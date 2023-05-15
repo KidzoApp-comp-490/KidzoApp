@@ -48,7 +48,7 @@ export default function Settings({ navigation }) {
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Changepass");
+            navigation.navigate("ChangePasswordScreen");
           }}
         >
           <Text style={styles.text1}>Change your password</Text>

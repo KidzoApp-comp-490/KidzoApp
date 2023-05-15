@@ -33,6 +33,7 @@ import Doctorsettings from "./Components/Doctors/Doctorsettings";
 import OnboardingFlow from "./Components/Users/OnboardingFlow";
 import { NetworkStatus } from "./Components/NetworkStatus";
 import Medical from "./Components/Medical/Medical";
+import ChangePasswordScreen from "./Components/Users/Changepass";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +101,11 @@ export default function App() {
           <Stack.Screen
             name="SignIn"
             component={SignIn}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
