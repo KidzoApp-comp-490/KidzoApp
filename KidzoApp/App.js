@@ -36,6 +36,7 @@ import Medical from "./Components/Medical/Medical";
 import ChangePasswordScreen from "./Components/Users/Changepass";
 import Messages from "./Components/Doctors/Messages";
 import ChatWithUser from "./Components/Chat/ChatWithUser";
+import Map from "./Components/Map/Map";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -134,6 +135,11 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Map"
+            component={Map}
             options={{ headerShown: false }}
           />
           <Stack.Screen
