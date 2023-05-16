@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
+  ActivityIndicator
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Frame from "../../assets/Report/Frame.png";
@@ -18,12 +19,14 @@ import {
   getMedical,
   deleteMedicineReport,
   getMedicineReport,
-  subscribe
+  subscribe,
+  editMedical
 
 } from "../../db/medicineReport";
 import { NetworkStatus } from '../NetworkStatus';
 import { getUserUId } from "../../db/firebase/auth";
 import * as ImagePicker from "expo-image-picker";
+import { firebase } from "../../db/Config";
 export default function Report({ navigation, route }) {
   let { flagAddVal, itemId } = route.params;
   const [title, setTitle] = useState("");
@@ -38,7 +41,30 @@ export default function Report({ navigation, route }) {
   const [printMonth, setprintMonth] = useState("")
   const [printYear, setprintYear] = useState("")
   const [printDesc, setprintDesc] = useState("")
-  
+
+
+  const [editTitle, seteditTitle] = useState("")
+  const [editday, seteditday] = useState("")
+
+  const [editMonth, seteditMonth] = useState("")
+  const [editYear, seteditYear] = useState("")
+
+  const [editDesc, seteditDesc] = useState("")
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`UsersImages/${new Date().toISOString()}`);
+    const snapshot = await ref.put(blob);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    setImage(downloadURL);
+    console.log("download link", downloadURL);
+    setImage(downloadURL);
+  };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -49,9 +75,12 @@ export default function Report({ navigation, route }) {
     await uploadImage(result.uri);
     setLoading(false);
   };
-  const handelId = getUserUId().then((val) => {
-    setCurrentId(val);
-  });
+  React.useEffect(() => {
+    getUserUId().then((val) => {
+      setCurrentId(val);
+    });
+  })
+
 
   React.useEffect(() => {
     mediList.map((e) => {
@@ -100,256 +129,272 @@ export default function Report({ navigation, route }) {
   }, []);
   return (
     <NetworkStatus>
-    <View style={styles.body}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.titleView}>
-          <View style={styles.frameView}>
+      <View style={styles.body}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.titleView}>
+            <View style={styles.frameView}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Medical");
+                }}
+              >
+                <Image source={Frame} style={styles.frame} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.wordView}>
+              {
+                flagAddVal ?
+                  <Text style={styles.title}>NEW REPORT</Text>
+                  :
+                  <Text style={styles.title}>EDIT REPORT</Text>
+              }
+
+            </View>
+          </View>
+          <View style={styles.lineView}>
+            <Text style={styles.line}> ────────────────────────────────</Text>
+          </View>
+          <View style={styles.ReportView}>
+            <View style={styles.starView}>
+              <Text style={styles.inpText}>Report Title {""}</Text>
+              <Text style={styles.star}>*</Text>
+            </View>
+            <View style={styles.inpView}>
+              {
+                flagAddVal ?
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(val) => setTitle(val)}
+                  /> :
+
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(val) => {
+                      seteditTitle(val);
+                    }}
+                  />
+              }
+
+            </View>
+          </View>
+          <View style={styles.birthdayView}>
+            <View style={styles.starView}>
+              <Text style={styles.inpText}>Report Date {""}</Text>
+              <Text style={styles.star}>*</Text>
+            </View>
+            <View style={styles.DMYView}>
+              <View style={styles.dayInpView}>
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Day"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setDay(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Day"
+                      keyboardType="number-pad"
+                      onChangeText={seteditday}
+                    />
+                }
+
+              </View>
+              <View style={styles.monthInpView}>
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Month"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setMonth(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Month"
+                      keyboardType="number-pad"
+                      onChangeText={seteditMonth}
+
+                    />
+                }
+
+              </View>
+              <View style={styles.yearInpView}>
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Year"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setYear(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Year"
+                      keyboardType="number-pad"
+                      onChangeText={seteditYear}
+                    />
+                }
+              </View>
+            </View>
+          </View>
+          <View style={styles.DesView}>
+            {
+              flagAddVal ?
+                <Text style={styles.Des}>Add Description</Text>
+                :
+                <Text style={styles.Des}>Edit Description</Text>
+            }
+
+            <View style={styles.inputView}>
+              {
+                flagAddVal ?
+                  <TextInput
+                    style={styles.inp}
+                    multiline
+                    scrollEnabled
+                    onChangeText={(val) => setDes(val)}
+                  /> :
+                  <TextInput
+                    style={styles.inp}
+                    multiline
+                    scrollEnabled
+                    onChangeText={seteditDesc}
+                  />
+              }
+
+            </View>
+          </View>
+          <View style={styles.iconView}>
+            {loading ? (
+              <ActivityIndicator
+                animating={true}
+                color="#bc2b78"
+                size="large"
+                style={styles.activityIndicator}
+              />
+            ) : (
+              <View style={{ borderRadius: 10, overflow: "hidden", marginBottom: 10 }}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 328, height: 150 }}
+                />
+              </View>
+            )}
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Medical");
-              }}
+              // adding image code goes here
+              onPress={pickImage}
             >
-              <Image source={Frame} style={styles.frame} />
+              <Image source={Icon} style={styles.icon} />
             </TouchableOpacity>
           </View>
-          <View style={styles.wordView}>
-            {
-              flagAddVal ?
-                <Text style={styles.title}>NEW REPORT</Text>
-                :
-                <Text style={styles.title}>EDIT REPORT</Text>
-            }
-
+          <View style={styles.wordsView}>
+            <Text style={styles.words}>
+              {" "}
+              Add pictures for medical prescription{"\n                 "}and
+              medical tests
+            </Text>
           </View>
-        </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
-        </View>
-        <View style={styles.ReportView}>
-          <View style={styles.starView}>
-            <Text style={styles.inpText}>Report Title {""}</Text>
-            <Text style={styles.star}>*</Text>
-          </View>
-          <View style={styles.inpView}>
-            {
-              flagAddVal ?
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(val) => setTitle(val)}
-                /> :
-                <TextInput
-                  style={styles.input}
-                  value={printTitle}
-                  // onChangeText={(val) => setprintTitle(val)}
-                />
-            }
-
-          </View>
-        </View>
-        <View style={styles.birthdayView}>
-          <View style={styles.starView}>
-            <Text style={styles.inpText}>Report Date {""}</Text>
-            <Text style={styles.star}>*</Text>
-          </View>
-          <View style={styles.DMYView}>
-            <View style={styles.dayInpView}>
-              {
-                flagAddVal ?
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Day"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setDay(val)}
-                  /> :
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Day"
-                    keyboardType="number-pad"
-                    value={printDay}
-                  />
-              }
-
-            </View>
-            <View style={styles.monthInpView}>
-              {
-                flagAddVal ?
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Month"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setMonth(val)}
-                  /> :
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Month"
-                    keyboardType="number-pad"
-                    value={printMonth}
-
-                  />
-              }
-
-            </View>
-            <View style={styles.yearInpView}>
-              {
-                flagAddVal ?
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Year"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setYear(val)}
-                  /> :
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Year"
-                    keyboardType="number-pad"
-                    value={printYear}
-                  />
-              }
-            </View>
-          </View>
-        </View>
-        <View style={styles.DesView}>
           {
-            flagAddVal ?
-              <Text style={styles.Des}>Add Description</Text>
-              :
-              <Text style={styles.Des}>Edit Description</Text>
-          }
+          flagAddVal ?
+            <TouchableOpacity style={styles.button}
+              onPress={() => {
+                let isMonth = /^\d+$/.test(month);
+                let isDay = /^\d+$/.test(day);
+                let isYear = /^\d+$/.test(year);
+                if (
+                  title.length > 0 &&
+                  isMonth &&
+                  month >= 1 &&
+                  month <= 12 &&
+                  isYear &&
+                  year >= 2020 &&
+                  isDay &&
+                  day >= 1 &&
+                  day <= 31 &&
+                  desc.length > 0
+                ) {
+                  navigation.navigate("TabFun");
+                  console.log(title, " ", day, " ", month, " ", year, " ", desc);
+                  addMedicineReport({
+                    day: day,
+                    description: desc,
+                    month: month,
+                    title: title,
+                    year: year,
+                    currentUserid: currentId,
+                    image: image
+                  });
+                }
+                if (!(title.length > 0)) {
+                  alert("Title can not be empty");
+                } else if (!(isMonth && month >= 1 && month <= 12)) {
+                  alert("Month should be between 1 - 12");
+                } else if (!(isDay && day >= 1 && day <= 31)) {
+                  alert("Day should be between 1 - 31");
+                } else if (!(isYear && year >= 2020)) {
+                  alert("Year should be greater than 2020");
+                }
+                else if (!(desc.length > 0)) {
+                  alert("Description can not be empty")
+                } else {
+                  alert("Done!");
+                }
 
-          <View style={styles.inputView}>
-            {
-              flagAddVal ?
-                <TextInput
-                  style={styles.inp}
-                  multiline
-                  scrollEnabled
-                  onChangeText={(val) => setDes(val)}
-                /> :
-                <TextInput
-                  style={styles.inp}
-                  multiline
-                  scrollEnabled
-                  value={printDesc}
-                />
-            }
-
-          </View>
-        </View>
-        <View style={styles.iconView}>
-          <TouchableOpacity
-          // adding image code goes here
-          onPress={pickImage}
-          >
-            <Image source={Icon} style={styles.icon} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.wordsView}>
-          <Text style={styles.words}>
-            {" "}
-            Add pictures for medical prescription{"\n                 "}and
-            medical tests
-          </Text>
-        </View>
-      </ScrollView>
-      {
-
-        flagAddVal ?
-          <TouchableOpacity style={styles.button}
-            onPress={() => {
-              // console.log("flagEditVal: ", flagEditVal, "flagAddVal: ", flagAddVal)
-              let isMonth = /^\d+$/.test(month);
-              let isDay = /^\d+$/.test(day);
-              let isYear = /^\d+$/.test(year);
-              if (
-                title.length > 0 &&
-                isMonth &&
-                month >= 1 &&
-                month <= 12 &&
-                isYear &&
-                year >= 2020 &&
-                isDay &&
-                day >= 1 &&
-                day <= 31
-              ) {
+              }}
+            >
+              <View style={styles.button2}>
+                <Text style={styles.button1}> Add Report</Text>
+              </View>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.button}
+              onPress={() => {
                 navigation.navigate("TabFun");
-                handelId;
-                console.log(title, " ", day, " ", month, " ", year, " ", desc);
-                addMedicineReport({
-                  day: day,
-                  description: desc,
-                  month: month,
-                  title: title,
-                  year: year,
+                let titleValue = printTitle;
+                let dayValue = printDay;
+                let monthValue = printMonth;
+                let yearValue = printYear;
+                let desValue = printDesc;
+                if (editTitle.length > 0) {
+                  titleValue = editTitle;
+                }
+                if (editMonth.length > 0) {
+                  monthValue = editMonth;
+                }
+                if (editday.length > 0) {
+                  dayValue = editday;
+                }
+                if (editYear.length > 0) {
+                  yearValue = editYear;
+                }
+                if (editDesc.length > 0) {
+                  desValue = editDesc;
+                }
+                editMedical({
                   currentUserid: currentId,
-                });
+                  title: titleValue,
+                  day: dayValue,
+                  month: monthValue,
+                  year: yearValue,
+                  description: desValue,
+                  image: image,
+                }, itemId)
+                alert("Done!");
               }
-              if (!(title.length > 0)) {
-                alert("Title can not be empty");
-              } else if (!(isMonth && month >= 1 && month <= 12)) {
-                alert("Month should be between 1 - 12");
-              } else if (!(isDay && day >= 1 && day <= 31)) {
-                alert("Day should be between 1 - 31");
-              } else if (!(isYear && year >= 2020)) {
-                alert("Year should be greater than 2020");
-              } else {
-                alert("Done!!");
-              }
-            }}
-          >
-            <View style={styles.button2}>
-              <Text style={styles.button1}> Add Report</Text>
-            </View>
-          </TouchableOpacity>
-
-          :
-
-          <TouchableOpacity style={styles.button}
-            onPress={() => {
-
-              console.log("itemId: ", itemId)
-              // console.log("data: ", currentItemData)
-              let isMonth = /^\d+$/.test(month);
-              let isDay = /^\d+$/.test(day);
-              let isYear = /^\d+$/.test(year);
-              if (
-                title.length > 0 &&
-                isMonth &&
-                month >= 1 &&
-                month <= 12 &&
-                isYear &&
-                year >= 2020 &&
-                isDay &&
-                day >= 1 &&
-                day <= 31
-              ) {
-                navigation.navigate("TabFun");
-                //edit code goes here
-              }
-              if (!(title.length > 0)) {
-                alert("Title can not be empty");
-              } else if (!(isMonth && month >= 1 && month <= 12)) {
-                alert("Month should be between 1 - 12");
-              } else if (!(isDay && day >= 1 && day <= 31)) {
-                alert("Day should be between 1 - 31");
-              } else if (!(isYear && year >= 2020)) {
-                alert("Year should be greater than 2020");
-              } else {
-                alert("Done!!");
-              }
-            }}
-          >
-            <View style={styles.button2}>
-              <Text style={styles.button1}> Edit Report</Text>
-            </View>
-          </TouchableOpacity>
-
-      }
-
-
-
-
-      <StatusBar style="auto" />
-    </View>
+              } 
+              
+            >
+              <View style={styles.button2}>
+                <Text style={styles.button1}> Edit Report</Text>
+              </View>
+            </TouchableOpacity>
+        }
+        </ScrollView>
+       
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
   );
 }
@@ -409,7 +454,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft:5,
+    paddingLeft: 5,
   },
   starView: {
     flexDirection: "row",
@@ -460,7 +505,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     fontSize: 14,
     opacity: 0.65,
-    
+
   },
   inp: {
     backgroundColor: "#ffff",
@@ -469,7 +514,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 144,
     borderRadius: 5,
-    paddingLeft:5,
+    paddingLeft: 5,
   },
   iconView: {
     marginTop: 36,
@@ -495,7 +540,7 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: "#FFA8C5",
     color: "#ffff",
-    marginBottom: 200,
+    marginBottom: 10,
   },
   button1: {
     fontFamily: "Montserrat",

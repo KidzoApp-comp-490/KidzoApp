@@ -24,7 +24,7 @@ export default function MedicalItem({ navigation }) {
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
-    console.log("medicines from database", medc);
+    // console.log("medicines from database", medc);
   }
   React.useEffect(() => {
     getmedcList();
@@ -100,6 +100,8 @@ export default function MedicalItem({ navigation }) {
               year={e.year}
               key={index}
               compId={e.id}
+              desc={e.description}
+              image={e.image}
             />
             : null
         ))}

@@ -11,13 +11,16 @@ import {  addDoc,
 import { app } from "./Config";
 const firestoreDB = getFirestore(app);
 
-async function addMedicineReport(day, description, month, title, year,currentUserid) {
-    await addDoc(collection(firestoreDB, "medicineReport"),day, description, month, title, year ,currentUserid);
+async function addMedicineReport(day, description, month, title, year,currentUserid,image) {
+    await addDoc(collection(firestoreDB, "medicineReport"),day, description, month, title, year ,currentUserid,image);
 }
-// async function addMedicineReport(day){
-//     await addDoc(collection(firestoreDB, "medicineReport"), day);
-//     // await setDoc(doc(firestoreDB,"medicineReport"),day);
-// }
+async function editMedical(medicineReport, idVal) {
+  await setDoc(doc(firestoreDB, "medicineReport", idVal), medicineReport);
+}
+
+async function updateMedical(medicineReport) {
+  await updateDoc(doc(firestoreDB, "medicineReport", medicineReport.id), medicineReport);
+}
 async function deleteMedicineReport(id) {
     await deleteDoc(doc(firestoreDB, "medicineReport",id));
 }
@@ -26,7 +29,7 @@ async function getMedicineReport(id) {
     const q = query(usersRef, where("id", "==", id));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => {
-        console.log("here doc", doc)
+        // console.log("here doc", doc)
         return { id: doc.id, ...doc.data() };
     });
 }
@@ -51,4 +54,4 @@ function subscribe(callback) {
     );
     return unsubscribe;
   }
-export { subscribe,addMedicineReport,getMedical, deleteMedicineReport, getMedicineReport };
+  export { subscribe,addMedicineReport,getMedical, deleteMedicineReport, getMedicineReport, editMedical,updateMedical};
