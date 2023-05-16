@@ -16,6 +16,7 @@ import Frame from "../../assets/ForgotPass/Frame.png";
 import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
 import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
 import { NetworkStatus } from '../NetworkStatus';
+
 import { firebase } from '../../db/Config';
 
 import 'firebase/auth';
@@ -43,7 +44,7 @@ export default function Changepass({ navigation }) {
     })
       .then(() => {
         console.log('Password changed successfully.');
-        // You can add any success message or navigation logic here
+        alert("Password changed successfully.");
         navigation.navigate("TabFun");
       })
       .catch((error) => {
