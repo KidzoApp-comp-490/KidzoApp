@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,26 +10,43 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Logo from "../../assets/SignIn/Kidzo.png";
-
 import OR from "../../assets/SignUp/OR.png";
 import Google from "../../assets/SignIn/logos_google-icon.png";
 import { register, getUserUId } from "../../db/firebase/auth";
 import { auth, provider } from "../../db/Config";
 import { Addusers } from "../../db/firebase/users";
 import { signInWithPopup } from "firebase/auth";
-import { NetworkStatus } from '../NetworkStatus';
+import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
+import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
+import { NetworkStatus } from "../NetworkStatus";
 
 export default function SignUpDoctor({ navigation }) {
   const SingUpWithGoogle = () => {
-    signInWithPopup(auth, provider).then((data) => {navigation.navigate("Doctorsettings")});
+    signInWithPopup(auth, provider).then((data) => {
+      navigation.navigate("Doctorsettings");
+      getUserUId().then((id) => {
+        Addusers({
+          uid: id,
+          email: data.user.email,
+          fName: fName,
+          lName: lName,
+          phone: phone,
+          address: address,
+          price: price,
+          job: "Doctor",
+          image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+        });
+      });
+    });
   };
 
-  const [checked, setChecked] = useState("first");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [price, setPrice] = useState("");
 
   const checkDate = () => {
     if (
@@ -40,12 +57,26 @@ export default function SignUpDoctor({ navigation }) {
       phone.length === 0
     ) {
       alert("invalid information");
+    } else if (email.length === 0) {
+      alert("Please enter your email");
+    } else if (!email.includes("@")) {
+      alert("invalid email");
     } else if (password.length < 8) {
       alert("Password must be at least 8 characters");
+    } else if (fName.length === 0) {
+      alert("Please enter your first name");
+    } else if (lName.length === 0) {
+      alert("Please enter your last name");
+    } else if (phone.length === 0) {
+      alert("Please enter your clinic phone number");
+    } else if (address.length === 0) {
+      alert("Please enter your clinic address");
+    } else if (price.length === 0) {
+      alert("Please enter your session price");
     } else {
       register(email, password)
         .then(() => {
-          console.log("registerd");
+          console.log("registered");
           alert("Register Success!\nPlease Login");
           navigation.navigate("SignIn");
           getUserUId().then((id) => {
@@ -56,6 +87,10 @@ export default function SignUpDoctor({ navigation }) {
               fName: fName,
               lName: lName,
               phone: phone,
+              address: address,
+              price: price,
+              job: "Doctor",
+              image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
             });
           });
         })
@@ -74,129 +109,165 @@ export default function SignUpDoctor({ navigation }) {
         });
     }
   };
+  const [icon, setIcon] = useState(true);
+  const clickEye = () => {
+    icon ? setIcon(false) : setIcon(true);
+  };
+  let imageSource = icon ? PassIconInV : PassIconV;
 
   return (
     <NetworkStatus>
-    <View style={styles.body}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.LogoView}>
-          <Image source={Logo} style={styles.Logo} />
-        </View>
-        <View style={styles.signUpTextView}>
-          <Text style={styles.signUpText}>
-            Sign Up As Doctor{"\n"}
-            <Text style={styles.accountText}>Already have account? </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("SignIn");
-              }}
-            >
-              <Text style={styles.signInText}>Sign In</Text>
+      <View style={styles.body}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.LogoView}>
+            <Image source={Logo} style={styles.Logo} />
+          </View>
+          <View style={styles.signUpTextView}>
+            <Text style={styles.signUpText}>
+              Sign Up As Doctor{"\n"}
+              <Text style={styles.accountText}>Already have account? </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("SignIn");
+                }}
+              >
+                <Text style={styles.signInText}>Sign In</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+          <View style={styles.emailView}>
+            <Text style={styles.inpText}>Email</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="email-address"
+                onChangeText={(val) => {
+                  setEmail(val);
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.PassView}>
+            <Text style={styles.inpText}>Password</Text>
+            {icon ? (
+              <View style={styles.inpPassView}>
+                <TextInput
+                  style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={(val) => {
+                    setPassword(val);
+                  }}
+                />
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.inpPassView}>
+                <TextInput
+                  style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  onChangeText={(val) => {
+                    setPassword(val);
+                  }}
+                />
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View style={styles.flNameView}>
+            <View style={styles.fNameView}>
+              <Text style={styles.fName}>First name</Text>
+              <View style={styles.fNameInpView}>
+                <TextInput
+                  style={styles.fNameInp}
+                  onChangeText={(val) => {
+                    setFName(val);
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.lNameView}>
+              <Text style={styles.lName}>Last name</Text>
+              <View style={styles.lNameInpView}>
+                <TextInput
+                  style={styles.lNameInp}
+                  onChangeText={(val) => {
+                    setLName(val);
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+          <View style={styles.PhoneView}>
+            <Text style={styles.inpText}>Clinic Phone number</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="number-pad"
+                onChangeText={(val) => {
+                  setPhone(val);
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.AdressView}>
+            <Text style={styles.inpText}>Clinic Address</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.Adressinput}
+                onChangeText={(val) => {
+                  setAddress(val);
+                }}
+              />
+            </View>
+          </View>
+
+          <View style={styles.PhoneView}>
+            <Text style={styles.inpText}>Session price</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="number-pad"
+                onChangeText={(val) => {
+                  setPrice(val);
+                }}
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonview}>
+            <TouchableOpacity style={styles.button} onPress={checkDate}>
+              <View style={styles.button2}>
+                <Text style={styles.button1}> Sign Up</Text>
+              </View>
             </TouchableOpacity>
-          </Text>
-        </View>
-        <View style={styles.emailView}>
-          <Text style={styles.inpText}>Email</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="email-address"
-              onChangeText={(val) => {
-                setEmail(val);
-              }}
-            />
           </View>
-        </View>
-        <View style={styles.PassView}>
-          <Text style={styles.inpText}>Password</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              secureTextEntry
-              onChangeText={(val) => {
-                setPassword(val);
-              }}
-            />
+          <View style={styles.orView}>
+            <Image source={OR} style={styles.or} />
           </View>
-        </View>
-        <View style={styles.flNameView}>
-          <View style={styles.fNameView}>
-            <Text style={styles.fName}>First name</Text>
-            <View style={styles.fNameInpView}>
-              <TextInput
-                style={styles.fNameInp}
-                onChangeText={(val) => {
-                  setFName(val);
-                }}
-              />
-            </View>
+          <View style={styles.SingUpWithGoogleView}>
+            <TouchableOpacity style={styles.touch} onPress={SingUpWithGoogle}>
+              <Image source={Google} style={styles.GoogleIcon} />
+              <Text style={styles.GoogleText}>SingUp with Google</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.lNameView}>
-            <Text style={styles.lName}>Last name</Text>
-            <View style={styles.lNameInpView}>
-              <TextInput
-                style={styles.lNameInp}
-                onChangeText={(val) => {
-                  setLName(val);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.PhoneView}>
-          <Text style={styles.inpText}>Clinic Phone number</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              onChangeText={(val) => {
-                setPhone(val);
-              }}
-            />
-          </View>
-        </View>
-        <View style={styles.AdressView}>
-          <Text style={styles.inpText}>Clinic Adress</Text>
-          <View style={styles.inpView}>
-            <TextInput style={styles.Adressinput} />
-          </View>
-        </View>
-
-        <View style={styles.PhoneView}>
-          <Text style={styles.inpText}>Session price</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              //   onChangeText={(val) => {
-              //     setPhone(val);
-              //   }}
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonview}>
-          <TouchableOpacity style={styles.button} onPress={checkDate}>
-            <View style={styles.button2}>
-              <Text style={styles.button1}> Sign Up</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.orView}>
-          <Image source={OR} style={styles.or} />
-        </View>
-        <View style={styles.SingUpWithGoogleView}>
-          <TouchableOpacity style={styles.touch} onPress={SingUpWithGoogle}>
-            <Image source={Google} style={styles.GoogleIcon} />
-            <Text style={styles.GoogleText}>SingUp with Google</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+        </ScrollView>
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
   );
 }
@@ -263,6 +334,21 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
+    paddingLeft: 5,
+  },
+  inpPassView: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffff",
+    borderColor: "#FFA8C5",
+    borderWidth: 1,
+    width: 328,
+    height: 48,
+    borderRadius: 5,
+  },
+  inputPass: {
+    width: 300,
+    height: 42,
     paddingLeft: 5,
   },
   AdressView: {

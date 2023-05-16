@@ -33,6 +33,9 @@ import Doctorsettings from "./Components/Doctors/Doctorsettings";
 import OnboardingFlow from "./Components/Users/OnboardingFlow";
 import { NetworkStatus } from "./Components/NetworkStatus";
 import Medical from "./Components/Medical/Medical";
+import ChangePasswordScreen from "./Components/Users/Changepass";
+import Messages from "./Components/Doctors/Messages";
+import ChatWithUser from "./Components/Chat/ChatWithUser";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -100,6 +103,11 @@ export default function App() {
           <Stack.Screen
             name="SignIn"
             component={SignIn}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChangePasswordScreen"
+            component={ChangePasswordScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -189,8 +197,18 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="Messages"
+            component={Messages}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="ChatWithDoc"
             component={ChatWithDoc}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChatWithUser"
+            component={ChatWithUser}
             options={{ headerShown: false }}
           />
           <Stack.Screen

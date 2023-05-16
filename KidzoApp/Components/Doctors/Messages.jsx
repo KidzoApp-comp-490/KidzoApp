@@ -10,27 +10,56 @@ import React from "react";
 import Frame from "../../assets/MedicalH/Frame.png";
 import ProfilePic from "../../assets/Profile/Group69.png";
 import { StatusBar } from "expo-status-bar";
+import LogOut from "../../assets/Settings/LogOut.png";
+import { SignOut } from "../../db/firebase/auth";
 
-export default function Messages() {
+export default function Messages({ navigation }) {
   return (
     <View style={styles.body}>
       <ScrollView>
         <View style={styles.titleView}>
-          <View style={styles.frameView}>
+          <Text style={styles.title}>Messages</Text>
+          <View style={styles.LogOutView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("TabFun");
+                SignOut().then(() => {
+                  console.log("sign out");
+                  navigation.navigate("SignIn");
+                  alert("You signed out");
+                });
               }}
             >
-              <Image source={Frame} style={styles.frame} />
+              <Image source={LogOut} style={styles.LogOutImage} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.title}>Messages</Text>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
+          <Text style={styles.line}>──────────────────────────────────</Text>
         </View>
         {/* main view */}
+        <TouchableOpacity
+          style={styles.square}
+          onPress={() => {
+            navigation.navigate("ChatWithUser");
+          }}
+        >
+          <View style={styles.doctorsView}>
+            <View style={styles.doctorsImageView}>
+              <Image source={ProfilePic} style={{ width: 75, height: 75 }} />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flex: 1,
+              }}
+            >
+              <Text>aaaaaa</Text>
+              <View style={styles.dotImageView}></View>
+            </View>
+          </View>
+        </TouchableOpacity>
         <View style={styles.doctorsView}>
           <View style={styles.doctorsImageView}>
             <Image source={ProfilePic} style={{ width: 75, height: 75 }} />
@@ -43,23 +72,7 @@ export default function Messages() {
               flex: 1,
             }}
           >
-            <Text>Dr. aaaaaa</Text>
-            <View style={styles.dotImageView}></View>
-          </View>
-        </View>
-        <View style={styles.doctorsView}>
-          <View style={styles.doctorsImageView}>
-            <Image source={ProfilePic} style={{ width: 75, height: 75 }} />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flex: 1,
-            }}
-          >
-            <Text>Dr. bbbbbbbbbbb</Text>
+            <Text>bbbbbbbbbbb</Text>
             <View style={styles.dotImageView}></View>
           </View>
         </View>
@@ -81,9 +94,14 @@ const styles = StyleSheet.create({
     marginTop: 75,
     marginLeft: 21.37,
   },
-  frame: {
-    width: 24,
-    height: 20,
+  LogOutView: {
+    flex: 1,
+    alignItems: "flex-end",
+    marginRight: 20,
+  },
+  LogOutImage: {
+    width: 25,
+    height: 25,
   },
   title: {
     color: "#0B3B63",

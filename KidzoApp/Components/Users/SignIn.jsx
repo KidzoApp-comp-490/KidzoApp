@@ -17,12 +17,22 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../db/Config";
 import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
 import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
-import { NetworkStatus } from '../NetworkStatus';
+import { NetworkStatus } from "../NetworkStatus";
+import { getUserUId } from "../../db/firebase/auth";
+import { getUserById } from "../../db/firebase/users";
 
 export default function SignIn({ navigation }) {
   const SingInWithGoogle = () => {
     signInWithPopup(auth, provider).then(() => {
-      navigation.navigate("TabFun");
+      getUserUId().then((id) => {
+        getUserById(id).then((user) => {
+          if (user[0].job === "Doctor") {
+            navigation.navigate("Messages");
+          } else {
+            navigation.navigate("TabFun");
+          }
+        });
+      });
     });
   };
 
@@ -35,7 +45,15 @@ export default function SignIn({ navigation }) {
     else
       login(email, password)
         .then(() => {
-          navigation.navigate("TabFun");
+          getUserUId().then((id) => {
+            getUserById(id).then((user) => {
+              if (user[0].job === "Doctor") {
+                navigation.navigate("Messages");
+              } else {
+                navigation.navigate("TabFun");
+              }
+            });
+          });
           alert("Login Success!");
         })
         .catch((e) => {
@@ -70,105 +88,103 @@ export default function SignIn({ navigation }) {
   let imageSource = icon ? PassIconInV : PassIconV;
 
   return (
-    
-    <NetworkStatus >
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.logoView}>
-          <Image source={Logo} style={styles.logo} />
-        </View>
-        <View style={styles.titleView}>
-          <Text style={styles.title}> Sign In</Text>
-          <Text style={styles.word}>Welcome back!</Text>
-        </View>
-        <View style={styles.emailView}>
-          <Text style={styles.inpText}>E-mail</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={(val) => setEmail(val)}
-            />
+    <NetworkStatus>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.logoView}>
+            <Image source={Logo} style={styles.logo} />
           </View>
-        </View>
-        <View style={styles.passView}>
-          <Text style={styles.inpText}>Password</Text>
-          {icon ? (
-            <View style={styles.inpViewPass}>
+          <View style={styles.titleView}>
+            <Text style={styles.title}> Sign In</Text>
+            <Text style={styles.word}>Welcome back!</Text>
+          </View>
+          <View style={styles.emailView}>
+            <Text style={styles.inpText}>E-mail</Text>
+            <View style={styles.inpView}>
               <TextInput
-                style={styles.inputPass}
-                autoCapitalize="none"
-                autoCorrect={false}
-                textContentType="newPassword"
-                secureTextEntry
-                onChangeText={(val) => setPassword(val)}
+                style={styles.input}
+                onChangeText={(val) => setEmail(val)}
               />
-              <TouchableOpacity onPress={clickEye}>
-                <Image
-                  source={imageSource}
-                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+            </View>
+          </View>
+          <View style={styles.passView}>
+            <Text style={styles.inpText}>Password</Text>
+            {icon ? (
+              <View style={styles.inpViewPass}>
+                <TextInput
+                  style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={(val) => setPassword(val)}
                 />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.inpViewPass}>
-              <TextInput
-                style={styles.inputPass}
-                onChangeText={(val) => setPassword(val)}
-              />
-              <TouchableOpacity onPress={clickEye}>
-                <Image
-                  source={imageSource}
-                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.inpViewPass}>
+                <TextInput
+                  style={styles.inputPass}
+                  onChangeText={(val) => setPassword(val)}
                 />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-        <View style={styles.forgotwordview}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ForgetPass");
-            }}
-          >
-            <Text style={styles.forgotword}>Forgot password?</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonview}>
-          <TouchableOpacity style={styles.button} onPress={checkDate}>
-            <View style={styles.button2}>
-              <Text style={styles.button1}> Sign in</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.orimageview}>
-          <Image source={Or} style={styles.orimage} />
-        </View>
-
-        <View style={styles.SinginWithGoogleView}>
-          <TouchableOpacity style={styles.touch} onPress={SingInWithGoogle}>
-            <Image source={Google} style={styles.GoogleIcon} />
-            <View style={styles.GoogleTextView}>
-              <Text style={styles.GoogleText}>Sing in with Google</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.uptextView}>
-          <Text style={styles.accountcreate}>
-            Don't have an account?
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View style={styles.forgotwordview}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("SignupAs");
+                navigation.navigate("ForgetPass");
               }}
             >
-              <Text style={styles.uptext}>Sign up</Text>
+              <Text style={styles.forgotword}>Forgot password?</Text>
             </TouchableOpacity>
-          </Text>
-        </View>
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+          </View>
+          <View style={styles.buttonview}>
+            <TouchableOpacity style={styles.button} onPress={checkDate}>
+              <View style={styles.button2}>
+                <Text style={styles.button1}> Sign in</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.orimageview}>
+            <Image source={Or} style={styles.orimage} />
+          </View>
+
+          <View style={styles.SinginWithGoogleView}>
+            <TouchableOpacity style={styles.touch} onPress={SingInWithGoogle}>
+              <Image source={Google} style={styles.GoogleIcon} />
+              <View style={styles.GoogleTextView}>
+                <Text style={styles.GoogleText}>Sing in with Google</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.uptextView}>
+            <Text style={styles.accountcreate}>
+              Don't have an account?
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("SignupAs");
+                }}
+              >
+                <Text style={styles.uptext}>Sign up</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+        </ScrollView>
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
-    
   );
 }
 const styles = StyleSheet.create({
@@ -261,8 +277,6 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: "#FFA8C5",
     color: "#ffff",
-    
-
   },
   button1: {
     fontFamily: "Montserrat",

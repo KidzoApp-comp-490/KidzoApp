@@ -17,7 +17,47 @@ import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
 import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
 import { NetworkStatus } from '../NetworkStatus';
 
+import { firebase } from '../../db/Config';
+
+import 'firebase/auth';
+
 export default function Changepass({ navigation }) {
+
+ const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const changePassword = () => {
+    const user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+
+    
+        if (newPassword.length < 8) {
+          alert("Password must be at least 8 characters");
+
+       
+      }
+    else {
+    user.reauthenticateWithCredential(credential)
+      .then(() => {
+    return user.updatePassword(newPassword);
+      
+    })
+      .then(() => {
+        console.log('Password changed successfully.');
+        alert("Password changed successfully.");
+        navigation.navigate("TabFun");
+      })
+      .catch((error) => {
+        console.log('Error changing password:', error);
+        // Handle and display error message to the user
+        
+      });
+    }
+  };
+
+
+
+
   const [icon, setIcon] = useState(true);
   const clickEye = () => {
     icon ? setIcon(false) : setIcon(true);
@@ -52,6 +92,8 @@ export default function Changepass({ navigation }) {
               autoCorrect={false}
               textContentType="newPassword"
               secureTextEntry
+              value={currentPassword}
+        onChangeText={(text) => setCurrentPassword(text)}
             />
             <TouchableOpacity onPress={clickEye}>
               <Image
@@ -67,6 +109,8 @@ export default function Changepass({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               textContentType="newPassword"
+              value={currentPassword}
+        onChangeText={(text) => setCurrentPassword(text)}
             />
             <TouchableOpacity onPress={clickEye}>
               <Image
@@ -88,6 +132,8 @@ export default function Changepass({ navigation }) {
               autoCorrect={false}
               textContentType="newPassword"
               secureTextEntry
+              value={newPassword}
+        onChangeText={(text) => setNewPassword(text)}
             />
             <TouchableOpacity onPress={clickEye}>
               <Image
@@ -103,6 +149,8 @@ export default function Changepass({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               textContentType="newPassword"
+              value={newPassword}
+        onChangeText={(text) => setNewPassword(text)}
             />
             <TouchableOpacity onPress={clickEye}>
               <Image
@@ -115,7 +163,8 @@ export default function Changepass({ navigation }) {
       </View>
 
       <View style={styles.buttonview}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+       onPress={changePassword} >
           <View style={styles.button2}>
             <Text style={styles.button1}> Change password</Text>
           </View>
@@ -225,3 +274,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
+

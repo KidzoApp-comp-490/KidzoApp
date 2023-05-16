@@ -16,7 +16,7 @@ import Send from "../../assets/Chat/ic_round-send.png";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 
-export default function ChatWithDoc({ navigation }) {
+export default function ChatWithUser({ navigation }) {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
@@ -49,7 +49,7 @@ export default function ChatWithDoc({ navigation }) {
   const sendMessage = () => {
     if (text || image) {
       setMessages([
-        { id: messages.length, text, image, sentByMe: true },
+        { id: messages.length, text, image, sentByMe: false },
         ...messages,
       ]);
       setText("");
@@ -84,7 +84,7 @@ export default function ChatWithDoc({ navigation }) {
           <View style={styles.headerContent}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Doctors");
+                navigation.navigate("Messages");
               }}
             >
               <Image
@@ -92,18 +92,11 @@ export default function ChatWithDoc({ navigation }) {
                 style={{ width: 25, height: 14.25, marginRight: 38.37 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center" }}
-              onPress={() => {
-                navigation.navigate("Expertdetails");
-              }}
-            >
-              <Image
-                source={ProfilePic}
-                style={{ width: 75, height: 75, marginRight: 32 }}
-              />
-              <Text style={styles.doctorTxt}>Dr.aaaaa</Text>
-            </TouchableOpacity>
+            <Image
+              source={ProfilePic}
+              style={{ width: 75, height: 75, marginRight: 32 }}
+            />
+            <Text style={styles.doctorTxt}>aaaaa</Text>
           </View>
         </View>
       </View>

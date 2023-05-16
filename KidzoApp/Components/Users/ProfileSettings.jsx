@@ -15,7 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import BackIcon from "../../assets/Profile/Back.png";
 import { firebase } from "../../db/Config";
 import * as ImagePicker from "expo-image-picker";
-import { NetworkStatus } from '../NetworkStatus';
+import { NetworkStatus } from "../NetworkStatus";
 
 export default function ProfileSettings({ navigation }) {
   const [user, setUser] = useState([]);
@@ -99,87 +99,87 @@ export default function ProfileSettings({ navigation }) {
 
   return (
     <NetworkStatus>
-    <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.Section1}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("TabFun");
-            }}
-          >
-            <Image
-              source={BackIcon}
-              style={{ width: 25, height: 25, marginRight: 21.37 }}
-            />
-          </TouchableOpacity>
-
-          <Text style={styles.ProfileTxt}>EDIT PROFILE</Text>
-        </View>
-        <View style={styles.UserImageView}>
-          <TouchableOpacity onPress={pickImage}>
-            {loading ? (
-              <ActivityIndicator
-                animating={true}
-                color="#bc2b78"
-                size="large"
-                style={styles.activityIndicator}
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.Section1}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("TabFun");
+              }}
+            >
+              <Image
+                source={BackIcon}
+                style={{ width: 25, height: 25, marginRight: 21.37 }}
               />
-            ) : (
-              <View style={{ borderRadius: 100, overflow: "hidden" }}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 168, height: 168 }}
+            </TouchableOpacity>
+
+            <Text style={styles.ProfileTxt}>EDIT PROFILE</Text>
+          </View>
+          <View style={styles.UserImageView}>
+            <TouchableOpacity onPress={pickImage}>
+              {loading ? (
+                <ActivityIndicator
+                  animating={true}
+                  color="#bc2b78"
+                  size="large"
+                  style={styles.activityIndicator}
                 />
+              ) : (
+                <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 168, height: 168 }}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={editImage}>
+              <Text style={styles.ImageText}>Save your profile picture</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.InputView}>
+            <Text style={styles.InputTxt}>First name</Text>
+            <TextInput
+              style={styles.Input}
+              defaultValue={fName}
+              onChangeText={setFName}
+            />
+          </View>
+          <View style={styles.InputView2}>
+            <Text style={styles.InputTxt}>Last name</Text>
+            <TextInput
+              style={styles.Input}
+              defaultValue={lName}
+              onChangeText={setLName}
+            />
+          </View>
+          <View style={styles.InputView2}>
+            <Text style={styles.InputTxt}>Phon number</Text>
+            <TextInput
+              style={styles.Input}
+              defaultValue={phone}
+              onChangeText={setPhone}
+            />
+          </View>
+          <View style={styles.InputView2}>
+            <Text style={styles.InputTxt}>Age</Text>
+            <TextInput
+              style={styles.Input}
+              defaultValue={age}
+              onChangeText={setAge}
+            />
+          </View>
+          <View style={styles.buttonview}>
+            <TouchableOpacity style={styles.button} onPress={editDate}>
+              <View style={styles.button2}>
+                <Text style={styles.button1}>Confirm editing</Text>
               </View>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={editImage}>
-            <Text style={styles.ImageText}>Save your profile picture</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.InputView}>
-          <Text style={styles.InputTxt}>First name</Text>
-          <TextInput
-            style={styles.Input}
-            defaultValue={fName}
-            onChangeText={setFName}
-          />
-        </View>
-        <View style={styles.InputView2}>
-          <Text style={styles.InputTxt}>Last name</Text>
-          <TextInput
-            style={styles.Input}
-            defaultValue={lName}
-            onChangeText={setLName}
-          />
-        </View>
-        <View style={styles.InputView2}>
-          <Text style={styles.InputTxt}>Phon number</Text>
-          <TextInput
-            style={styles.Input}
-            defaultValue={phone}
-            onChangeText={setPhone}
-          />
-        </View>
-        <View style={styles.InputView2}>
-          <Text style={styles.InputTxt}>Age</Text>
-          <TextInput
-            style={styles.Input}
-            defaultValue={age}
-            onChangeText={setAge}
-          />
-        </View>
-        <View style={styles.buttonview}>
-          <TouchableOpacity style={styles.button} onPress={editDate}>
-            <View style={styles.button2}>
-              <Text style={styles.button1}>Confirm editing</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginBottom: 30 }}></View>
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginBottom: 30 }}></View>
+        </ScrollView>
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
   );
 }
@@ -221,10 +221,11 @@ const styles = StyleSheet.create({
   Input: {
     width: 326,
     height: 48,
-    borderRadius:5,
-    marginTop:5,
+    borderRadius: 5,
+    marginTop: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
+    paddingLeft: 5,
   },
   InputView2: {
     marginTop: 32,

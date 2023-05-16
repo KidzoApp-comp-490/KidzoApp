@@ -14,91 +14,60 @@ import { StatusBar } from "expo-status-bar";
 import Iconset from "../../assets/Settings/Frame.png";
 import Iconcha from "../../assets/Settings/change.png";
 import { SignOut } from "../../db/firebase/auth";
-
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function Settings({ navigation }) {
   return (
     <NetworkStatus>
-    <View style={styles.body}>
-      <View style={styles.wordView}>
-        <Text style={styles.word}>SETTINGS</Text>
-      </View>
-      <View style={styles.lineView}>
-        <Text style={styles.line}> ────────────────────────────────</Text>
-      </View>
-
-      <View style={styles.content}>
-      <View style={styles.iconView}>
-          <Image source={Iconset} style={styles.icon} />
+      <View style={styles.body}>
+        <View style={styles.wordView}>
+          <Text style={styles.word}>SETTINGS</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ProfileSettings");
-          }}
-        >
-          <Text style={styles.text1}>Edit your profile</Text>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.content2}>
-      <View style={styles.iconView2}>
-          <Image source={Iconcha} style={styles.icon2} />
+        <View style={styles.lineView}>
+          <Text style={styles.line}> ────────────────────────────────</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Changepass");
-          }}
-        >
-          <Text style={styles.text1}>Change your password</Text>
-        </TouchableOpacity>
-      </View>
 
-
-      {/* <View style={styles.textView}>
-        <View style={styles.iconView}>
-          <Image source={Iconset} style={styles.icon} />
+        <View style={styles.content}>
+          <View style={styles.iconView}>
+            <Image source={Iconset} style={styles.icon} />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ProfileSettings");
+            }}
+          >
+            <Text style={styles.text1}>Edit your profile</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ProfileSettings");
-          }}
-        >
-          <Text style={styles.text}>Edit your profile</Text>
-        </TouchableOpacity>
-      </View> */}
 
-      {/* <View style={styles.textView2}>
-        <View style={styles.iconView2}>
-          <Image source={Iconset} style={styles.icon2} />
+        <View style={styles.content2}>
+          <View style={styles.iconView2}>
+            <Image source={Iconcha} style={styles.icon2} />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ChangePasswordScreen");
+            }}
+          >
+            <Text style={styles.text1}>Change your password</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Changepass");
-          }}
-        >
-          <Text style={styles.text}>Change your password</Text>
-        </TouchableOpacity>
-      </View> */}
-
-      <View style={styles.content3}>
-       
-        <TouchableOpacity
-          style={styles.square}
-          onPress={() => {
-            SignOut().then(() => {
-              console.log("sign out");
-              navigation.navigate("SignIn");
-              alert("You signed out");
-            });
-          }}
-        >
-          <Text style={styles.text1}>Log Out</Text>
-        </TouchableOpacity>
+        <View style={styles.content3}>
+          <TouchableOpacity
+            style={styles.square}
+            onPress={() => {
+              SignOut().then(() => {
+                console.log("sign out");
+                navigation.navigate("SignIn");
+                alert("You signed out");
+              });
+            }}
+          >
+            <Text style={styles.text1}>Log Out</Text>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
-    </View>
     </NetworkStatus>
   );
 }
@@ -109,54 +78,51 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
-  content:{
-    width:328,
-    height:48,
-    backgroundColor:"#FFA8C5",
+  content: {
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
     flexDirection: "row",
     alignItems: "center",
-    borderRadius:5,
+    borderRadius: 5,
     marginTop: 70,
     marginRight: 16,
-    marginLeft:16,
-    alignItems:'center',
-    justifyContent:'center',
+    marginLeft: 16,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  content2:{
-    width:328,
-    height:48,
-    backgroundColor:"#FFA8C5",
+  content2: {
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
     flexDirection: "row",
     alignItems: "center",
-    borderRadius:5,
+    borderRadius: 5,
     marginTop: 60,
     marginRight: 16,
-    marginLeft:16,
-    alignItems:'center',
-    justifyContent:'center',
+    marginLeft: 16,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  content3:{
-    width:328,
-    height:48,
-    backgroundColor:"#FFA8C5",
+  content3: {
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
     flexDirection: "row",
-    
-    borderRadius:5,
+
+    borderRadius: 5,
     marginTop: 60,
     marginRight: 16,
-    marginLeft:16,
-    alignItems:'center',
-    justifyContent:'center',
+    marginLeft: 16,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  text1:{
-   textAlign:'center',
-   color: "white",
-   fontFamily: "Montserrat",
-   fontWeight: 700,
-   fontSize: 16,
-    
-
-   
+  text1: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "Montserrat",
+    fontWeight: 700,
+    fontSize: 16,
   },
 
   wordView: {
