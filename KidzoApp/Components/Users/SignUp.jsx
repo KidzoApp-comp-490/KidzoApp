@@ -19,7 +19,7 @@ import { Addusers } from "../../db/firebase/users";
 import { signInWithPopup } from "firebase/auth";
 import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
 import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
-import { NetworkStatus } from '../NetworkStatus';
+import { NetworkStatus } from "../NetworkStatus";
 
 export default function SignUp({ navigation }) {
   const SingUpWithGoogle = () => {
@@ -34,6 +34,7 @@ export default function SignUp({ navigation }) {
           phone: phone,
           gender: "",
           age: age,
+          job: "user",
           image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
         });
       });
@@ -89,6 +90,7 @@ export default function SignUp({ navigation }) {
               phone: phone,
               gender: gender,
               age: age,
+              job: "user",
               image: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
             });
           });
@@ -117,174 +119,174 @@ export default function SignUp({ navigation }) {
 
   return (
     <NetworkStatus>
-    <View style={styles.body}>
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={styles.LogoView}>
-          <Image source={Logo} style={styles.Logo} />
-        </View>
-        <View style={styles.signUpTextView}>
-          <Text style={styles.signUpText}>
-            Sign Up{"\n"}
-            <Text style={styles.accountText}>Already have account? </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("SignIn");
-              }}
-            >
-              <Text style={styles.signInText}>Sign In</Text>
-            </TouchableOpacity>
-          </Text>
-        </View>
-        <View style={styles.emailView}>
-          <Text style={styles.inpText}>Email</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="email-address"
-              onChangeText={(val) => {
-                setEmail(val);
-              }}
-            />
+      <View style={styles.body}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          <View style={styles.LogoView}>
+            <Image source={Logo} style={styles.Logo} />
           </View>
-        </View>
-        <View style={styles.PassView}>
-          <Text style={styles.inpPassText}>Password</Text>
-          {icon ? (
-            <View style={styles.inpPassView}>
-              <TextInput
-                style={styles.inputPass}
-                autoCapitalize="none"
-                autoCorrect={false}
-                textContentType="newPassword"
-                secureTextEntry
-                onChangeText={(val) => {
-                  setPassword(val);
-                }}
-              />
-              <TouchableOpacity onPress={clickEye}>
-                <Image
-                  source={imageSource}
-                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.inpPassView}>
-              <TextInput
-                style={styles.inputPass}
-                autoCapitalize="none"
-                autoCorrect={false}
-                textContentType="newPassword"
-                onChangeText={(val) => {
-                  setPassword(val);
-                }}
-              />
-              <TouchableOpacity onPress={clickEye}>
-                <Image
-                  source={imageSource}
-                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-        <View style={styles.flNameView}>
-          <View style={styles.fNameView}>
-            <Text style={styles.fName}>First name</Text>
-            <View style={styles.fNameInpView}>
-              <TextInput
-                style={styles.fNameInp}
-                onChangeText={(val) => {
-                  setFName(val);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.lNameView}>
-            <Text style={styles.lName}>Last name</Text>
-            <View style={styles.lNameInpView}>
-              <TextInput
-                style={styles.lNameInp}
-                onChangeText={(val) => {
-                  setLName(val);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.PhoneView}>
-          <Text style={styles.inpText}>Phone number</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              onChangeText={(val) => {
-                setPhone(val);
-              }}
-            />
-          </View>
-        </View>
-        <View style={styles.Gender}>
-          <Text style={styles.GenderTxt}>Gender</Text>
-          <View style={styles.FMView}>
-            <View style={styles.FemaleView}>
-              <Text style={styles.FemaleTxt}>Female</Text>
-              <RadioButton
-                value="first"
-                status={checked === "first" ? "checked" : "unchecked"}
+          <View style={styles.signUpTextView}>
+            <Text style={styles.signUpText}>
+              Sign Up{"\n"}
+              <Text style={styles.accountText}>Already have account? </Text>
+              <TouchableOpacity
                 onPress={() => {
-                  setGender("Female"), setChecked("first");
+                  navigation.navigate("SignIn");
                 }}
-                color="#FFA8C5"
-                uncheckedColor="#FFA8C5"
-              />
-            </View>
-            <View style={styles.maleView}>
-              <Text style={styles.maleTxt}>Male</Text>
-              <RadioButton
-                value="second"
-                status={checked === "second" ? "checked" : "unchecked"}
-                onPress={() => {
-                  setChecked("second"), setGender("male");
+              >
+                <Text style={styles.signInText}>Sign In</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+          <View style={styles.emailView}>
+            <Text style={styles.inpText}>Email</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="email-address"
+                onChangeText={(val) => {
+                  setEmail(val);
                 }}
-                color="#FFA8C5"
-                uncheckedColor="#FFA8C5"
               />
             </View>
           </View>
-        </View>
+          <View style={styles.PassView}>
+            <Text style={styles.inpPassText}>Password</Text>
+            {icon ? (
+              <View style={styles.inpPassView}>
+                <TextInput
+                  style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  secureTextEntry
+                  onChangeText={(val) => {
+                    setPassword(val);
+                  }}
+                />
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.inpPassView}>
+                <TextInput
+                  style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  onChangeText={(val) => {
+                    setPassword(val);
+                  }}
+                />
+                <TouchableOpacity onPress={clickEye}>
+                  <Image
+                    source={imageSource}
+                    style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          <View style={styles.flNameView}>
+            <View style={styles.fNameView}>
+              <Text style={styles.fName}>First name</Text>
+              <View style={styles.fNameInpView}>
+                <TextInput
+                  style={styles.fNameInp}
+                  onChangeText={(val) => {
+                    setFName(val);
+                  }}
+                />
+              </View>
+            </View>
+            <View style={styles.lNameView}>
+              <Text style={styles.lName}>Last name</Text>
+              <View style={styles.lNameInpView}>
+                <TextInput
+                  style={styles.lNameInp}
+                  onChangeText={(val) => {
+                    setLName(val);
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+          <View style={styles.PhoneView}>
+            <Text style={styles.inpText}>Phone number</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="number-pad"
+                onChangeText={(val) => {
+                  setPhone(val);
+                }}
+              />
+            </View>
+          </View>
+          <View style={styles.Gender}>
+            <Text style={styles.GenderTxt}>Gender</Text>
+            <View style={styles.FMView}>
+              <View style={styles.FemaleView}>
+                <Text style={styles.FemaleTxt}>Female</Text>
+                <RadioButton
+                  value="first"
+                  status={checked === "first" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setGender("Female"), setChecked("first");
+                  }}
+                  color="#FFA8C5"
+                  uncheckedColor="#FFA8C5"
+                />
+              </View>
+              <View style={styles.maleView}>
+                <Text style={styles.maleTxt}>Male</Text>
+                <RadioButton
+                  value="second"
+                  status={checked === "second" ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setChecked("second"), setGender("male");
+                  }}
+                  color="#FFA8C5"
+                  uncheckedColor="#FFA8C5"
+                />
+              </View>
+            </View>
+          </View>
 
-        <View style={styles.PhoneView}>
-          <Text style={styles.inpText}>Age</Text>
-          <View style={styles.inpView}>
-            <TextInput
-              style={styles.input}
-              keyboardType="number-pad"
-              onChangeText={(val) => {
-                setAge(val);
-              }}
-            />
-          </View>
-        </View>
-        <View style={styles.buttonview}>
-          <TouchableOpacity style={styles.button} onPress={checkDate}>
-            <View style={styles.button2}>
-              <Text style={styles.button1}> Sign Up</Text>
+          <View style={styles.PhoneView}>
+            <Text style={styles.inpText}>Age</Text>
+            <View style={styles.inpView}>
+              <TextInput
+                style={styles.input}
+                keyboardType="number-pad"
+                onChangeText={(val) => {
+                  setAge(val);
+                }}
+              />
             </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.orView}>
-          <Image source={OR} style={styles.or} />
-        </View>
-        <View style={styles.SingUpWithGoogleView}>
-          <TouchableOpacity style={styles.touch} onPress={SingUpWithGoogle}>
-            <Image source={Google} style={styles.GoogleIcon} />
-            <Text style={styles.GoogleText}>SingUp with Google</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+          </View>
+          <View style={styles.buttonview}>
+            <TouchableOpacity style={styles.button} onPress={checkDate}>
+              <View style={styles.button2}>
+                <Text style={styles.button1}> Sign Up</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.orView}>
+            <Image source={OR} style={styles.or} />
+          </View>
+          <View style={styles.SingUpWithGoogleView}>
+            <TouchableOpacity style={styles.touch} onPress={SingUpWithGoogle}>
+              <Image source={Google} style={styles.GoogleIcon} />
+              <Text style={styles.GoogleText}>SingUp with Google</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
   );
 }
