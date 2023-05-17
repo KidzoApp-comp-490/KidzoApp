@@ -10,17 +10,42 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Back from "../../assets/Chat/WhiteBack.png";
-import ProfilePic from "../../assets/Profile/Group69.png";
 import Img from "../../assets/Chat/icon-park-outline_picture-one.png";
 import Send from "../../assets/Chat/ic_round-send.png";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
+import { getusersInfo } from "../../db/firebase/users";
 
-export default function ChatWithUser({ navigation }) {
+export default function ChatWithUser({ navigation, route }) {
+  let docId = route.params.itemId;
+  console.log("id ,", docId);
+  const [usersList, setUsersList] = useState([]);
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
+  const [profImage, setProfImage] = useState("");
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const getUsersList = async () => {
+    const users = await getusersInfo();
+    setUsersList(users);
+    console.log("users from database", users);
+  };
+  React.useEffect(() => {
+    getUsersList();
+  }, []);
+
+  React.useEffect(() => {
+    usersList.map((e) => {
+      if (docId == e.id) {
+        setFName(e.fName);
+        setLName(e.lName);
+        setProfImage(e.image);
+      }
+    });
+  });
 
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
@@ -84,7 +109,7 @@ export default function ChatWithUser({ navigation }) {
           <View style={styles.headerContent}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Messages");
+                navigation.navigate("MessageItem");
               }}
             >
               <Image
@@ -93,10 +118,17 @@ export default function ChatWithUser({ navigation }) {
               />
             </TouchableOpacity>
             <Image
-              source={ProfilePic}
-              style={{ width: 75, height: 75, marginRight: 32 }}
+              source={{ uri: profImage }}
+              style={{
+                width: 75,
+                height: 75,
+                marginRight: 32,
+                borderRadius: 100,
+              }}
             />
-            <Text style={styles.doctorTxt}>aaaaa</Text>
+            <Text style={styles.doctorTxt}>
+              {fName} {lName}
+            </Text>
           </View>
         </View>
       </View>

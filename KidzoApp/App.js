@@ -26,7 +26,7 @@ import GoogleInfo from "./Components/Users/GoogleInfo";
 import SignupAs from "./Components/Users/SignupAs";
 import SignUpDoctor from "./Components/Users/SignUpDoctor";
 import Changepass from "./Components/Users/Changepass";
-import Doctors from "./Components/Doctors/Doctors";
+import DoctorItem from "./Components/Doctors/DoctorItem";
 import ChatWithDoc from "./Components/Chat/ChatWithDoc";
 import Expertdetails from "./Components/Doctors/Expertdetails";
 import Doctorsettings from "./Components/Doctors/Doctorsettings";
@@ -34,9 +34,10 @@ import OnboardingFlow from "./Components/Users/OnboardingFlow";
 import { NetworkStatus } from "./Components/NetworkStatus";
 import Medical from "./Components/Medical/Medical";
 import ChangePasswordScreen from "./Components/Users/Changepass";
-import Messages from "./Components/Doctors/Messages";
+import MessageItem from "./Components/Doctors/MessageItem";
 import ChatWithUser from "./Components/Chat/ChatWithUser";
 import Map from "./Components/Map/Map";
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -198,13 +199,13 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Doctors"
-            component={Doctors}
+            name="DoctorItem"
+            component={DoctorItem}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Messages"
-            component={Messages}
+            name="MessageItem"
+            component={MessageItem}
             options={{ headerShown: false }}
           />
           <Stack.Screen

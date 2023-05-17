@@ -84,7 +84,7 @@ export default function Home({ navigation }) {
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
-                navigation.navigate("Doctors");
+                navigation.navigate("DoctorItem");
               }}
             >
               <Image source={Expert} style={styles.squareImg} />

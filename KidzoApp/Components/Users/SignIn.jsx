@@ -27,7 +27,7 @@ export default function SignIn({ navigation }) {
       getUserUId().then((id) => {
         getUserById(id).then((user) => {
           if (user[0].job === "Doctor") {
-            navigation.navigate("Messages");
+            navigation.navigate("MessageItem");
           } else {
             navigation.navigate("TabFun");
           }
@@ -48,7 +48,7 @@ export default function SignIn({ navigation }) {
           getUserUId().then((id) => {
             getUserById(id).then((user) => {
               if (user[0].job === "Doctor") {
-                navigation.navigate("Messages");
+                navigation.navigate("MessageItem");
               } else {
                 navigation.navigate("TabFun");
               }

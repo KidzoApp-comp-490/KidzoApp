@@ -102,7 +102,7 @@ export default function Doctorsettings({ navigation }) {
       })
         .then(() => {
           alert("Your information updated");
-          navigation.navigate("Messages");
+          navigation.navigate("MessageItem");
         })
         .catch((e) => console.log(e));
     }
