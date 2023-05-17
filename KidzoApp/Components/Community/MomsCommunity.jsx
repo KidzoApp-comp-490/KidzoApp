@@ -2,7 +2,6 @@ import {
   View,
   StyleSheet,
   Image,
-  TextInput,
   Text,
   ScrollView,
   TouchableOpacity,
@@ -11,6 +10,8 @@ import React, { useState } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
+import ProfIcon from "../../assets/Home/Group80.png";
+import ReportIcon from "../../assets/Profile/octicon_report-16.png";
 
 export default function MomsCommunity({ iconSrc, text }) {
   const [icon, setIcon] = useState(true);
@@ -25,7 +26,6 @@ export default function MomsCommunity({ iconSrc, text }) {
     }
   };
   let imageSource = icon ? Heart : ColoredHeart;
-
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -34,7 +34,14 @@ export default function MomsCommunity({ iconSrc, text }) {
         }}
       >
         <View style={styles.PostsView}>
-          <Text style={styles.PostTitle}>{text}</Text>
+          <View style={styles.userInfo}>
+            <Image source={ProfIcon} style={styles.profImg} />
+            <Text style={styles.profTxt}>aaaa</Text>
+            <Image source={ReportIcon} style={styles.reportIcon} />
+          </View>
+          <View style={{ flex: 1, alignSelf: "flex-start", marginLeft: 20 }}>
+            <Text style={styles.PostTitle}>{text}</Text>
+          </View>
           <Image source={iconSrc} style={{ width: 328, height: 243 }} />
           <View style={styles.ReactsView}>
             <View style={styles.LeftPart}>
@@ -50,19 +57,6 @@ export default function MomsCommunity({ iconSrc, text }) {
             </View>
           </View>
         </View>
-        {/* <View style={styles.PostsView2}>
-          <Text style={styles.PostTitle2}>
-            Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day! Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!
-          </Text>
-        </View> */}
       </ScrollView>
     </View>
   );
@@ -71,21 +65,42 @@ export default function MomsCommunity({ iconSrc, text }) {
 const styles = StyleSheet.create({
   PostsView: {
     width: 370,
-    // height: 360,
     borderRadius: 15,
     borderColor: "rgba(11, 59, 99, 0.15)",
     borderWidth: 1,
     marginTop: 16,
     alignItems: "center",
   },
+  userInfo: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "flex-start",
+    alignItems: "center",
+    marginLeft: 17,
+    marginTop: 10,
+  },
+  profImg: {
+    width: 56,
+    height: 56,
+  },
+  profTxt: {
+    fontWeight: "600",
+    fontSize: 14,
+    color: "#0B3B63",
+    marginLeft: 11,
+  },
+  reportIcon: {
+    width: 25,
+    height: 25,
+    marginLeft: 210,
+  },
   PostTitle: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: "Montserrat",
     color: "#0B3B63",
-    marginTop: 17,
+    marginTop: 15,
     marginBottom: 16,
-    marginRight: 200,
   },
   ReactsView: {
     width: 370,

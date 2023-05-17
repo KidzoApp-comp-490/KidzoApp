@@ -46,7 +46,7 @@ export default function MessageItem({ navigation }) {
           <Text style={styles.line}>──────────────────────────────────</Text>
         </View>
         {usersList.map((e, index) =>
-          e.job == "user" ? (
+          e.job == "user" && e.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (
             <Messages
               text1={e.fName}
               text2={e.lName}

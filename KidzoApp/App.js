@@ -38,6 +38,11 @@ import MessageItem from "./Components/Doctors/MessageItem";
 import ChatWithUser from "./Components/Chat/ChatWithUser";
 import Map from "./Components/Map/Map";
 import Session from "./Components/Session/Session";
+import AdminMainPage from "./Components/Admin/AdminMainPage";
+import ManageCommunity from "./Components/Admin/ManageCommunity";
+import ManageMedicalH from "./Components/Admin/ManageMedicalH";
+import ManageUsers from "./Components/Admin/ManageUsers";
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -117,7 +122,6 @@ export default function App() {
             component={OnboardingFlow}
             options={{ headerShown: false }}
           />
-
           <Stack.Screen
             name="SignupAs"
             component={SignupAs}
@@ -146,6 +150,11 @@ export default function App() {
           <Stack.Screen
             name="Medical"
             component={MedicalItem}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AdminMainPage"
+            component={AdminMainPage}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -232,6 +241,21 @@ export default function App() {
             name="Session"
             component={Session}
             options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="ManageCommunity"
+            component={ManageCommunity}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ManageMedicalH"
+            component={ManageMedicalH}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ManageUsers"
+            component={ManageUsers}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
