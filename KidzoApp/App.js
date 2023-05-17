@@ -37,7 +37,7 @@ import ChangePasswordScreen from "./Components/Users/Changepass";
 import MessageItem from "./Components/Doctors/MessageItem";
 import ChatWithUser from "./Components/Chat/ChatWithUser";
 import Map from "./Components/Map/Map";
-
+import Session from "./Components/Session/Session";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -138,11 +138,11 @@ export default function App() {
             component={Home}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Map"
             component={Map}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Stack.Screen
             name="Medical"
             component={MedicalItem}
@@ -227,6 +227,11 @@ export default function App() {
             name="Doctorsettings"
             component={Doctorsettings}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Session"
+            component={Session}
+            options={{ headerShown: true }}
           />
         </Stack.Navigator>
       </NavigationContainer>

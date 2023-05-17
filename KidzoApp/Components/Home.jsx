@@ -62,17 +62,23 @@ export default function Home({ navigation }) {
                 <Text style={styles.WelcomeTxt}>Welcome, {fName}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.square}>
-              <Image source={Session} style={styles.squareImg} />
-            </TouchableOpacity>
             <TouchableOpacity
+              style={styles.square}
+              onPress={() => {
+                navigation.navigate("Session");
+              }}
+            >
+              <Image source={Session} style={styles.squareImg} />
+
+            </TouchableOpacity>
+            {/* <TouchableOpacity
               style={styles.square}
               onPress={() => {
                 navigation.navigate("Map");
               }}
             >
               <Image source={Map} style={styles.squareImg} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
