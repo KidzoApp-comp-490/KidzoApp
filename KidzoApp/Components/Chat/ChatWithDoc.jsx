@@ -8,34 +8,57 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+
 } from "react-native";
+import { serverTimestamp } from "firebase/firestore";
 import Back from "../../assets/Chat/WhiteBack.png";
 import Img from "../../assets/Chat/icon-park-outline_picture-one.png";
 import Send from "../../assets/Chat/ic_round-send.png";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 import { getusersInfo } from "../../db/firebase/users";
-
+import {
+  getMsgsforChatId,
+  getChat,
+  getMessage,
+  addMessage
+} from '../../db/Chat'
+import { getUserUId } from '../../db/firebase/auth'
 export default function ChatWithDoc({ navigation, route }) {
   let docId = route.params.itemId;
-  console.log("id ,", docId);
+  // console.log("id ,", docId);
   const [usersList, setUsersList] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
+  const [reciverID, setreciverID] = useState("");
+  const [userID, setuserID] = useState("");
   const [profImage, setProfImage] = useState("");
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages2, setMessages2] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [sendBysender, setsendBysender] = useState(false);
+  // const [chats, setChats] = useState([]);
+  // const [msgsForChat, setmsgsForChat] = useState([]);
+  // const [chatID, setChatId] = useState("");
 
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
-    console.log("users from database", users);
+  };
+  const getUsersMessages = async () => {
+    const msgs = await getMessage();
+    setMessages2(msgs);
   };
   React.useEffect(() => {
+    getUserUId().then((val) => {
+      setuserID(val);
+    });
     getUsersList();
   }, []);
+  React.useEffect(() => {
+    getUsersMessages();
+  }, [])
 
   React.useEffect(() => {
     usersList.map((e) => {
@@ -43,6 +66,7 @@ export default function ChatWithDoc({ navigation, route }) {
         setFName(e.fName);
         setLName(e.lName);
         setProfImage(e.image);
+        setreciverID(e.uid);
       }
     });
   });
@@ -72,33 +96,31 @@ export default function ChatWithDoc({ navigation, route }) {
   };
 
   const sendMessage = () => {
-    if (text || image) {
-      setMessages([
-        { id: messages.length, text, image, sentByMe: true },
-        ...messages,
-      ]);
-      setText("");
-      setImage(null);
-    }
+    
+    addMessage({
+      content: text,
+      reciverUid: reciverID,
+      senderUid: userID,
+      time: serverTimestamp(),
+      type: "text",
+    })
+    console.log("added")
   };
 
   const renderMessage = ({ item }) => (
     <View
       style={[
         styles.messageContainer,
-        item.sentByMe ? styles.sentMessage : styles.receivedMessage,
+        item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage 
+        : (item.senderUid == reciverID && item.reciverUid == userID)? styles.receivedMessage:null
       ]}
     >
-      {item.image ? (
-        <Image source={{ uri: item.image }} style={styles.messageImage} />
-      ) : null}
-      <Text
-        style={[
-          item.sentByMe ? styles.messageSentText : styles.messageReceivedText,
-        ]}
-      >
-        {item.text}
-      </Text>
+
+      {
+        (item.senderUid == userID && item.reciverUid == reciverID)||(item.senderUid == reciverID && item.reciverUid == userID) ?
+          <Text>{item.content}</Text> : null
+      }
+      
     </View>
   );
 
@@ -135,12 +157,19 @@ export default function ChatWithDoc({ navigation, route }) {
               <Text style={styles.doctorTxt}>
                 Dr. {fName} {lName}
               </Text>
+
             </TouchableOpacity>
           </View>
         </View>
       </View>
+
+
+      {/* code for displaying messages goes here */}
+
+
+
       <FlatList
-        data={messages}
+        data={messages2}
         renderItem={renderMessage}
         keyExtractor={(item) => item.id}
         style={styles.chatContainer}
@@ -172,6 +201,17 @@ export default function ChatWithDoc({ navigation, route }) {
             style={styles.input}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+
+            {/* // () => {
+
+             
+            //   // getMsgfor_Id(chatID)
+            //   // console.log("chatID: ",chatID)
+            //   // console.log("MSGS: ", msgsForChat)
+            //   // console.log("CHAT: ", chats)
+            // }
+
+          // }> */}
             <Image source={Send} style={{ width: 25.94, height: 22.62 }} />
           </TouchableOpacity>
         </View>
