@@ -65,7 +65,7 @@ export default function Home({ navigation }) {
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
-                navigation.navigate("Session");
+                navigation.navigate("ImageUploader");
               }}
             >
               <Image source={Session} style={styles.squareImg} />

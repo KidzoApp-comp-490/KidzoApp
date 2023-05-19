@@ -42,6 +42,7 @@ import AdminMainPage from "./Components/Admin/AdminMainPage";
 import ManageCommunity from "./Components/Admin/ManageCommunity";
 import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
+import ImageUploader from "./Components/Session/ImageUploader";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -240,6 +241,11 @@ export default function App() {
           <Stack.Screen
             name="Session"
             component={Session}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="ImageUploader"
+            component={ImageUploader}
             options={{ headerShown: true }}
           />
           <Stack.Screen
