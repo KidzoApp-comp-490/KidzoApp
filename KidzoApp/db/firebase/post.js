@@ -65,9 +65,9 @@ async function getpost() {
     return { id: doc.id, ...doc.data() };
   });
 }
-function subscribe(callback) {
+function subscribePost(callback) {
   const unsubscribe = onSnapshot(
-    query(collection(firestoreDB, "Address")),
+    query(collection(firestoreDB, "post")),
     (snapshot) => {
       const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
       snapshot.docChanges().forEach((change) => {
@@ -82,7 +82,7 @@ function subscribe(callback) {
 export {
   addpost,
   deletepost,
-  subscribe,
+  subscribePost,
   getpost,
   getpostinfo,
   fetchData,

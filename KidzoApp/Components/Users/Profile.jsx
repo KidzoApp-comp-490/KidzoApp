@@ -2,44 +2,68 @@ import {
   View,
   StyleSheet,
   Image,
-  TextInput,
   Text,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById, subscribe } from "../../db/firebase/users";
 import EditIcon from "../../assets/Profile/material-symbols_edit-rounded.png";
-import PostIcon from "../../assets/Profile/image3.png";
 import Heart from "../../assets/Profile/Group.png";
 import Comment from "../../assets/Profile/comment.png";
 import { StatusBar } from "expo-status-bar";
-import { NetworkStatus } from '../NetworkStatus';
-import {
-  addpost,
-  deletepost,
-  getpost,
-  getpostinfo,
-} from "../../db/firebase/post";
-export function ManagepostItem({
-  value, image, idpost,numreact
-}) {
+import { NetworkStatus } from "../NetworkStatus";
+import { deletepost, getpost, subscribePost } from "../../db/firebase/post";
+import DeleteIcon from "../../assets/Profile/majesticons_delete-bin-line.png";
 
+export function PostItem({
+  postText,
+  postImage,
+  postId,
+  numreact,
+  fName,
+  lName,
+  profImg,
+}) {
   return (
     <View style={styles.PostsView}>
-      <TouchableOpacity
-        onPress={() => deletepost(idpost)}
-        style={{ backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
-        <Text>deletepost</Text>
-      </TouchableOpacity>
-      <Text style={styles.PostTitle}>{value}</Text>
-      <Image source={image} style={{ width: 328, height: 243 }} />
-      <View style={styles.ReactsView}>
-        <View style={styles.LeftPart}>
-          <Image source={Heart} style={{ width: 24, height: 24 }} />
-          <Text style={styles.ReactTxt}>{numreact}</Text>
+      <View style={styles.userInfoView}>
+        <Image
+          source={profImg}
+          style={{ width: 55, height: 55, borderRadius: 100 }}
+        />
+        <Text style={styles.userName}>
+          {fName} {lName}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            deletepost(postId);
+            alert("Deleted");
+          }}
+          style={{
+            alignItems: "center",
+            alignContent: "flex-end",
+            position: "absolute",
+            marginLeft: 320,
+          }}
+        >
+          <Image source={DeleteIcon} style={{ width: 20, height: 20 }} />
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.PostTitle}>{postText}</Text>
+      <View style={{ alignItems: "center" }}>
+        <Image
+          source={postImage}
+          style={{ width: 328, height: 243, borderRadius: 15 }}
+        />
+        <View style={styles.ReactsView}>
+          <View style={styles.LeftPart}>
+            <Image source={Heart} style={{ width: 24, height: 24 }} />
+            <Text style={styles.ReactTxt}>{numreact}</Text>
+          </View>
           <View style={styles.VerticalPar}></View>
           <View style={styles.RightPart}>
             <Image source={Comment} style={{ width: 24, height: 24 }} />
@@ -51,17 +75,14 @@ export function ManagepostItem({
   );
 }
 export default function Profile({ navigation }) {
-
   const [firstname, SetFName] = useState("");
   const [lastname, SetLName] = useState("");
   const [image, setImage] = useState("");
   const [id, setid] = useState("");
-  const [postlist, setpostlist] = useState([]);
-  const [value, setvalue] = useState("");
-  const [imagepost, setImagepost] = useState("");
-  const [numreact, setnumreact] = useState(0);
-  React.useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+  const [postsList, setPostsList] = useState([]);
+
+  useEffect(() => {
+    subscribe(() => {
       getUserUId().then((id) => {
         console.log(id);
         getUserById(id).then((user) => {
@@ -75,23 +96,15 @@ export default function Profile({ navigation }) {
   }, []);
   const getposts = async () => {
     const posts = await getpost();
-    setpostlist(posts);
+    setPostsList(posts);
     console.log("here the post mehtod", posts);
-  }
-  React.useEffect(() => {
+  };
 
-    getposts();
-
+  useEffect(() => {
+    subscribePost(() => {
+      getposts();
+    });
   }, []);
-  React.useEffect(() => {
-    postlist.map((e) => {
-      if (id == e.currentUserid) {
-        setImagepost(e.image)
-        setvalue(e.text)
-        setnumreact(e.numreact)
-      }
-    })
-  })
 
   return (
     <NetworkStatus>
@@ -117,24 +130,31 @@ export default function Profile({ navigation }) {
                 navigation.navigate("ProfileSettings");
               }}
             >
-              <Image source={EditIcon} style={{ width: 22.85, height: 22.81 }} />
+              <Image
+                source={EditIcon}
+                style={{ width: 22.85, height: 22.81 }}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.lineView}>
             <Text style={styles.line}>───────────────────────────────────</Text>
           </View>
           <Text style={styles.PostsTxt}>Posts</Text>
-          {postlist.map((e, index) => (
-            console.log("here = ", e.id),
-            <ManagepostItem
-              value={e.text}
-              image={e.image}
-              idpost={e.id}
-              numreact={e.numreact}
-              key={index}
-            />
-          ))}
-          <View style={{ marginBottom: 80 }}></View>
+          {postsList.map((e, index) =>
+            e.currentUserid == id ? (
+              <PostItem
+                postText={e.text}
+                postImage={e.image}
+                postId={e.id}
+                numreact={e.numreact}
+                key={index}
+                fName={firstname}
+                lName={lastname}
+                profImg={image}
+              />
+            ) : null
+          )}
+          <View style={{ marginBottom: 30 }}></View>
         </ScrollView>
         <StatusBar style="auto" />
       </View>
@@ -184,12 +204,23 @@ const styles = StyleSheet.create({
   },
   PostsView: {
     width: 370,
-    height: 360,
+    paddingTop: 5,
     borderRadius: 15,
     borderColor: "rgba(11, 59, 99, 0.15)",
     borderWidth: 1,
     marginTop: 16,
+  },
+  userInfoView: {
+    flexDirection: "row",
     alignItems: "center",
+    marginLeft: 18,
+  },
+  userName: {
+    fontSize: 14,
+    fontWeight: "500",
+    fontFamily: "Montserrat",
+    color: "#0B3B63",
+    marginLeft: 12,
   },
   PostTitle: {
     fontSize: 14,
@@ -198,21 +229,22 @@ const styles = StyleSheet.create({
     color: "#0B3B63",
     marginTop: 17,
     marginBottom: 16,
-    marginRight: 200,
+    marginLeft: 18,
   },
   ReactsView: {
+    flexDirection: "row",
     width: 370,
-    height: 48,
+    paddingBottom: 5,
     borderRadius: 15,
     borderWidth: 1,
     marginTop: 16,
     borderColor: "rgba(11, 59, 99, 0.15)",
-    justifyContent: "center",
   },
   LeftPart: {
     flexDirection: "row",
-    marginLeft: 16,
     alignItems: "center",
+    width: "49%",
+    marginLeft: 16,
   },
   ReactTxt: {
     fontSize: 14,
@@ -225,12 +257,12 @@ const styles = StyleSheet.create({
     width: 1,
     height: 47,
     backgroundColor: "rgba(11, 59, 99, 0.15)",
-    marginLeft: 84,
   },
   RightPart: {
     flexDirection: "row",
-    marginLeft: 19.7,
     alignItems: "center",
+    width: "49%",
+    marginLeft: 16,
   },
   CommentTxt: {
     fontSize: 14,
