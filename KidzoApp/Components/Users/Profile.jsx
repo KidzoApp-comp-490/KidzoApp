@@ -17,11 +17,49 @@ import Heart from "../../assets/Profile/Group.png";
 import Comment from "../../assets/Profile/comment.png";
 import { StatusBar } from "expo-status-bar";
 import { NetworkStatus } from '../NetworkStatus';
+import {
+  addpost,
+  deletepost,
+  getpost,
+  getpostinfo,
+} from "../../db/firebase/post";
+export function ManagepostItem({
+  value, image, idpost,numreact
+}) {
 
+  return (
+    <View style={styles.PostsView}>
+      <TouchableOpacity
+        onPress={() => deletepost(idpost)}
+        style={{ backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
+        <Text>deletepost</Text>
+      </TouchableOpacity>
+      <Text style={styles.PostTitle}>{value}</Text>
+      <Image source={image} style={{ width: 328, height: 243 }} />
+      <View style={styles.ReactsView}>
+        <View style={styles.LeftPart}>
+          <Image source={Heart} style={{ width: 24, height: 24 }} />
+          <Text style={styles.ReactTxt}>{numreact}</Text>
+          <View style={styles.VerticalPar}></View>
+          <View style={styles.RightPart}>
+            <Image source={Comment} style={{ width: 24, height: 24 }} />
+            <Text style={styles.CommentTxt}>5 Comments</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
 export default function Profile({ navigation }) {
+
   const [firstname, SetFName] = useState("");
   const [lastname, SetLName] = useState("");
   const [image, setImage] = useState("");
+  const [id, setid] = useState("");
+  const [postlist, setpostlist] = useState([]);
+  const [value, setvalue] = useState("");
+  const [imagepost, setImagepost] = useState("");
+  const [numreact, setnumreact] = useState(0);
   React.useEffect(() => {
     const unsubscribe = subscribe(({ change, snapshot }) => {
       getUserUId().then((id) => {
@@ -30,60 +68,76 @@ export default function Profile({ navigation }) {
           SetFName(user[0].fName);
           SetLName(user[0].lName);
           setImage(user[0].image);
+          setid(id);
         });
       });
     });
   }, []);
+  const getposts = async () => {
+    const posts = await getpost();
+    setpostlist(posts);
+    console.log("here the post mehtod", posts);
+  }
+  React.useEffect(() => {
+
+    getposts();
+
+  }, []);
+  React.useEffect(() => {
+    postlist.map((e) => {
+      if (id == e.currentUserid) {
+        setImagepost(e.image)
+        setvalue(e.text)
+        setnumreact(e.numreact)
+      }
+    })
+  })
+
   return (
     <NetworkStatus>
-    <View style={{ flex: 1 }}>
-      <ScrollView
-        contentContainerStyle={{ alignItems: "center", marginBottom: 80 }}
-      >
-        <View>
-          <Text style={styles.ProfileTxt}>YOUR PROFILE</Text>
-        </View>
-        <View style={styles.Section1}>
-          <View style={{ borderRadius: 100, overflow: "hidden" }}>
-            <Image
-              source={{ uri: image }}
-              style={{ width: 155, height: 155 }}
-            />
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{ alignItems: "center", marginBottom: 80 }}
+        >
+          <View>
+            <Text style={styles.ProfileTxt}>YOUR PROFILE</Text>
           </View>
-          <Text style={styles.UserName}>
-            {firstname} {lastname}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("ProfileSettings");
-            }}
-          >
-            <Image source={EditIcon} style={{ width: 22.85, height: 22.81 }} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}>───────────────────────────────────</Text>
-        </View>
-        <Text style={styles.PostsTxt}>Posts</Text>
-        <View style={styles.PostsView}>
-          <Text style={styles.PostTitle}>Happy Mother's Day!</Text>
-          <Image source={PostIcon} style={{ width: 328, height: 243 }} />
-          <View style={styles.ReactsView}>
-            <View style={styles.LeftPart}>
-              <Image source={Heart} style={{ width: 24, height: 24 }} />
-              <Text style={styles.ReactTxt}>12 Love</Text>
-              <View style={styles.VerticalPar}></View>
-              <View style={styles.RightPart}>
-                <Image source={Comment} style={{ width: 24, height: 24 }} />
-                <Text style={styles.CommentTxt}>5 Comments</Text>
-              </View>
+          <View style={styles.Section1}>
+            <View style={{ borderRadius: 100, overflow: "hidden" }}>
+              <Image
+                source={{ uri: image }}
+                style={{ width: 155, height: 155 }}
+              />
             </View>
+            <Text style={styles.UserName}>
+              {firstname} {lastname}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ProfileSettings");
+              }}
+            >
+              <Image source={EditIcon} style={{ width: 22.85, height: 22.81 }} />
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={{ marginBottom: 80 }}></View>
-      </ScrollView>
-      <StatusBar style="auto" />
-    </View>
+          <View style={styles.lineView}>
+            <Text style={styles.line}>───────────────────────────────────</Text>
+          </View>
+          <Text style={styles.PostsTxt}>Posts</Text>
+          {postlist.map((e, index) => (
+            console.log("here = ", e.id),
+            <ManagepostItem
+              value={e.text}
+              image={e.image}
+              idpost={e.id}
+              numreact={e.numreact}
+              key={index}
+            />
+          ))}
+          <View style={{ marginBottom: 80 }}></View>
+        </ScrollView>
+        <StatusBar style="auto" />
+      </View>
     </NetworkStatus>
   );
 }

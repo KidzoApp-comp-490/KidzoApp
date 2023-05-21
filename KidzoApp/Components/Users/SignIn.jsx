@@ -56,7 +56,6 @@ export default function SignIn({ navigation }) {
               }
             });
           });
-          alert("Login Success!");
         })
         .catch((e) => {
           if (

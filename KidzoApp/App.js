@@ -43,6 +43,7 @@ import ManageCommunity from "./Components/Admin/ManageCommunity";
 import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
 import ImageUploader from "./Components/Session/ImageUploader";
+import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -263,6 +264,17 @@ export default function App() {
             component={ManageUsers}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="MomsComCreatepost"
+            component={MomsComCreatepost}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="MomsCommunityItem"
+            component={MomsCommunityItem}
+            options={{ headerShown: false }}
+          />
+         
         </Stack.Navigator>
       </NavigationContainer>
     </NetworkStatus>
