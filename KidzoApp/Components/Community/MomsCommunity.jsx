@@ -19,9 +19,9 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
   useEffect(() => {
     clickHeart();
   }, []);
-  const clickHeart = async () => {
+  let clickHeart = async () => {
     if (icon) {
-      setIcon(false);
+      setIcon(true);
       setReactNum(reactNum + 1);
       console.log("*****", idpost);
       try {
@@ -32,7 +32,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
         console.error("Error updating post:", error);
       }
     } else {
-      setIcon(true);
+      setIcon(false);
       setReactNum(reactNum - 1);
       console.log("*****", idpost);
       try {
