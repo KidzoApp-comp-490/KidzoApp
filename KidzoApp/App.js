@@ -29,19 +29,17 @@ import Changepass from "./Components/Users/Changepass";
 import DoctorItem from "./Components/Doctors/DoctorItem";
 import ChatWithDoc from "./Components/Chat/ChatWithDoc";
 import Expertdetails from "./Components/Doctors/Expertdetails";
-import Doctorsettings from "./Components/Doctors/Doctorsettings";
+import DoctorGoogleSettings from "./Components/Doctors/DoctorGoogleSettings";
 import OnboardingFlow from "./Components/Users/OnboardingFlow";
 import { NetworkStatus } from "./Components/NetworkStatus";
-import Medical from "./Components/Medical/Medical";
 import ChangePasswordScreen from "./Components/Users/Changepass";
 import MessageItem from "./Components/Doctors/MessageItem";
 import ChatWithUser from "./Components/Chat/ChatWithUser";
-import Map from "./Components/Map/Map";
 import Session from "./Components/Session/Session";
-import AdminMainPage from "./Components/Admin/AdminMainPage";
 import ManageCommunity from "./Components/Admin/ManageCommunity";
 import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
+import DoctorSettings from "./Components/Doctors/DoctorSettings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -101,7 +99,13 @@ export default function App() {
   return (
     <NetworkStatus>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="First">
+        <Stack.Navigator
+          initialRouteName="First"
+          screenOptions={{
+            animationEnabled: true,
+            gestureEnabled: true,
+          }}
+        >
           <Stack.Screen
             name="First"
             component={First}
@@ -153,8 +157,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="AdminMainPage"
-            component={AdminMainPage}
+            name="DoctorSettings"
+            component={DoctorSettings}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -233,8 +237,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Doctorsettings"
-            component={Doctorsettings}
+            name="DoctorGoogleSettings"
+            component={DoctorGoogleSettings}
             options={{ headerShown: false }}
           />
           <Stack.Screen

@@ -15,163 +15,159 @@ import Logo from "../../assets/ForgotPass/Logo 2.png";
 import Frame from "../../assets/ForgotPass/Frame.png";
 import PassIconV from "../../assets/SignIn/fluent_eye-24-regular.png";
 import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
-import { NetworkStatus } from '../NetworkStatus';
-
-import { firebase } from '../../db/Config';
-
-import 'firebase/auth';
+import { NetworkStatus } from "../NetworkStatus";
+import { firebase } from "../../db/Config";
+import "firebase/auth";
 
 export default function Changepass({ navigation }) {
-
- const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const changePassword = () => {
     const user = firebase.auth().currentUser;
-    const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
 
-    
-        if (newPassword.length < 8) {
-          alert("Password must be at least 8 characters");
-
-       
-      }
-    else {
-    user.reauthenticateWithCredential(credential)
-      .then(() => {
-    return user.updatePassword(newPassword);
-      
-    })
-      .then(() => {
-        console.log('Password changed successfully.');
-        alert("Password changed successfully.");
-        navigation.navigate("TabFun");
-      })
-      .catch((error) => {
-        console.log('Error changing password:', error);
-        // Handle and display error message to the user
-        
-      });
+    if (newPassword.length < 8) {
+      alert("Password must be at least 8 characters");
+    } else {
+      user
+        .reauthenticateWithCredential(credential)
+        .then(() => {
+          return user.updatePassword(newPassword);
+        })
+        .then(() => {
+          console.log("Password changed successfully.");
+          alert("Password changed successfully.");
+          navigation.navigate("TabFun");
+        })
+        .catch((error) => {
+          console.log("Error changing password:", error);
+          // Handle and display error message to the user
+        });
     }
   };
 
-
-
-
   const [icon, setIcon] = useState(true);
+  const [icon2, setIcon2] = useState(true);
   const clickEye = () => {
     icon ? setIcon(false) : setIcon(true);
   };
+  const clickEye2 = () => {
+    icon2 ? setIcon2(false) : setIcon2(true);
+  };
   let imageSource = icon ? PassIconInV : PassIconV;
+  let imageSource2 = icon2 ? PassIconInV : PassIconV;
 
   return (
     <NetworkStatus>
-    <View style={styles.container}>
-      <View style={styles.logoView}>
-        <Image source={Logo} style={styles.logo} />
-      </View>
-      <View style={styles.frameView}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("TabFun");
-          }}
-        >
-          <Image source={Frame} style={styles.frame} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.titleViwe}>
-        <Text style={styles.title}>Change your password</Text>
-      </View>
-      <View style={styles.emailView}>
-        <Text style={styles.inpText}>Current password</Text>
-        {icon ? (
-          <View style={styles.inpViewPass}>
-            <TextInput
-              style={styles.inputPass}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              secureTextEntry
-              value={currentPassword}
-        onChangeText={(text) => setCurrentPassword(text)}
-            />
-            <TouchableOpacity onPress={clickEye}>
-              <Image
-                source={imageSource}
-                style={{ width: 14, height: 14, marginHorizontal: 5 }}
+      <View style={styles.container}>
+        <View style={styles.logoView}>
+          <Image source={Logo} style={styles.logo} />
+        </View>
+        <View style={styles.frameView}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("TabFun");
+            }}
+          >
+            <Image source={Frame} style={styles.frame} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.titleViwe}>
+          <Text style={styles.title}>Change your password</Text>
+        </View>
+        <View style={styles.emailView}>
+          <Text style={styles.inpText}>Current password</Text>
+          {icon ? (
+            <View style={styles.inpViewPass}>
+              <TextInput
+                style={styles.inputPass}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="newPassword"
+                secureTextEntry
+                value={currentPassword}
+                onChangeText={(text) => setCurrentPassword(text)}
               />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.inpViewPass}>
-            <TextInput
-              style={styles.inputPass}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              value={currentPassword}
-        onChangeText={(text) => setCurrentPassword(text)}
-            />
-            <TouchableOpacity onPress={clickEye}>
-              <Image
-                source={imageSource}
-                style={{ width: 14, height: 14, marginHorizontal: 5 }}
+              <TouchableOpacity onPress={clickEye}>
+                <Image
+                  source={imageSource}
+                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.inpViewPass}>
+              <TextInput
+                style={styles.inputPass}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="newPassword"
+                value={currentPassword}
+                onChangeText={(text) => setCurrentPassword(text)}
               />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+              <TouchableOpacity onPress={clickEye}>
+                <Image
+                  source={imageSource}
+                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
 
-      <View style={styles.emailView}>
-        <Text style={styles.inpText}>New password</Text>
-        {icon ? (
-          <View style={styles.inpViewPass}>
-            <TextInput
-              style={styles.inputPass}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              secureTextEntry
-              value={newPassword}
-        onChangeText={(text) => setNewPassword(text)}
-            />
-            <TouchableOpacity onPress={clickEye}>
-              <Image
-                source={imageSource}
-                style={{ width: 14, height: 14, marginHorizontal: 5 }}
+        <View style={styles.emailView}>
+          <Text style={styles.inpText}>New password</Text>
+          {icon2 ? (
+            <View style={styles.inpViewPass}>
+              <TextInput
+                style={styles.inputPass}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="newPassword"
+                secureTextEntry
+                value={newPassword}
+                onChangeText={(text) => setNewPassword(text)}
               />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View style={styles.inpViewPass}>
-            <TextInput
-              style={styles.inputPass}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="newPassword"
-              value={newPassword}
-        onChangeText={(text) => setNewPassword(text)}
-            />
-            <TouchableOpacity onPress={clickEye}>
-              <Image
-                source={imageSource}
-                style={{ width: 14, height: 14, marginHorizontal: 5 }}
+              <TouchableOpacity onPress={clickEye2}>
+                <Image
+                  source={imageSource2}
+                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.inpViewPass}>
+              <TextInput
+                style={styles.inputPass}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="newPassword"
+                value={newPassword}
+                onChangeText={(text) => setNewPassword(text)}
               />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+              <TouchableOpacity onPress={clickEye2}>
+                <Image
+                  source={imageSource2}
+                  style={{ width: 14, height: 14, marginHorizontal: 5 }}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
 
-      <View style={styles.buttonview}>
-        <TouchableOpacity style={styles.button}
-       onPress={changePassword} >
-          <View style={styles.button2}>
-            <Text style={styles.button1}> Change password</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.buttonview}>
+          <TouchableOpacity style={styles.button} onPress={changePassword}>
+            <View style={styles.button2}>
+              <Text style={styles.button1}> Change password</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
-    </View>
     </NetworkStatus>
   );
 }
@@ -274,4 +270,3 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
-

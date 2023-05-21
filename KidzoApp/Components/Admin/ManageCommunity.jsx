@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import BackIcon from "../../assets/MedicalH/Frame.png";
 
@@ -18,7 +18,7 @@ export default function ManageCommunity({ navigation }) {
           <View style={styles.frameView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("AdminMainPage");
+                navigation.navigate("TabFun");
               }}
             >
               <Image source={BackIcon} style={styles.frame} />

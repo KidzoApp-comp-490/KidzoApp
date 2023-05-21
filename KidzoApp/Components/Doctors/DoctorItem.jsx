@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import Frame from "../../assets/MedicalH/Frame.png";
+import BackIcon from "../../assets/MedicalH/Frame.png";
 import { StatusBar } from "expo-status-bar";
 import Doctors from "./Doctors";
 import { getusersInfo } from "../../db/firebase/users";
@@ -17,7 +17,6 @@ export default function DoctorItem({ navigation }) {
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
-    console.log("users from database", users);
   };
   React.useEffect(() => {
     getUsersList();
@@ -32,7 +31,7 @@ export default function DoctorItem({ navigation }) {
                 navigation.navigate("TabFun");
               }}
             >
-              <Image source={Frame} style={styles.frame} />
+              <Image source={BackIcon} style={styles.frame} />
             </TouchableOpacity>
           </View>
           <Text style={styles.title}>Doctors</Text>
@@ -89,46 +88,5 @@ const styles = StyleSheet.create({
   line: {
     color: "#FFA8C5",
     opacity: 0.5,
-  },
-  iconView: {
-    marginTop: 36,
-    alignItems: "center",
-  },
-  icon: {
-    width: 40,
-    height: 40,
-  },
-  wordsView: {
-    alignItems: "center",
-  },
-  words: {
-    color: "#0B3B63",
-    opacity: 0.65,
-    fontFamily: "Montserrat",
-    fontWeight: 300,
-    fontSize: 14,
-  },
-  doctorsView: {
-    width: 328,
-    height: 80,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "#FFA8C5",
-    marginTop: 32,
-    marginLeft: 15,
-    marginRight: 17,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  doctorsImageView: {
-    marginLeft: 17,
-    marginRight: 32,
-  },
-  dotImageView: {
-    width: 15,
-    height: 15,
-    backgroundColor: "#FFA8C5",
-    borderRadius: 100,
-    marginRight: 18,
   },
 });

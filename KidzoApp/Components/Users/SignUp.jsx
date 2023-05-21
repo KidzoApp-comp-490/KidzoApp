@@ -292,7 +292,6 @@ export default function SignUp({ navigation }) {
 }
 const styles = StyleSheet.create({
   body: {
-    alignItems: "center",
     flex: 1,
     backgroundColor: "#FFFFFF",
   },

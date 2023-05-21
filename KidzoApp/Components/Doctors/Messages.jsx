@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
   },
   doctorsView: {
     width: 328,
-    height: 80,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "#FFA8C5",
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     backgroundColor: "#FFA8C5",
-    borderRadius: "50%",
+    borderRadius: 100,
     marginRight: 18,
   },
 });

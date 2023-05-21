@@ -37,7 +37,7 @@ export function ManageUsersItem({ email, fName, lName, image, userId }) {
           onPress={() => {
             deleteusers(userId);
             alert("Removed!");
-            navigation.navigate("AdminMainPage");
+            navigation.navigate("TabFun");
           }}
         >
           <Image source={DeleteIcon} style={{ width: 25, height: 25 }} />
@@ -66,7 +66,7 @@ export default function ManageUsers({ navigation }) {
           <View style={styles.frameView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("AdminMainPage");
+                navigation.navigate("TabFun");
               }}
             >
               <Image source={BackIcon} style={styles.frame} />

@@ -1,60 +1,59 @@
-import React from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Iconset from "../../assets/Settings/Frame.png";
 import Iconcha from "../../assets/Settings/change.png";
-import { SignOut } from "../../db/firebase/auth";
+import { SignOut, getUserUId } from "../../db/firebase/auth";
+import { getUserById, subscribe } from "../../db/firebase/users";
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function Settings({ navigation }) {
+  const [userID, setUserID] = useState("");
+  subscribe(() => {
+    getUserUId().then((id) => {
+      getUserById(id).then((user) => {
+        setUserID(user[0].uid);
+        console.log("id for user", userID);
+      });
+    });
+  });
   return (
     <NetworkStatus>
-      <View style={styles.body}>
-        <View style={styles.wordView}>
-          <Text style={styles.word}>SETTINGS</Text>
-        </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
-        </View>
-
-        <View style={styles.content}>
-          <View style={styles.iconView}>
-            <Image source={Iconset} style={styles.icon} />
+      {userID != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (
+        <View style={styles.body}>
+          <View style={styles.wordView}>
+            <Text style={styles.word}>SETTINGS</Text>
+          </View>
+          <View style={styles.lineView}>
+            <Text style={styles.line}> ────────────────────────────────</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ProfileSettings");
             }}
           >
-            <Text style={styles.text1}>Edit your profile</Text>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.content}>
+              <View style={styles.iconView}>
+                <Image source={Iconset} style={styles.icon} />
+              </View>
 
-        <View style={styles.content2}>
-          <View style={styles.iconView2}>
-            <Image source={Iconcha} style={styles.icon2} />
-          </View>
+              <Text style={styles.text1}>Edit your profile</Text>
+            </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("ChangePasswordScreen");
             }}
           >
-            <Text style={styles.text1}>Change your password</Text>
+            <View style={styles.content}>
+              <View style={styles.iconView2}>
+                <Image source={Iconcha} style={styles.icon2} />
+              </View>
+
+              <Text style={styles.text1}>Change your password</Text>
+            </View>
           </TouchableOpacity>
-        </View>
-        <View style={styles.content3}>
           <TouchableOpacity
-            style={styles.square}
             onPress={() => {
               SignOut().then(() => {
                 console.log("sign out");
@@ -63,11 +62,64 @@ export default function Settings({ navigation }) {
               });
             }}
           >
-            <Text style={styles.text1}>Log Out</Text>
+            <View style={styles.content}>
+              <Text style={styles.text1}>Log Out</Text>
+            </View>
           </TouchableOpacity>
+          <StatusBar style="auto" />
         </View>
-        <StatusBar style="auto" />
-      </View>
+      ) : (
+        <View style={styles.body}>
+          <View style={styles.wordView}>
+            <Text style={styles.word}>Admin Dashboard</Text>
+          </View>
+          <View style={styles.lineView}>
+            <Text style={styles.line}>────────────────────────────────</Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ManageUsers");
+            }}
+          >
+            <View style={styles.content}>
+              <Text style={styles.text1}>Users management</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ManageMedicalH");
+            }}
+          >
+            <View style={styles.content}>
+              <Text style={styles.text1}>Medical History management</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ManageCommunity");
+            }}
+          >
+            <View style={styles.content}>
+              <Text style={styles.text1}>Community management</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              SignOut().then(() => {
+                console.log("sign out");
+                navigation.navigate("SignIn");
+                alert("You signed out");
+              });
+            }}
+          >
+            <View style={styles.content}>
+              <Text style={styles.text1}>Log Out</Text>
+            </View>
+          </TouchableOpacity>
+
+          <StatusBar style="auto" />
+        </View>
+      )}
     </NetworkStatus>
   );
 }
@@ -78,6 +130,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffff",
   },
+  wordView: {
+    marginTop: 77,
+    marginLeft: 57,
+    marginBottom: 32,
+    alignSelf: "flex-start",
+  },
+  word: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontWeight: 700,
+    fontSize: 18,
+  },
+  lineView: {
+    marginHorizontal: 16,
+    marginBottom: 100,
+  },
+  line: {
+    color: "#FFA8C5",
+    opacity: 0.5,
+  },
   content: {
     width: 328,
     height: 48,
@@ -85,79 +157,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 5,
-    marginTop: 70,
-    marginRight: 16,
-    marginLeft: 16,
+    marginHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
-  },
-  content2: {
-    width: 328,
-    height: 48,
-    backgroundColor: "#FFA8C5",
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 5,
-    marginTop: 60,
-    marginRight: 16,
-    marginLeft: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  content3: {
-    width: 328,
-    height: 48,
-    backgroundColor: "#FFA8C5",
-    flexDirection: "row",
-
-    borderRadius: 5,
-    marginTop: 60,
-    marginRight: 16,
-    marginLeft: 16,
-    alignItems: "center",
-    justifyContent: "center",
+    marginBottom: 48,
   },
   text1: {
     textAlign: "center",
     color: "white",
     fontFamily: "Montserrat",
-    fontWeight: 700,
-    fontSize: 16,
-  },
-
-  wordView: {
-    marginTop: 77,
-    marginRight: 252,
-    marginLeft: 16,
-  },
-  word: {
-    color: "#0B3B63",
-    fontFamily: "Montserrat",
-    fontWeight: 700,
-    fontSize: 18,
-    width: 92,
-    height: 22,
-  },
-  lineView: {
-    marginTop: 32,
-    marginLeft: 16,
-    marginRight: 16,
-  },
-  line: {
-    color: "#FFA8C5",
-    opacity: 0.5,
-  },
-  textView: {
-    marginTop: 70,
-    marginRight: 161,
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 17,
-  },
-  text: {
-    color: "#FFA8C5",
-    fontFamily: "Montserrat",
-    fontWeight: 700,
+    fontWeight: "700",
     fontSize: 16,
   },
   iconView: {
@@ -168,14 +177,6 @@ const styles = StyleSheet.create({
     width: 22,
     height: 28.67,
   },
-  textView2: {
-    marginTop: 60,
-    marginRight: 120,
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 17,
-  },
-
   iconView2: {
     marginRight: 17.67,
     marginLeft: 24.33,
@@ -184,14 +185,6 @@ const styles = StyleSheet.create({
     width: 22,
     height: 28.67,
   },
-  textView3: {
-    marginTop: 60,
-    marginRight: 220,
-    flexDirection: "row",
-    alignItems: "center",
-    marginLeft: 17,
-  },
-
   iconView3: {
     marginRight: 17.67,
     marginLeft: 24.33,

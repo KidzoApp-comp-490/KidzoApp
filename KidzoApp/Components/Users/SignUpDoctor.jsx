@@ -23,7 +23,7 @@ import { NetworkStatus } from "../NetworkStatus";
 export default function SignUpDoctor({ navigation }) {
   const SingUpWithGoogle = () => {
     signInWithPopup(auth, provider).then((data) => {
-      navigation.navigate("Doctorsettings");
+      navigation.navigate("DoctorGoogleSettings");
       getUserUId().then((id) => {
         Addusers({
           uid: id,
@@ -148,7 +148,7 @@ export default function SignUpDoctor({ navigation }) {
             </View>
           </View>
           <View style={styles.PassView}>
-            <Text style={styles.inpText}>Password</Text>
+            <Text style={styles.inpPassText}>Password</Text>
             {icon ? (
               <View style={styles.inpPassView}>
                 <TextInput
@@ -273,7 +273,6 @@ export default function SignUpDoctor({ navigation }) {
 }
 const styles = StyleSheet.create({
   body: {
-    alignItems: "center",
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
@@ -335,6 +334,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#FFA8C5",
     paddingLeft: 5,
+  },
+  inpPassText: {
+    fontSize: 14,
+    fontFamily: "Montserrat",
+    color: "#0B3B63A6",
+    fontWeight: "500",
+    opacity: 0.65,
+    marginBottom: 5,
   },
   inpPassView: {
     flexDirection: "row",

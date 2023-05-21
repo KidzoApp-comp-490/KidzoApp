@@ -44,7 +44,7 @@ export function ManageMedicalHItem({
           onPress={() => {
             deleteMedicineReport(medId);
             alert("Removed!");
-            navigation.navigate("AdminMainPage");
+            navigation.navigate("TabFun");
           }}
         >
           <Image source={DeleteIcon} style={{ width: 25, height: 25 }} />
@@ -71,7 +71,7 @@ export default function ManageMedicalH({ navigation }) {
           <View style={styles.frameView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("AdminMainPage");
+                navigation.navigate("TabFun");
               }}
             >
               <Image source={BackIcon} style={styles.frame} />

@@ -14,17 +14,15 @@ import { getUserById, edituser, subscribe } from "../../db/firebase/users";
 import { StatusBar } from "expo-status-bar";
 import { firebase } from "../../db/Config";
 import * as ImagePicker from "expo-image-picker";
-import { RadioButton } from "react-native-paper";
 import { NetworkStatus } from "../NetworkStatus";
 
-export default function GoogleInfo({ navigation }) {
+export default function DoctorGoogleSettings({ navigation }) {
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [phone, setPhone] = useState("");
-  const [gender, setGender] = useState("Female");
-  const [age, setAge] = useState("");
-  const [checked, setChecked] = useState("first");
+  const [address, setAddress] = useState("");
+  const [price, setPrice] = useState("");
   const [image, setImage] = useState(
     "https://cdn-icons-png.flaticon.com/512/149/149071.png"
   );
@@ -39,7 +37,6 @@ export default function GoogleInfo({ navigation }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    console.log("download link", downloadURL);
     setImage(downloadURL);
   };
 
@@ -59,7 +56,6 @@ export default function GoogleInfo({ navigation }) {
       getUserUId().then((id) => {
         getUserById(id).then((user) => {
           setUser(user[0]);
-          setImage(user[0].image);
         });
       });
     });
@@ -70,7 +66,8 @@ export default function GoogleInfo({ navigation }) {
       fName.length === 0 &&
       lName.length === 0 &&
       phone.length === 0 &&
-      age.length === 0
+      address.length === 0 &&
+      price.length === 0
     ) {
       alert("invalid information");
     } else if (fName.length === 0) {
@@ -78,26 +75,29 @@ export default function GoogleInfo({ navigation }) {
     } else if (lName.length === 0) {
       alert("Please enter your last name");
     } else if (phone.length === 0) {
-      alert("Please enter your phone");
-    } else if (age.length === 0) {
-      alert("Please enter your age");
+      alert("Please enter your Clinic phone number");
+    } else if (address.length === 0) {
+      alert("Please enter your Clinic address");
+    } else if (price.length === 0) {
+      alert("Please enter your Session price");
     } else {
       edituser({
         ...user,
         fName: fName,
         lName: lName,
         phone: phone,
-        gender: gender,
-        age: age,
+        address: address,
+        price: price,
         image: image,
       })
         .then(() => {
           alert("Your information updated");
-          navigation.navigate("TabFun");
+          navigation.navigate("MessageItem");
         })
         .catch((e) => console.log(e));
     }
   };
+
   return (
     <NetworkStatus>
       <View style={{ flex: 1 }}>
@@ -114,10 +114,12 @@ export default function GoogleInfo({ navigation }) {
                 style={styles.activityIndicator}
               />
             ) : (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 168, height: 168, borderRadius: "50%" }}
-              />
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 168, height: 168 }}
+                />
+              </View>
             )}
             <TouchableOpacity onPress={pickImage}>
               <Text style={styles.ImageText}>Edit your profile picture</Text>
@@ -132,41 +134,16 @@ export default function GoogleInfo({ navigation }) {
             <TextInput style={styles.Input} onChangeText={setLName} />
           </View>
           <View style={styles.InputView2}>
-            <Text style={styles.InputTxt}>Phon number</Text>
+            <Text style={styles.InputTxt}>Clinic Phon number</Text>
             <TextInput style={styles.Input} onChangeText={setPhone} />
           </View>
-          <View style={styles.Gender}>
-            <Text style={styles.GenderTxt}>Gender</Text>
-            <View style={styles.FMView}>
-              <View style={styles.FemaleView}>
-                <Text style={styles.FemaleTxt}>Female</Text>
-                <RadioButton
-                  value="first"
-                  status={checked === "first" ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setChecked("first");
-                  }}
-                  color="#FFA8C5"
-                  uncheckedColor="#FFA8C5"
-                />
-              </View>
-              <View style={styles.maleView}>
-                <Text style={styles.maleTxt}>Male</Text>
-                <RadioButton
-                  value="second"
-                  status={checked === "second" ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setChecked("second"), setGender("male");
-                  }}
-                  color="#FFA8C5"
-                  uncheckedColor="#FFA8C5"
-                />
-              </View>
-            </View>
+          <View style={styles.InputView2}>
+            <Text style={styles.InputTxt}>Clinic address</Text>
+            <TextInput style={styles.Input} onChangeText={setAddress} />
           </View>
           <View style={styles.InputView2}>
-            <Text style={styles.InputTxt}>Age</Text>
-            <TextInput style={styles.Input} onChangeText={setAge} />
+            <Text style={styles.InputTxt}>Session price</Text>
+            <TextInput style={styles.Input} onChangeText={setPrice} />
           </View>
           <View style={styles.buttonview}>
             <TouchableOpacity style={styles.button} onPress={editDate}>
@@ -220,10 +197,11 @@ const styles = StyleSheet.create({
   Input: {
     width: 326,
     height: 48,
-    borderRadius: 5,
     marginTop: 5,
     borderWidth: 1,
+    borderWidth: 1,
     borderColor: "#FFA8C5",
+    borderRadius: 5,
     paddingLeft: 5,
   },
   InputView2: {
@@ -254,55 +232,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 80,
-  },
-  Gender: {
-    marginHorizontal: 16,
-    marginTop: 32,
-  },
-  GenderTxt: {
-    marginBottom: 5,
-    fontSize: 14,
-    fontFamily: "Montserrat",
-    color: "#0B3B63A6",
-    fontWeight: "500",
-    opacity: 0.65,
-  },
-  FMView: {
-    flexDirection: "row",
-  },
-  FemaleView: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 156,
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#FFA8C5",
-    borderRadius: 5,
-    marginRight: 16,
-  },
-  FemaleTxt: {
-    fontSize: 14,
-    fontFamily: "Montserrat",
-    color: "#0B3B63A6",
-    fontWeight: "500",
-    marginLeft: 14,
-    marginRight: 59,
-  },
-  maleView: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: 156,
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#FFA8C5",
-    borderRadius: 5,
-  },
-  maleTxt: {
-    fontSize: 14,
-    fontFamily: "Montserrat",
-    color: "#0B3B63A6",
-    fontWeight: "500",
-    marginLeft: 14,
-    marginRight: 77,
   },
 });

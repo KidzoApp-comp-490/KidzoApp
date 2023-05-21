@@ -49,8 +49,6 @@ export default function SignIn({ navigation }) {
             getUserById(id).then((user) => {
               if (user[0].job === "Doctor") {
                 navigation.navigate("MessageItem");
-              } else if (user[0].uid === "ZF60Ucd4DVd66crcR4GO7yGSL8h1") {
-                navigation.navigate("AdminMainPage");
               } else {
                 navigation.navigate("TabFun");
               }

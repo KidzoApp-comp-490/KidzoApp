@@ -15,8 +15,9 @@ import { StatusBar } from "expo-status-bar";
 import { firebase } from "../../db/Config";
 import * as ImagePicker from "expo-image-picker";
 import { NetworkStatus } from "../NetworkStatus";
+import BackIcon from "../../assets/Profile/Back.png";
 
-export default function Doctorsettings({ navigation }) {
+export default function DoctorSettings({ navigation }) {
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -38,8 +39,6 @@ export default function Doctorsettings({ navigation }) {
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
     setImage(downloadURL);
-    console.log("download link", downloadURL);
-    setImage(downloadURL);
   };
 
   const pickImage = async () => {
@@ -54,23 +53,20 @@ export default function Doctorsettings({ navigation }) {
   };
 
   useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+    subscribe(() => {
       getUserUId().then((id) => {
         getUserById(id).then((user) => {
           setUser(user[0]);
+          setFName(user[0].fName);
+          setLName(user[0].lName);
+          setPhone(user[0].phone);
+          setAddress(user[0].address);
+          setPrice(user[0].price);
+          setImage(user[0].image);
         });
       });
     });
   }, []);
-
-  const editImage = () => {
-    edituser({
-      ...user,
-      image: image,
-    })
-      .then(() => {})
-      .catch((e) => console.log(e));
-  };
 
   const editDate = () => {
     if (
@@ -86,11 +82,11 @@ export default function Doctorsettings({ navigation }) {
     } else if (lName.length === 0) {
       alert("Please enter your last name");
     } else if (phone.length === 0) {
-      alert("Please enter your phone");
+      alert("Please enter your Clinic phone number");
     } else if (address.length === 0) {
-      alert("Please enter your address");
+      alert("Please enter your Clinic address");
     } else if (price.length === 0) {
-      alert("Please enter your price");
+      alert("Please enter your Session price");
     } else {
       edituser({
         ...user,
@@ -99,6 +95,7 @@ export default function Doctorsettings({ navigation }) {
         phone: phone,
         address: address,
         price: price,
+        image: image,
       })
         .then(() => {
           alert("Your information updated");
@@ -113,28 +110,36 @@ export default function Doctorsettings({ navigation }) {
       <View style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.Section1}>
-            <Text style={styles.ProfileTxt}>Please Complete your data</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("MessageItem");
+              }}
+            >
+              <Image
+                source={BackIcon}
+                style={{ width: 25, height: 25, marginRight: 21.37 }}
+              />
+            </TouchableOpacity>
+            <Text style={styles.ProfileTxt}>EDIT PROFILE</Text>
           </View>
           <View style={styles.UserImageView}>
-            <TouchableOpacity onPress={pickImage}>
-              {loading ? (
-                <ActivityIndicator
-                  animating={true}
-                  color="#bc2b78"
-                  size="large"
-                  style={styles.activityIndicator}
+            {loading ? (
+              <ActivityIndicator
+                animating={true}
+                color="#bc2b78"
+                size="large"
+                style={styles.activityIndicator}
+              />
+            ) : (
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 168, height: 168 }}
                 />
-              ) : (
-                <View style={{ borderRadius: 100, overflow: "hidden" }}>
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 168, height: 168 }}
-                  />
-                </View>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={editImage}>
-              <Text style={styles.ImageText}>Save your profile picture</Text>
+              </View>
+            )}
+            <TouchableOpacity onPress={pickImage}>
+              <Text style={styles.ImageText}>Edit your profile picture</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.InputView}>
@@ -209,6 +214,12 @@ const styles = StyleSheet.create({
     marginTop: 34,
     alignItems: "center",
   },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
+  },
   ImageText: {
     fontSize: 14,
     fontWeight: "700",
@@ -258,11 +269,5 @@ const styles = StyleSheet.create({
   button2: {
     alignItems: "center",
     marginTop: 15,
-  },
-  activityIndicator: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 80,
   },
 });

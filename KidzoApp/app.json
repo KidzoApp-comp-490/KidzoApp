@@ -1,16 +1,11 @@
 {
   "expo": {
-    "name": "KidzoApp",
-    "slug": "KidzoApp",
+    "name": "Kidzo",
+    "slug": "kidzo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Logo/final.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,12 +14,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Logo/final.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.azizgerges.KidzoApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0406880c-cff0-4406-ad79-ed38d4b295f7"
+      }
     }
   }
 }

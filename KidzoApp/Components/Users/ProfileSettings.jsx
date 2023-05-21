@@ -26,9 +26,6 @@ export default function ProfileSettings({ navigation }) {
   const [image, setImage] = useState(
     "https://cdn-icons-png.flaticon.com/512/149/149071.png"
   );
-  // const [imageLink, setImageLink] = useState(
-  //   "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-  // );
   const [loading, setLoading] = useState(false);
 
   const uploadImage = async (uri) => {
@@ -40,8 +37,6 @@ export default function ProfileSettings({ navigation }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    setImage(downloadURL);
-    console.log("download link", downloadURL);
     setImage(downloadURL);
   };
 
@@ -57,7 +52,7 @@ export default function ProfileSettings({ navigation }) {
   };
 
   useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+    subscribe(() => {
       getUserUId().then((id) => {
         getUserById(id).then((user) => {
           setUser(user[0]);
@@ -71,17 +66,6 @@ export default function ProfileSettings({ navigation }) {
     });
   }, []);
 
-  const editImage = () => {
-    edituser({
-      ...user,
-      image: image,
-    })
-      .then(() => {
-        navigation.navigate("Profile");
-      })
-      .catch((e) => console.log(e));
-  };
-
   const editDate = () => {
     edituser({
       ...user,
@@ -89,6 +73,7 @@ export default function ProfileSettings({ navigation }) {
       lName: lName,
       age: age,
       phone: phone,
+      image: image,
     })
       .then(() => {
         alert("Your information updated");
@@ -116,25 +101,23 @@ export default function ProfileSettings({ navigation }) {
             <Text style={styles.ProfileTxt}>EDIT PROFILE</Text>
           </View>
           <View style={styles.UserImageView}>
-            <TouchableOpacity onPress={pickImage}>
-              {loading ? (
-                <ActivityIndicator
-                  animating={true}
-                  color="#bc2b78"
-                  size="large"
-                  style={styles.activityIndicator}
+            {loading ? (
+              <ActivityIndicator
+                animating={true}
+                color="#bc2b78"
+                size="large"
+                style={styles.activityIndicator}
+              />
+            ) : (
+              <View style={{ borderRadius: 100, overflow: "hidden" }}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 168, height: 168 }}
                 />
-              ) : (
-                <View style={{ borderRadius: 100, overflow: "hidden" }}>
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 168, height: 168 }}
-                  />
-                </View>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity onPress={editImage}>
-              <Text style={styles.ImageText}>Save your profile picture</Text>
+              </View>
+            )}
+            <TouchableOpacity onPress={pickImage}>
+              <Text style={styles.ImageText}>Edit your profile picture</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.InputView}>
