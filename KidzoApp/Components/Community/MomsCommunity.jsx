@@ -16,11 +16,12 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
   let [icon, setIcon] = useState(true);
   let [reactNum, setReactNum] = useState(numreact);
 
-
-
-  let clickHeart = async () => {
+  useEffect(() => {
+    clickHeart();
+  }, []);
+  const clickHeart = async () => {
     if (icon) {
-      setIcon(true);
+
       setReactNum(reactNum + 1);
       console.log("*****", idpost);
       try {
@@ -31,7 +32,6 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
         console.error("Error updating post:", error);
       }
     } else {
-      setIcon(false);
       setReactNum(reactNum - 1);
       console.log("*****", idpost);
       try {
@@ -64,7 +64,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
               >
                 <Image source={imageSource} style={{ width: 24, height: 23 }} />
               </TouchableOpacity>
-              <Text style={styles.ReactTxt}>{reactNum} Love</Text>
+              <Text style={styles.ReactTxt}>{reactNum - 1} Love</Text>
               <View style={styles.VerticalPar}></View>
               <View style={styles.RightPart}>
                 <Image source={Comment} style={{ width: 24, height: 24 }} />
