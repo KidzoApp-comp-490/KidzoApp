@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import logo from "../../assets/Post/ant-design_picture-outlined.png";
+import Frame from "../../assets/MedicalH/Frame.png";
 import { getUserUId } from "../../db/firebase/auth";
 import { firebase } from "../../db/Config";
 import { StatusBar } from "expo-status-bar";
@@ -73,6 +74,24 @@ export default function MomsComCreatepost() {
   return (
     <View style={styles.container}>
       <ScrollView>
+      <View style={styles.titleView}>
+          <View style={styles.frameView}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("TabFun");
+              }}
+            >
+              <Image source={Frame} style={styles.frame} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.wordView}>
+            <Text style={styles.title}>CREATE POST</Text>
+          </View>
+        </View>
+        <View style={styles.lineView}>
+          <Text style={styles.line}> ────────────────────────────────</Text>
+        </View>
+
         <View style={styles.header}>
           <View style={{ borderRadius: 100, overflow: "hidden" }}>
             <Image source={{ uri: image }} style={{ width: 45, height: 45 }} />
@@ -88,33 +107,56 @@ export default function MomsComCreatepost() {
           </TouchableOpacity>
         </View>
         <View>
-          <TextInput
+          <TextInput 
+          placeholder="what's in your mind?"
+          placeholderTextColor={"#0B3B63"}
+          
             style={{
               height: 300,
               borderColor: "#ffff",
               borderRadius: 10,
               marginTop: 20,
-              placeholder: "Type your message here",
+              paddingLeft:16,
+              paddingTop:10,
+              fontSize:14,
+              
             }}
             onChangeText={(text) => onChangeText(text)}
             value={value}
             multiline={true}
           />
         </View>
+        <View  style={{
+            alignItems: "center",
+            justifyContent: "center"
+          }}> 
         <Image
           source={imageup}
           style={{
-            width: 90,
-            height: 90,
+            width: 100,
+            height: 100,
             justifyContent: "center",
             alignItems: "center",
           }}
         />
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
+        </View>
+        <View  style={{
             alignItems: "center",
-            backgroundColor: "red",
+            justifyContent: "center"
+          }}> 
+        <TouchableOpacity
+        
+          style={{
+            width: 200,
+            height: 52,
+            backgroundColor: "#FFA8C5",
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 5,
+            marginHorizontal: 16,
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 48,
           }}
           onPress={() => {
             addpost({
@@ -127,18 +169,24 @@ export default function MomsComCreatepost() {
             setImageup("");
             onChangeText("");
           }}
+          
         >
           <Text
             style={{
-              fontSize: 20,
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
+              textAlign: "center",
+              color: "white",
+              fontFamily: "Montserrat",
+              fontWeight: "700",
+              fontSize: 18,
+
             }}
           >
             creat post
           </Text>
         </TouchableOpacity>
+        </View>
+
+
       </ScrollView>
     </View>
   );
@@ -161,5 +209,35 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 29.75,
     marginTop: 8,
+  },
+  frameView: {
+    marginTop: 75,
+  },
+  frame: {
+    width: 24,
+    height: 20,
+  },
+  titleView: {
+    flexDirection: "row",
+  },
+  title: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontWeight: 700,
+    fontSize: 18,
+  },
+  wordView: {
+    marginTop: 77,
+    marginRight: 127,
+    marginLeft: 21.37,
+  },
+  lineView: {
+    marginTop: 32,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  line: {
+    color: "#FFA8C5",
+    opacity: 0.5,
   },
 });

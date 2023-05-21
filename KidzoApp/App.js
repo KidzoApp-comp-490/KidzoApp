@@ -271,7 +271,7 @@ export default function App() {
           <Stack.Screen
             name="MomsComCreatepost"
             component={MomsComCreatepost}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="MomsCommunityItem"

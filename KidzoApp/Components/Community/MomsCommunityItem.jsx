@@ -20,6 +20,7 @@ import {
 import React from "react";
 import MomsCommunity from "./MomsCommunity";
 import PostIcon from "../../assets/Profile/image3.png";
+import Frame from "../../assets/MedicalH/Frame.png";
 import ImageIcon from "../../assets/Community/ant-design_picture-outlined.png";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
@@ -54,20 +55,47 @@ export default function MomsCommunityItem() {
           alignItems: "center",
         }}
       >
-        <Text style={styles.CommunityTxt}>Moms Community</Text>
-        <View>
+       <View style={styles.titleView}>
+          <View style={styles.frameView}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("TabFun");
+              }}
+            >
+              <Image source={Frame} style={styles.frame} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.wordView}>
+            <Text style={styles.title}>MOMS COMMUNITY</Text>
+          </View>
+        </View>
+        <View style={styles.lineView}>
+          <Text style={styles.line}> ────────────────────────────────</Text>
+        </View>
+
+
+        {/* <View>
           <Button
             title="Go to Details"
             onPress={() => navigation.navigate('MomsComCreatepost')}
           />
-        </View>
+        </View> */}
         <View style={styles.InpView}>
-          <TextInput
+
+          <TouchableOpacity style={styles.Viewopaci}
+          onPress={() => navigation.navigate('MomsComCreatepost')}
+          >
+            <View style={styles.vewtext}>
+              <Text style={styles.textst}>What's in your mind?</Text>
+            </View>
+
+          </TouchableOpacity>
+          {/* <TextInput
             style={styles.Inp}
             placeholder="What's in your mind?"
             placeholderTextColor="#FFA8C5"
           />
-          <Image source={ImageIcon} style={styles.ImageIcon} />
+          <Image source={ImageIcon} style={styles.ImageIcon} /> */}
         </View>
         {postlist.map((e, index) => (
             console.log("here = ", e.id),
@@ -115,5 +143,55 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     marginRight: 18,
+  },
+  frameView: {
+    marginTop: 75,
+  },
+  frame: {
+    width: 24,
+    height: 20,
+  },
+  titleView: {
+    flexDirection: "row",
+  },
+  title: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontWeight: 700,
+    fontSize: 18,
+  },
+  wordView: {
+    marginTop: 77,
+    marginRight: 127,
+    marginLeft: 21.37,
+  },
+  lineView: {
+    marginTop: 32,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  line: {
+    color: "#FFA8C5",
+    opacity: 0.5,
+  },
+  textst:{
+    textAlign: "center",
+    color: "#FFA8C5",
+    fontFamily: "Montserrat",
+    fontWeight: "500",
+    fontSize: 14,
+  },
+  Viewopaci:{
+    width: 273,
+    height: 32,
+    
+    
+    alignItems: "center",
+    borderRadius: 30,
+    
+    alignItems: "center",
+    justifyContent: "center",
+    
+
   },
 });
