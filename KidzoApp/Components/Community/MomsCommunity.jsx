@@ -14,7 +14,7 @@ import Comment from "../../assets/Community/Comment.png";
 import { editpost } from "../../db/firebase/post";
 export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
-  const [reactNum, setReactNum] = useState(1);
+  let [reactNum, setReactNum] = useState(numreact);
 
   const clickHeart = async () => {
     if (icon) {
