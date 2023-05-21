@@ -16,6 +16,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
   let [reactNum, setReactNum] = useState(numreact);
 
+  
   const clickHeart = async () => {
     if (icon) {
       setIcon(false);
