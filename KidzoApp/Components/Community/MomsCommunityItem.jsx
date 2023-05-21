@@ -36,10 +36,11 @@ export default function MomsCommunityItem() {
     setpostlist(posts);
     console.log("here the post mehtod", posts);
   }
-  useEffect(() => {
+  React.useEffect(() => {
     getposts();
+
   }, []);
-  useEffect(() => {
+  React.useEffect(() => {
     postlist.map((e) => {
       setImagepost(e.image)
       setvalue(e.text)
