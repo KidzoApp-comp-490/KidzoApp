@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
