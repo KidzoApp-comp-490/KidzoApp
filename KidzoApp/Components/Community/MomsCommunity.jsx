@@ -11,31 +11,24 @@ import React, { useState } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
-import { updatePost } from "../../db/firebase/post";
+import { editpost } from "../../db/firebase/post";
 export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
   const [reactNum, setReactNum] = useState(numreact);
-
+  
   const clickHeart = () => {
     if (icon) {
       setIcon(false);
       setReactNum(reactNum + 1);
-
+      editpost( reactNum);
     } else {
       setIcon(true);
       setReactNum(reactNum - 1);
-      updatePost(idpost, idpost, numreact)
+      editpost(reactNum);
     }
   };
   let imageSource = icon ? Heart : ColoredHeart;
-  const handleUpdatePost = async () => {
-    try {
-      await updatePost(idpost, idpost, numreact);
-      console.log('Post updated successfully');
-    } catch (error) {
-      console.error('Error updating post:', error);
-    }
-  };
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
