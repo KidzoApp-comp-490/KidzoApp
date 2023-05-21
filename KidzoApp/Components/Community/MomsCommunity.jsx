@@ -14,12 +14,12 @@ import Comment from "../../assets/Community/Comment.png";
 import { editpost } from "../../db/firebase/post";
 export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
-  const [reactNum, setReactNum] = useState(numreact);
+  const [reactNum, setReactNum] = useState();
 
   const clickHeart = async () => {
     if (icon) {
       setIcon(false);
-      setReactNum(reactNum + 1);
+      setReactNum(numreact + 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
@@ -30,7 +30,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
       }
     } else {
       setIcon(true);
-      setReactNum(reactNum - 1);
+      setReactNum(numreact - 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
