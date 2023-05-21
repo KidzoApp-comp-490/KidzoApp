@@ -26,13 +26,13 @@ async function addpost(text, image, currentUserid, numreact) {
     numreact
   );
 }
-async function updatePost(post,numReact) {
-    console.log("7777777777777777");
-    await updateDoc(doc(firestoreDB, "post", post.id), {
-      numreact: numReact
-    });
-  }
-  
+async function updatePost(post, numReact) {
+  console.log("7777777777777777");
+  await updateDoc(doc(firestoreDB, "post", post.id), {
+    numreact: numReact,
+  });
+}
+
 async function deletepost(id) {
   await deleteDoc(doc(firestoreDB, "post", id));
 }
@@ -52,9 +52,10 @@ async function getpost() {
     return { id: doc.id, ...doc.data() };
   });
 }
-function subscribe(callback) {
+
+function subscribePost(callback) {
   const unsubscribe = onSnapshot(
-    query(collection(firestoreDB, "Address")),
+    query(collection(firestoreDB, "post")),
     (snapshot) => {
       const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
       snapshot.docChanges().forEach((change) => {
@@ -66,4 +67,5 @@ function subscribe(callback) {
   );
   return unsubscribe;
 }
-export { addpost, deletepost, subscribe, getpost, getpostinfo, updatePost };
+
+export { addpost, deletepost, subscribePost, getpost, getpostinfo, updatePost };
