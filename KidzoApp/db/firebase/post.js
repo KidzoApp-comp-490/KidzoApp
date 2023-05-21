@@ -77,11 +77,11 @@ function subscribePost(callback) {
   return unsubscribe;
 }
 
-export { addpost, deletepost, subscribePost, getpost, getpostinfo, updatePost };
+export { addpost, deletepost, subscribePost, getpost, getpostinfo };
 export {
   addpost,
   deletepost,
-  subscribe,
+  subscribePost,
   getpost,
   getpostinfo,
   fetchData,
