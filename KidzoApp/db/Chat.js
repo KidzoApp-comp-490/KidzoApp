@@ -10,16 +10,17 @@ import {  addDoc,
     deleteDoc,
     Firestore,
     firestore,
-    serverTimestamp
+    serverTimestamp,
+    orderBy
 } from "firebase/firestore";
 import { app,db } from "./Config";
 const firestoreDB = getFirestore(app);
-async function addMessage(content, reciverUid, senderUid,time, type) {
-    await addDoc(collection(firestoreDB, "messagesChat"),content, reciverUid, senderUid,time , type);
+async function addMessage(content, reciverUid, senderUid,time, type,image) {
+    await addDoc(collection(firestoreDB, "messagesChat"),content, reciverUid, senderUid,time , type,image);
 }
 async function getMessage() {
     const mCol = collection(firestoreDB, "messagesChat");
-    const addressSnapshot = await getDocs(mCol);
+    const addressSnapshot = await getDocs(query(mCol, orderBy('time','desc')));
     return addressSnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
     });
@@ -40,14 +41,14 @@ async function getChat() {
 }
 function subscribe(callback) {
     const unsubscribe = onSnapshot(
-      query(collection(firestoreDB, "Address")),
+      query(collection(firestoreDB, "messagesChat")),
       (snapshot) => {
         const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
         snapshot.docChanges().forEach((change) => {
-          // console.log("changes", change, snapshot.metadata);
+          console.log("changes", change, snapshot.metadata);
           if (callback) callback({ change, snapshot });
         });
-        // console.log(source, " data: ", snapshot.data());
+
       }
     );
     return unsubscribe;

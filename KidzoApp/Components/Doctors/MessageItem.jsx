@@ -13,97 +13,72 @@ import Settings from "../../assets/Settings/Sittings.png";
 import Ok from "../../assets/MedicalH/ok.png";
 import { SignOut } from "../../db/firebase/auth";
 import Messages from "./Messages";
-import { getusersInfo, subscribe } from "../../db/firebase/users";
+import { getusersInfo } from "../../db/firebase/users";
 
 export default function MessageItem({ navigation }) {
   const [usersList, setUsersList] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
     console.log("users from database", users);
+  };
+  const getDocMessages = async () => {
+    const msgs = await getMessage();
+    setMessages2(msgs);
+    // console.log(msgs)
   };
   React.useEffect(() => {
     subscribe(() => {
       getUsersList();
     });
   }, []);
+  React.useEffect(() => {
+    userForDoc.forEach((val) => {
+      console.log("val", val);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    getDocMessages();
+  }, []);
+  React.useEffect(() => {
+    getUserUId().then((val) => {
+      setuserID(val);
+    });
+  }, []);
   return (
     <View style={styles.body}>
       <ScrollView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TouchableOpacity
-                style={{ marginTop: 30 }}
-                onPress={() => {
-                  navigation.navigate("DoctorSettings");
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.content}>
-                  <Text style={styles.text1}>Profile Settings</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  SignOut().then(() => {
-                    console.log("sign out");
-                    navigation.navigate("SignIn");
-                    alert("You signed out");
-                    setModalVisible(!modalVisible);
-                  });
-                }}
-              >
-                <View style={styles.content}>
-                  <Text style={styles.text1}>Log Out</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ alignItems: "center", justifyContent: "center" }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Image source={Ok} style={styles.imageOk} />
-              </TouchableOpacity>
-            </View>
+        <View style={styles.titleView}>
+          <Text style={styles.title}>Messages</Text>
+          <View style={styles.LogOutView}>
+            <TouchableOpacity
+              onPress={() => {
+                SignOut().then(() => {
+                  console.log("sign out");
+                  navigation.navigate("SignIn");
+                  alert("You signed out");
+                });
+              }}
+            >
+              <Image source={LogOut} style={styles.LogOutImage} />
+            </TouchableOpacity>
           </View>
-        </Modal>
-        <View style={{ alignItems: "center" }}>
-          <View style={styles.titleView}>
-            <Text style={styles.title}>Messages</Text>
-            <View style={styles.LogOutView}>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-              >
-                <Image source={Settings} style={styles.LogOutImage} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.lineView}>
-            <Text style={styles.line}>──────────────────────────────────</Text>
-          </View>
-          {usersList.map((e, index) =>
-            e.job == "user" && e.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (
-              <Messages
-                text1={e.fName}
-                text2={e.lName}
-                iconSrc={e.image}
-                docId={e.id}
-                key={index}
-              />
-            ) : null
-          )}
         </View>
+        <View style={styles.lineView}>
+          <Text style={styles.line}>──────────────────────────────────</Text>
+        </View>
+        {usersList.map((e, index) =>
+          e.job == "user" && e.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (
+            <Messages
+              text1={e.fName}
+              text2={e.lName}
+              iconSrc={e.image}
+              docId={e.id}
+              key={index}
+            />
+          ) : null
+        )}
         <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
       <StatusBar style="auto" />

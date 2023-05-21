@@ -2,6 +2,7 @@ import {
   View,
   StyleSheet,
   Image,
+  TextInput,
   Text,
   ScrollView,
   TouchableOpacity,
@@ -10,22 +11,31 @@ import React, { useState } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
-import ProfIcon from "../../assets/Home/Group80.png";
-import ReportIcon from "../../assets/Profile/octicon_report-16.png";
-
-export default function MomsCommunity({ iconSrc, text }) {
+import { updatePost } from "../../db/firebase/post";
+export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
-  const [reactNum, setReactNum] = useState(0);
+  const [reactNum, setReactNum] = useState(numreact);
+
   const clickHeart = () => {
     if (icon) {
       setIcon(false);
       setReactNum(reactNum + 1);
+
     } else {
       setIcon(true);
       setReactNum(reactNum - 1);
+      updatePost(idpost, idpost, numreact)
     }
   };
   let imageSource = icon ? Heart : ColoredHeart;
+  const handleUpdatePost = async () => {
+    try {
+      await updatePost(idpost, idpost, numreact);
+      console.log('Post updated successfully');
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -34,18 +44,16 @@ export default function MomsCommunity({ iconSrc, text }) {
         }}
       >
         <View style={styles.PostsView}>
-          <View style={styles.userInfo}>
-            <Image source={ProfIcon} style={styles.profImg} />
-            <Text style={styles.profTxt}>aaaa</Text>
-            <Image source={ReportIcon} style={styles.reportIcon} />
-          </View>
-          <View style={{ flex: 1, alignSelf: "flex-start", marginLeft: 20 }}>
-            <Text style={styles.PostTitle}>{text}</Text>
-          </View>
-          <Image source={iconSrc} style={{ width: 328, height: 243 }} />
+          <Text style={styles.PostTitle}>{value}</Text>
+          <Image source={image} style={{ width: 328, height: 243 }} />
           <View style={styles.ReactsView}>
             <View style={styles.LeftPart}>
-              <TouchableOpacity onPress={clickHeart}>
+              <TouchableOpacity
+                onPress={() => {
+                  clickHeart();
+                }}
+
+              >
                 <Image source={imageSource} style={{ width: 24, height: 23 }} />
               </TouchableOpacity>
               <Text style={styles.ReactTxt}>{reactNum} Love</Text>
@@ -57,6 +65,19 @@ export default function MomsCommunity({ iconSrc, text }) {
             </View>
           </View>
         </View>
+        {/* <View style={styles.PostsView2}>
+          <Text style={styles.PostTitle2}>
+            Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
+            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
+            Day! Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
+            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
+            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
+            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
+            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
+            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
+            Day!
+          </Text>
+        </View> */}
       </ScrollView>
     </View>
   );
@@ -65,42 +86,21 @@ export default function MomsCommunity({ iconSrc, text }) {
 const styles = StyleSheet.create({
   PostsView: {
     width: 370,
+    // height: 360,
     borderRadius: 15,
     borderColor: "rgba(11, 59, 99, 0.15)",
     borderWidth: 1,
     marginTop: 16,
     alignItems: "center",
   },
-  userInfo: {
-    flex: 1,
-    flexDirection: "row",
-    alignSelf: "flex-start",
-    alignItems: "center",
-    marginLeft: 17,
-    marginTop: 10,
-  },
-  profImg: {
-    width: 56,
-    height: 56,
-  },
-  profTxt: {
-    fontWeight: "600",
-    fontSize: 14,
-    color: "#0B3B63",
-    marginLeft: 11,
-  },
-  reportIcon: {
-    width: 25,
-    height: 25,
-    marginLeft: 210,
-  },
   PostTitle: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: "Montserrat",
     color: "#0B3B63",
-    marginTop: 15,
+    marginTop: 17,
     marginBottom: 16,
+    marginRight: 200,
   },
   ReactsView: {
     width: 370,

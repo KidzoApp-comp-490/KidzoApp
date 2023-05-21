@@ -39,6 +39,8 @@ import Session from "./Components/Session/Session";
 import ManageCommunity from "./Components/Admin/ManageCommunity";
 import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
+import ImageUploader from "./Components/Session/ImageUploader";
+import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
 import DoctorSettings from "./Components/Doctors/DoctorSettings";
 
 const Tab = createBottomTabNavigator();
@@ -247,6 +249,11 @@ export default function App() {
             options={{ headerShown: true }}
           />
           <Stack.Screen
+            name="ImageUploader"
+            component={ImageUploader}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
             name="ManageCommunity"
             component={ManageCommunity}
             options={{ headerShown: false }}
@@ -259,6 +266,16 @@ export default function App() {
           <Stack.Screen
             name="ManageUsers"
             component={ManageUsers}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MomsComCreatepost"
+            component={MomsComCreatepost}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="MomsCommunityItem"
+            component={MomsCommunityItem}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

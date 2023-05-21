@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import BackIcon from "../../assets/MedicalH/Frame.png";
 import { StatusBar } from "expo-status-bar";
 import Doctors from "./Doctors";
-import { getusersInfo } from "../../db/firebase/users";
+import { getusersInfo,subscribe } from "../../db/firebase/users";
 
 export default function DoctorItem({ navigation }) {
   const [usersList, setUsersList] = useState([]);
@@ -19,8 +19,13 @@ export default function DoctorItem({ navigation }) {
     setUsersList(users);
   };
   React.useEffect(() => {
-    getUsersList();
-  }, []);
+    const unsubscribe = subscribe(() => {
+      getUsersList();
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [])
   return (
     <View style={styles.body}>
       <ScrollView>
