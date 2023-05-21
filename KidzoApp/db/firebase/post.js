@@ -61,7 +61,6 @@ async function getpost() {
     return { id: doc.id, ...doc.data() };
   });
 }
-
 function subscribePost(callback) {
   const unsubscribe = onSnapshot(
     query(collection(firestoreDB, "post")),
@@ -76,8 +75,6 @@ function subscribePost(callback) {
   );
   return unsubscribe;
 }
-
-export { addpost, deletepost, subscribePost, getpost, getpostinfo };
 export {
   addpost,
   deletepost,
