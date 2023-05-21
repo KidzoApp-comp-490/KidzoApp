@@ -16,7 +16,19 @@ import {
 } from "firebase/firestore";
 import { app, db } from "/db/Config";
 const firestoreDB = getFirestore(app);
+const fetchData = async () => {
+  try {
+    const collectionRef = collection(firestoreDB, "posts");
+    const querySnapshot = await getDocs(collectionRef);
 
+    querySnapshot.forEach((doc) => {
+      console.log("Document ID:", doc.id);
+      console.log("Document data:", doc.data());
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 async function addpost(text, image, currentUserid, numreact) {
   await addDoc(
     collection(firestoreDB, "post"),
@@ -26,13 +38,10 @@ async function addpost(text, image, currentUserid, numreact) {
     numreact
   );
 }
-async function updatePost(post,numReact) {
-    console.log("7777777777777777");
-    await updateDoc(doc(firestoreDB, "post", post.id), {
-      numreact: numReact
-    });
-  }
-  
+async function editpost(Post) {
+  await setDoc(doc(db, "post", Post.id), Post);
+}
+
 async function deletepost(id) {
   await deleteDoc(doc(firestoreDB, "post", id));
 }
@@ -66,4 +75,12 @@ function subscribe(callback) {
   );
   return unsubscribe;
 }
-export { addpost, deletepost, subscribe, getpost, getpostinfo, updatePost };
+export {
+  addpost,
+  deletepost,
+  subscribe,
+  getpost,
+  getpostinfo,
+  fetchData,
+  editpost,
+};
