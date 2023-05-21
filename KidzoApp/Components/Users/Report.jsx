@@ -48,7 +48,7 @@ export default function Report({ navigation, route }) {
 
   const [editMonth, seteditMonth] = useState("")
   const [editYear, seteditYear] = useState("")
-
+  const [editImg, setImageVal] = useState("")
   const [editDesc, seteditDesc] = useState("")
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
@@ -64,6 +64,7 @@ export default function Report({ navigation, route }) {
     setImage(downloadURL);
     console.log("download link", downloadURL);
     setImage(downloadURL);
+    // watch out here
   };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,6 +91,7 @@ export default function Report({ navigation, route }) {
         setprintMonth(e.month)
         setprintYear(e.year)
         setprintDesc(e.description)
+        setImageVal(e.image)
       }
     })
   })
@@ -297,102 +299,103 @@ export default function Report({ navigation, route }) {
             </Text>
           </View>
           {
-          flagAddVal ?
-            <TouchableOpacity style={styles.button}
-              onPress={() => {
-                let isMonth = /^\d+$/.test(month);
-                let isDay = /^\d+$/.test(day);
-                let isYear = /^\d+$/.test(year);
-                if (
-                  title.length > 0 &&
-                  isMonth &&
-                  month >= 1 &&
-                  month <= 12 &&
-                  isYear &&
-                  year >= 2020 &&
-                  isDay &&
-                  day >= 1 &&
-                  day <= 31 &&
-                  desc.length > 0
-                ) {
+            flagAddVal ?
+              <TouchableOpacity style={styles.button}
+                onPress={() => {
+                  let isMonth = /^\d+$/.test(month);
+                  let isDay = /^\d+$/.test(day);
+                  let isYear = /^\d+$/.test(year);
+                  if (
+                    title.length > 0 &&
+                    isMonth &&
+                    month >= 1 &&
+                    month <= 12 &&
+                    isYear &&
+                    year >= 2020 &&
+                    isDay &&
+                    day >= 1 &&
+                    day <= 31 &&
+                    desc.length > 0
+                  ) {
+                    navigation.navigate("TabFun");
+                    console.log(title, " ", day, " ", month, " ", year, " ", desc);
+                    addMedicineReport({
+                      day: day,
+                      description: desc,
+                      month: month,
+                      title: title,
+                      year: year,
+                      currentUserid: currentId,
+                      image: image
+                    });
+                  }
+                  if (!(title.length > 0)) {
+                    alert("Title can not be empty");
+                  } else if (!(isMonth && month >= 1 && month <= 12)) {
+                    alert("Month should be between 1 - 12");
+                  } else if (!(isDay && day >= 1 && day <= 31)) {
+                    alert("Day should be between 1 - 31");
+                  } else if (!(isYear && year >= 2020)) {
+                    alert("Year should be greater than 2020");
+                  }
+                  else if (!(desc.length > 0)) {
+                    alert("Description can not be empty")
+                  } else {
+                    alert("Done!");
+                  }
+
+                }}
+              >
+                <View style={styles.button2}>
+                  <Text style={styles.button1}> Add Report</Text>
+                </View>
+              </TouchableOpacity>
+              :
+              <TouchableOpacity style={styles.button}
+                onPress={() => {
                   navigation.navigate("TabFun");
-                  console.log(title, " ", day, " ", month, " ", year, " ", desc);
-                  addMedicineReport({
-                    day: day,
-                    description: desc,
-                    month: month,
-                    title: title,
-                    year: year,
+                  let titleValue = printTitle;
+                  let dayValue = printDay;
+                  let monthValue = printMonth;
+                  let yearValue = printYear;
+                  let desValue = printDesc;
+                  let imgValue = editImg;
+                  if (editTitle.length > 0) {
+                    titleValue = editTitle;
+                  }
+                  if (editMonth.length > 0) {
+                    monthValue = editMonth;
+                  }
+                  if (editday.length > 0) {
+                    dayValue = editday;
+                  }
+                  if (editYear.length > 0) {
+                    yearValue = editYear;
+                  }
+                  if (editDesc.length > 0) {
+                    desValue = editDesc;
+                  }
+                  editMedical({
                     currentUserid: currentId,
-                    image: image
-                  });
-                }
-                if (!(title.length > 0)) {
-                  alert("Title can not be empty");
-                } else if (!(isMonth && month >= 1 && month <= 12)) {
-                  alert("Month should be between 1 - 12");
-                } else if (!(isDay && day >= 1 && day <= 31)) {
-                  alert("Day should be between 1 - 31");
-                } else if (!(isYear && year >= 2020)) {
-                  alert("Year should be greater than 2020");
-                }
-                else if (!(desc.length > 0)) {
-                  alert("Description can not be empty")
-                } else {
+                    title: titleValue,
+                    day: dayValue,
+                    month: monthValue,
+                    year: yearValue,
+                    description: desValue,
+                    image: imgValue,
+                  }, itemId)
                   alert("Done!");
                 }
+                }
 
-              }}
-            >
-              <View style={styles.button2}>
-                <Text style={styles.button1}> Add Report</Text>
-              </View>
-            </TouchableOpacity>
-            :
-            <TouchableOpacity style={styles.button}
-              onPress={() => {
-                navigation.navigate("TabFun");
-                let titleValue = printTitle;
-                let dayValue = printDay;
-                let monthValue = printMonth;
-                let yearValue = printYear;
-                let desValue = printDesc;
-                if (editTitle.length > 0) {
-                  titleValue = editTitle;
-                }
-                if (editMonth.length > 0) {
-                  monthValue = editMonth;
-                }
-                if (editday.length > 0) {
-                  dayValue = editday;
-                }
-                if (editYear.length > 0) {
-                  yearValue = editYear;
-                }
-                if (editDesc.length > 0) {
-                  desValue = editDesc;
-                }
-                editMedical({
-                  currentUserid: currentId,
-                  title: titleValue,
-                  day: dayValue,
-                  month: monthValue,
-                  year: yearValue,
-                  description: desValue,
-                  image: image,
-                }, itemId)
-                alert("Done!");
-              }
-              } 
-              
-            >
-              <View style={styles.button2}>
-                <Text style={styles.button1}> Edit Report</Text>
-              </View>
-            </TouchableOpacity>
-        }
+              >
+                <View style={styles.button2}>
+                  <Text style={styles.button1}> Edit Report</Text>
+                </View>
+              </TouchableOpacity>
+          }
         </ScrollView>
-       
+
         <StatusBar style="auto" />
       </View>
     </NetworkStatus>

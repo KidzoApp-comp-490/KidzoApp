@@ -21,7 +21,8 @@ import {
   getMsgsforChatId,
   getChat,
   getMessage,
-  addMessage
+  addMessage,
+  subscribe
 } from '../../db/Chat'
 import { getUserUId } from '../../db/firebase/auth'
 export default function ChatWithDoc({ navigation, route }) {
@@ -37,10 +38,6 @@ export default function ChatWithDoc({ navigation, route }) {
   const [messages2, setMessages2] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [sendBysender, setsendBysender] = useState(false);
-  // const [chats, setChats] = useState([]);
-  // const [msgsForChat, setmsgsForChat] = useState([]);
-  // const [chatID, setChatId] = useState("");
 
   const getUsersList = async () => {
     const users = await getusersInfo();
@@ -49,6 +46,7 @@ export default function ChatWithDoc({ navigation, route }) {
   const getUsersMessages = async () => {
     const msgs = await getMessage();
     setMessages2(msgs);
+    console.log(msgs)
   };
   React.useEffect(() => {
     getUserUId().then((val) => {
@@ -57,7 +55,12 @@ export default function ChatWithDoc({ navigation, route }) {
     getUsersList();
   }, []);
   React.useEffect(() => {
-    getUsersMessages();
+    const unsubscribe = subscribe(() => {
+      getUsersMessages();
+    })
+    return () => {
+      unsubscribe();
+    };
   }, [])
 
   React.useEffect(() => {
@@ -96,32 +99,54 @@ export default function ChatWithDoc({ navigation, route }) {
   };
 
   const sendMessage = () => {
-    
+
+    let typeVal =""
+    if (image ) {
+      typeVal="img"
+    }
+    else{
+      typeVal="text"
+    }
     addMessage({
       content: text,
       reciverUid: reciverID,
       senderUid: userID,
       time: serverTimestamp(),
-      type: "text",
-    })
-    console.log("added")
+      type: typeVal,
+      image:image
+    }) 
+    setText("")
+    setImage("")
   };
 
   const renderMessage = ({ item }) => (
-    <View
-      style={[
-        styles.messageContainer,
-        item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage 
-        : (item.senderUid == reciverID && item.reciverUid == userID)? styles.receivedMessage:null
-      ]}
-    >
-
-      {
-        (item.senderUid == userID && item.reciverUid == reciverID)||(item.senderUid == reciverID && item.reciverUid == userID) ?
-          <Text>{item.content}</Text> : null
-      }
-      
-    </View>
+    item.type == "text" ?
+      <View
+        style={[
+          styles.messageContainer,
+          item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage
+            : (item.senderUid == reciverID && item.reciverUid == userID) ? styles.receivedMessage : null
+        ]}
+      >
+        {
+          (item.senderUid == userID && item.reciverUid == reciverID) || (item.senderUid == reciverID && item.reciverUid == userID) ?
+            <Text>{item.content}</Text> : null
+        }
+      </View> 
+      :
+      <View
+        style={[
+          styles.messageContainer,
+          item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage
+            : (item.senderUid == reciverID && item.reciverUid == userID) ? styles.receivedMessage : null
+        ]}
+      >
+        {
+          (item.senderUid == userID && item.reciverUid == reciverID) || (item.senderUid == reciverID && item.reciverUid == userID) ?
+          <Image source={item.image} style={styles.image} />
+          : null
+        }
+      </View>
   );
 
   return (
@@ -162,12 +187,6 @@ export default function ChatWithDoc({ navigation, route }) {
           </View>
         </View>
       </View>
-
-
-      {/* code for displaying messages goes here */}
-
-
-
       <FlatList
         data={messages2}
         renderItem={renderMessage}
@@ -200,18 +219,13 @@ export default function ChatWithDoc({ navigation, route }) {
             placeholderTextColor="rgba(255, 168, 197, 0.5)"
             style={styles.input}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <TouchableOpacity style={styles.sendButton}
 
-            {/* // () => {
-
-             
-            //   // getMsgfor_Id(chatID)
-            //   // console.log("chatID: ",chatID)
-            //   // console.log("MSGS: ", msgsForChat)
-            //   // console.log("CHAT: ", chats)
-            // }
-
-          // }> */}
+            onPress={
+              text || image ?
+                sendMessage : null
+            }
+          >
             <Image source={Send} style={{ width: 25.94, height: 22.62 }} />
           </TouchableOpacity>
         </View>
@@ -250,6 +264,13 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     maxWidth: "80%",
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  messageContainer1:{
+    width: 328,
+    height: 48,
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
@@ -319,6 +340,10 @@ const styles = StyleSheet.create({
     height: 80,
     marginLeft: 10,
   },
+  image:{
+    width: 200,
+    height: 200,
+  }
 });
 
 // import React, { useState } from "react";

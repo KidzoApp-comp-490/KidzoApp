@@ -15,7 +15,15 @@ import Send from "../../assets/Chat/ic_round-send.png";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 import { getusersInfo } from "../../db/firebase/users";
-
+import {
+  getMsgsforChatId,
+  getChat,
+  getMessage,
+  addMessage,
+  subscribe
+} from '../../db/Chat'
+import { getUserUId } from '../../db/firebase/auth'
+import { onSnapshot, serverTimestamp } from "firebase/firestore";
 export default function ChatWithUser({ navigation, route }) {
   let docId = route.params.itemId;
   console.log("id ,", docId);
@@ -24,28 +32,50 @@ export default function ChatWithUser({ navigation, route }) {
   const [lName, setLName] = useState("");
   const [profImage, setProfImage] = useState("");
   const [text, setText] = useState("");
-  const [messages, setMessages] = useState([]);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [messages2, setMessages2] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [userID, setuserID] = useState("");
+  const [reciverID, setreciverID] = useState("");
+  const[isText, setisText] = useState(false)
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
     console.log("users from database", users);
   };
+  const getUsersMessages = async () => {
+    const msgs = await getMessage();
+    setMessages2(msgs);
+    console.log(msgs)
+  };
   React.useEffect(() => {
     getUsersList();
   }, []);
-
+  React.useEffect(() => {
+    getUserUId().then((val) => {
+      setuserID(val);
+    });
+    getUsersList();
+  }, []);
   React.useEffect(() => {
     usersList.map((e) => {
       if (docId == e.id) {
         setFName(e.fName);
         setLName(e.lName);
         setProfImage(e.image);
+        setreciverID(e.uid);
       }
     });
   });
+  React.useEffect(() => {
+    const unsubscribe = subscribe(()=>{
+      getUsersMessages();
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [])
 
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
@@ -70,38 +100,55 @@ export default function ChatWithUser({ navigation, route }) {
     await uploadImage(result.uri);
     setLoading(false);
   };
-
   const sendMessage = () => {
-    if (text || image) {
-      setMessages([
-        { id: messages.length, text, image, sentByMe: false },
-        ...messages,
-      ]);
-      setText("");
-      setImage(null);
+    let typeVal =""
+    if (image ) {
+      typeVal="img"
     }
+    else{
+      typeVal="text"
+    }
+    addMessage({
+      content: text,
+      reciverUid: reciverID,
+      senderUid: userID,
+      time: serverTimestamp(),
+      type: typeVal,
+      image:image
+    }) 
+    setText("")
+    setImage("")
+    console.log("added")
   };
-
   const renderMessage = ({ item }) => (
-    <View
-      style={[
-        styles.messageContainer,
-        item.sentByMe ? styles.sentMessage : styles.receivedMessage,
-      ]}
-    >
-      {item.image ? (
-        <Image source={{ uri: item.image }} style={styles.messageImage} />
-      ) : null}
-      <Text
+   item.type == "text" ?
+      <View
         style={[
-          item.sentByMe ? styles.messageSentText : styles.messageReceivedText,
+          styles.messageContainer,
+          item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage
+            : (item.senderUid == reciverID && item.reciverUid == userID) ? styles.receivedMessage : null
         ]}
       >
-        {item.text}
-      </Text>
-    </View>
+        {
+          (item.senderUid == userID && item.reciverUid == reciverID) || (item.senderUid == reciverID && item.reciverUid == userID) ?
+            <Text>{item.content}</Text> : null
+        }
+      </View> 
+      :
+      <View
+        style={[
+          styles.messageContainer,
+          item.senderUid == userID && item.reciverUid == reciverID ? styles.sentMessage
+            : (item.senderUid == reciverID && item.reciverUid == userID) ? styles.receivedMessage : null
+        ]}
+      >
+        {
+          (item.senderUid == userID && item.reciverUid == reciverID) || (item.senderUid == reciverID && item.reciverUid == userID) ?
+          <Image source={item.image} style={styles.image} />
+          : null
+        }
+      </View>
   );
-
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
@@ -133,7 +180,7 @@ export default function ChatWithUser({ navigation, route }) {
         </View>
       </View>
       <FlatList
-        data={messages}
+        data={messages2}
         renderItem={renderMessage}
         keyExtractor={(item) => item.id}
         style={styles.chatContainer}
@@ -164,7 +211,13 @@ export default function ChatWithUser({ navigation, route }) {
             placeholderTextColor="rgba(255, 168, 197, 0.5)"
             style={styles.input}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <TouchableOpacity style={styles.sendButton}
+            onPress={
+              text || image ?
+                sendMessage : null
+            }
+
+          >
             <Image source={Send} style={{ width: 25.94, height: 22.62 }} />
           </TouchableOpacity>
         </View>
@@ -272,6 +325,10 @@ const styles = StyleSheet.create({
     height: 80,
     marginLeft: 10,
   },
+  image:{
+    width: 200,
+    height: 200,
+  }
 });
 
 // import React, { useState } from "react";

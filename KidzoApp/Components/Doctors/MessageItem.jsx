@@ -11,17 +11,50 @@ import { StatusBar } from "expo-status-bar";
 import LogOut from "../../assets/Settings/LogOut.png";
 import { SignOut } from "../../db/firebase/auth";
 import Messages from "./Messages";
-import { getusersInfo } from "../../db/firebase/users";
-
+import { getusersInfo, getUserById } from "../../db/firebase/users";
+import { getUserUId } from '../../db/firebase/auth'
+import {
+  getMsgsforChatId,
+  getChat,
+  getMessage,
+  addMessage
+} from '../../db/Chat'
 export default function MessageItem({ navigation }) {
   const [usersList, setUsersList] = useState([]);
+  const [messages2, setMessages2] = useState([]);
+  const [userID, setuserID] = useState("");
+  var userForDoc = new Set(messages2.map((e) =>
+    e.reciverUid == userID ?
+      e.senderUid : null
+
+  ));
+  var usersDocState = Array.from(userForDoc)
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
     console.log("users from database", users);
   };
+  const getDocMessages = async () => {
+    const msgs = await getMessage();
+    setMessages2(msgs);
+    // console.log(msgs)
+  };
   React.useEffect(() => {
     getUsersList();
+  }, []);
+  React.useEffect(() => {
+    userForDoc.forEach((val) => {
+      console.log("val", val)
+    })
+  }, [])
+
+  React.useEffect(() => {
+     getDocMessages();
+  }, [])
+  React.useEffect(() => {
+    getUserUId().then((val) => {
+      setuserID(val);
+    });
   }, []);
   return (
     <View style={styles.body}>
@@ -45,17 +78,25 @@ export default function MessageItem({ navigation }) {
         <View style={styles.lineView}>
           <Text style={styles.line}>──────────────────────────────────</Text>
         </View>
-        {usersList.map((e, index) =>
-          e.job == "user" && e.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (
+
+
+        {
+          usersDocState.map((e) =>
+            usersList.map((u,index) =>
+            u.uid==e && u.job == "user" && u.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1"?
             <Messages
-              text1={e.fName}
-              text2={e.lName}
-              iconSrc={e.image}
-              docId={e.id}
+              text1={u.fName}
+              text2={u.lName}
+              iconSrc={u.image}
+              docId={u.id}
               key={index}
             />
-          ) : null
-        )}
+              :null
+            )
+          )
+        }
+
+
         <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
       <StatusBar style="auto" />
