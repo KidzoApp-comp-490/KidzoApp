@@ -14,27 +14,27 @@ import Comment from "../../assets/Community/Comment.png";
 import { editpost } from "../../db/firebase/post";
 export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
-  let [reactNum, setReactNum] = useState(numreact);
+  let [reactNum, setReactNum] = useState(0);
 
   const clickHeart = async () => {
     if (icon) {
       setIcon(false);
-      setReactNum(numreact + 1);
+      setReactNum(reactNum + 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
-        console.log(reactNum)
+        console.log(reactNum);
         console.log("Post updated successfully");
       } catch (error) {
         console.error("Error updating post:", error);
       }
     } else {
       setIcon(true);
-      setReactNum(numreact - 1);
+      setReactNum(reactNum - 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
-        console.log(reactNum)
+        console.log(reactNum);
         console.log("Post updated successfully");
       } catch (error) {
         console.error("Error updating post:", error);
