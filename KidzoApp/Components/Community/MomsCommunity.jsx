@@ -19,7 +19,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
   const clickHeart = async () => {
     if (icon) {
       setIcon(false);
-      setReactNum(reactNum + 1);
+      setReactNum(reactNum - 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
@@ -30,7 +30,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
       }
     } else {
       setIcon(true);
-      setReactNum(reactNum - 1);
+      setReactNum(reactNum + 1);
       console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
