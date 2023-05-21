@@ -15,16 +15,30 @@ import { editpost } from "../../db/firebase/post";
 export default function MomsCommunity({ value, image, idpost, numreact }) {
   const [icon, setIcon] = useState(true);
   const [reactNum, setReactNum] = useState(numreact);
-  
-  const clickHeart = () => {
+
+  const clickHeart = async () => {
     if (icon) {
       setIcon(false);
       setReactNum(reactNum + 1);
-      editpost( reactNum);
+      console.log("*****", idpost);
+      try {
+        await editpost(idpost, reactNum);
+        console.log(reactNum)
+        console.log("Post updated successfully");
+      } catch (error) {
+        console.error("Error updating post:", error);
+      }
     } else {
       setIcon(true);
       setReactNum(reactNum - 1);
-      editpost(reactNum);
+      console.log("*****", idpost);
+      try {
+        await editpost(idpost, reactNum);
+        console.log(reactNum)
+        console.log("Post updated successfully");
+      } catch (error) {
+        console.error("Error updating post:", error);
+      }
     }
   };
   let imageSource = icon ? Heart : ColoredHeart;
@@ -45,7 +59,6 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
                 onPress={() => {
                   clickHeart();
                 }}
-
               >
                 <Image source={imageSource} style={{ width: 24, height: 23 }} />
               </TouchableOpacity>
@@ -58,19 +71,6 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
             </View>
           </View>
         </View>
-        {/* <View style={styles.PostsView2}>
-          <Text style={styles.PostTitle2}>
-            Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day! Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy
-            Mother's Day!Happy Mother's Day!Happy Mother's Day!Happy Mother's
-            Day!
-          </Text>
-        </View> */}
       </ScrollView>
     </View>
   );

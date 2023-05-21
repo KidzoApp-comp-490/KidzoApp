@@ -9,10 +9,6 @@ import {
   where,
   onSnapshot,
   deleteDoc,
-  Firestore,
-  firestore,
-  serverTimestamp,
-  updateDoc,
 } from "firebase/firestore";
 import { app, db } from "/db/Config";
 const firestoreDB = getFirestore(app);
@@ -38,8 +34,16 @@ async function addpost(text, image, currentUserid, numreact) {
     numreact
   );
 }
-async function editpost(Post) {
-  await setDoc(doc(db, "post", Post.id), Post);
+
+async function editpost(id, numreact) {
+  try {
+    const postRef = doc(db, "post", id);
+
+    await setDoc(postRef, { numreact: numreact }, { merge: true });
+    console.log("Post updated successfully");
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
 }
 
 async function deletepost(id) {
