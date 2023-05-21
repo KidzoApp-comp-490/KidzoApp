@@ -41,7 +41,7 @@ import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
 import ImageUploader from "./Components/Session/ImageUploader";
 import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
-import DoctorSettings from "./Components/Doctors/DoctorSettings";
+import DoctorSettings from "./Components/Doctors/Doctorsettings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

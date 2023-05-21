@@ -10,7 +10,7 @@ import {
   onSnapshot,
   deleteDoc,
 } from "firebase/firestore";
-import { app, db } from "/db/Config";
+import { app, db } from "../Config";
 const firestoreDB = getFirestore(app);
 const fetchData = async () => {
   try {

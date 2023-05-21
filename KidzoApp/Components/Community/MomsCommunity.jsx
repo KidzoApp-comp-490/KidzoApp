@@ -63,11 +63,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
                 <Image source={imageSource} style={{ width: 24, height: 23 }} />
               </TouchableOpacity>
               <Text style={styles.ReactTxt}>{reactNum - 1} Love</Text>
-              <View style={styles.VerticalPar}></View>
-              <View style={styles.RightPart}>
-                <Image source={Comment} style={{ width: 24, height: 24 }} />
-                <Text style={styles.CommentTxt}>5 Comments</Text>
-              </View>
+
             </View>
           </View>
         </View>
@@ -103,6 +99,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     borderColor: "rgba(11, 59, 99, 0.15)",
     justifyContent: "center",
+    alignItems: "center"
   },
   LeftPart: {
     flexDirection: "row",
