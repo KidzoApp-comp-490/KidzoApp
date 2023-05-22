@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import SignIn from "./Components/Users/SignIn";
 import SignUp from "./Components/Users/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
@@ -41,7 +41,8 @@ import ManageMedicalH from "./Components/Admin/ManageMedicalH";
 import ManageUsers from "./Components/Admin/ManageUsers";
 import ImageUploader from "./Components/Session/ImageUploader";
 import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
-import DoctorSettings from "./Components/Doctors/Doctorsettings";
+import DoctorSettings from "./Components/Doctors/DoctorSettings";
+import Map from "./Components/Map/Map";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -148,11 +149,20 @@ export default function App() {
             component={Home}
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Map"
             component={Map}
-            options={{ headerShown: false }}
-          /> */}
+            options={{
+              headerBackVisible: true,
+              headerTransparent: true,
+              title: "MAP",
+              headerTitleStyle: {
+                fontSize: 18,
+                color: "#0B3B63",
+                fontWeight: "700",
+              },
+            }}
+          />
           <Stack.Screen
             name="Medical"
             component={MedicalItem}
@@ -297,5 +307,8 @@ const styles = StyleSheet.create({
   TabIcon: {
     width: 32,
     height: 32,
+  },
+  mapHeader: {
+    backgroundColor: "red",
   },
 });

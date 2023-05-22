@@ -9,19 +9,9 @@ import {
   Button,
 } from "react-native";
 import { useState } from "react";
-import { getUserUId } from "../../db/firebase/auth";
-import { getUserById, subscribe } from "../../db/firebase/users";
-import {
-  addpost,
-  deletepost,
-  getpost,
-  getpostinfo,
-} from "../../db/firebase/post";
+import { getpost, subscribePost } from "../../db/firebase/post";
 import React from "react";
 import MomsCommunity from "./MomsCommunity";
-import PostIcon from "../../assets/Profile/image3.png";
-import Frame from "../../assets/MedicalH/Frame.png";
-import ImageIcon from "../../assets/Community/ant-design_picture-outlined.png";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 
@@ -29,25 +19,27 @@ export default function MomsCommunityItem() {
   const [postlist, setpostlist] = useState([]);
   const [value, setvalue] = useState("");
   const [imagepost, setImagepost] = useState("");
-  const [numreact, setnumreact] = useState(0)
+  const [numreact, setnumreact] = useState(0);
   const navigation = useNavigation();
+
   const getposts = async () => {
     const posts = await getpost();
     setpostlist(posts);
     console.log("here the post mehtod", posts);
-  }
+  };
   React.useEffect(() => {
-
-    getposts();
-
+    subscribePost(() => {
+      getposts();
+    });
   }, []);
+
   React.useEffect(() => {
     postlist.map((e) => {
-        setImagepost(e.image)
-        setvalue(e.text)
-        setnumreact(e.numreact)
-    })
-  })
+      setImagepost(e.image);
+      setvalue(e.text);
+      setnumreact(e.numreact);
+    });
+  });
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -55,48 +47,36 @@ export default function MomsCommunityItem() {
           alignItems: "center",
         }}
       >
-       <View style={styles.titleView}>
-          <View style={styles.frameView}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("TabFun");
-              }}
-            >
-              <Image source={Frame} style={styles.frame} />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.titleView}>
           <View style={styles.wordView}>
             <Text style={styles.title}>MOMS COMMUNITY</Text>
           </View>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
+          <Text style={styles.line}>───────────────────────────────────</Text>
         </View>
-
-
-      
         <View style={styles.InpView}>
-
-          <TouchableOpacity style={styles.Viewopaci}
-          onPress={() => navigation.navigate('MomsComCreatepost')}
+          <TouchableOpacity
+            style={styles.MomInpView}
+            onPress={() => navigation.navigate("MomsComCreatepost")}
           >
-            <View style={styles.vewtext}>
-              <Text style={styles.textst}>What's in your mind?</Text>
-            </View>
-
+            <Text style={styles.textst}>What's in your mind?</Text>
           </TouchableOpacity>
-          
         </View>
-        {postlist.map((e, index) => (
+        {postlist.map(
+          (e, index) => (
             console.log("here = ", e.id),
-            <MomsCommunity
-              value={e.text}
-              image={e.image}
-              idpost={e.id}
-              numreact={e.numreact}
-              key={index}
-            />
-          ))}
+            (
+              <MomsCommunity
+                value={e.text}
+                image={e.image}
+                idpost={e.id}
+                numreact={e.numreact}
+                key={index}
+              />
+            )
+          )
+        )}
         <View style={{ marginBottom: 80 }}></View>
       </ScrollView>
       <StatusBar style="auto" />
@@ -104,43 +84,6 @@ export default function MomsCommunityItem() {
   );
 }
 const styles = StyleSheet.create({
-  CommunityTxt: {
-    fontSize: 18,
-    fontWeight: "700",
-    fontFamily: "Montserrat",
-    color: "#0B3B63",
-    marginTop: 77,
-    marginRight: 180,
-    textAlign: "center",
-  },
-  InpView: {
-    marginTop: 33,
-    flexDirection: "row",
-    width: 328,
-    height: 32,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "#FFA8C5",
-    alignItems: "center",
-  },
-  Inp: {
-    width: 300,
-    height: 32,
-    borderRadius: 30,
-    paddingLeft: 16,
-  },
-  ImageIcon: {
-    width: 14,
-    height: 14,
-    marginRight: 18,
-  },
-  frameView: {
-    marginTop: 75,
-  },
-  frame: {
-    width: 24,
-    height: 20,
-  },
   titleView: {
     flexDirection: "row",
   },
@@ -164,24 +107,45 @@ const styles = StyleSheet.create({
     color: "#FFA8C5",
     opacity: 0.5,
   },
-  textst:{
-    textAlign: "center",
+  InpView: {
+    marginTop: 15,
+    flexDirection: "row",
+    width: 328,
+    height: 32,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: "#FFA8C5",
+  },
+  MomInpView: {
+    width: 273,
+    height: 32,
+    borderRadius: 30,
+    justifyContent: "center",
+  },
+  textst: {
+    textAlign: "left",
     color: "#FFA8C5",
     fontFamily: "Montserrat",
     fontWeight: "500",
     fontSize: 14,
+    marginLeft: 16,
   },
-  Viewopaci:{
-    width: 273,
+  Inp: {
+    width: 300,
     height: 32,
-    
-    
-    alignItems: "center",
     borderRadius: 30,
-    
-    alignItems: "center",
-    justifyContent: "center",
-    
-
+    paddingLeft: 16,
+  },
+  ImageIcon: {
+    width: 14,
+    height: 14,
+    marginRight: 18,
+  },
+  frameView: {
+    marginTop: 75,
+  },
+  frame: {
+    width: 24,
+    height: 20,
   },
 });
