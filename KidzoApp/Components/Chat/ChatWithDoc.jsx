@@ -139,7 +139,7 @@ export default function ChatWithDoc({ navigation, route }) {
       >
         {(item.senderUid == userID && item.reciverUid == reciverID) ||
         (item.senderUid == reciverID && item.reciverUid == userID) ? (
-          <Image source={item.image} style={styles.image} />
+          <Image source={{ uri: item.image }} style={styles.image} />
         ) : null}
       </View>
     );
@@ -201,7 +201,7 @@ export default function ChatWithDoc({ navigation, route }) {
               />
             ) : (
               <Image
-                source={image ? image : Img}
+                source={{ uri: image ? image : Img }}
                 style={{ width: 24, height: 24, marginLeft: 15 }}
               />
             )}
@@ -334,5 +334,6 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+    borderRadius: 15,
   },
 });

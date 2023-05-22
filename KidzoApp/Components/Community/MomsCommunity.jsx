@@ -46,7 +46,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
       <View style={{ alignItems: "center" }}>
         {image == "" ? null : (
           <Image
-            source={image}
+            source={{ uri: image }}
             style={{
               width: 328,
               height: 243,

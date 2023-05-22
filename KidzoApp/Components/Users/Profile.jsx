@@ -31,7 +31,7 @@ export function PostItem({
     <View style={styles.PostsView}>
       <View style={styles.userInfoView}>
         <Image
-          source={profImg}
+          source={{ uri: profImg }}
           style={{ width: 55, height: 55, borderRadius: 100 }}
         />
         <Text style={styles.userName}>
@@ -56,8 +56,13 @@ export function PostItem({
       <View style={{ alignItems: "center" }}>
         {postImage == "" ? null : (
           <Image
-            source={postImage}
-            style={{ width: 328, height: 243, borderRadius: 15 }}
+            source={{ uri: postImage }}
+            style={{
+              width: 328,
+              height: 243,
+              borderRadius: 15,
+              resizeMode: "stretch",
+            }}
           />
         )}
 

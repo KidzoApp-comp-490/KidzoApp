@@ -35,8 +35,13 @@ export function ManageCommunityItem({ postText, postImage, postId, numreact }) {
       <View style={{ alignItems: "center" }}>
         {postImage == "" ? null : (
           <Image
-            source={postImage}
-            style={{ width: 328, height: 243, borderRadius: 15 }}
+            source={{ uri: postImage }}
+            style={{
+              width: 328,
+              height: 243,
+              borderRadius: 15,
+              resizeMode: "stretch",
+            }}
           />
         )}
 

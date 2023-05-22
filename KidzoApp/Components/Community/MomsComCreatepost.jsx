@@ -136,7 +136,7 @@ export default function MomsComCreatepost() {
             }}
           >
             <Image
-              source={imageup}
+              source={{ uri: imageup }}
               style={{
                 width: "90%",
                 height: 150,
