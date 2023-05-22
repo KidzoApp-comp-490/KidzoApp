@@ -37,14 +37,15 @@ export default function MomsCommunityItem() {
     console.log("here the post mehtod", posts);
   }
   React.useEffect(() => {
+
     getposts();
 
   }, []);
   React.useEffect(() => {
     postlist.map((e) => {
-      setImagepost(e.image)
-      setvalue(e.text)
-      setnumreact(e.numreact)
+        setImagepost(e.image)
+        setvalue(e.text)
+        setnumreact(e.numreact)
     })
   })
   return (
@@ -54,7 +55,7 @@ export default function MomsCommunityItem() {
           alignItems: "center",
         }}
       >
-        <View style={styles.titleView}>
+       <View style={styles.titleView}>
           <View style={styles.frameView}>
             <TouchableOpacity
               onPress={() => {
@@ -73,39 +74,29 @@ export default function MomsCommunityItem() {
         </View>
 
 
-        {/* <View>
-          <Button
-            title="Go to Details"
-            onPress={() => navigation.navigate('MomsComCreatepost')}
-          />
-        </View> */}
+      
         <View style={styles.InpView}>
 
           <TouchableOpacity style={styles.Viewopaci}
-            onPress={() => navigation.navigate('MomsComCreatepost')}
+          onPress={() => navigation.navigate('MomsComCreatepost')}
           >
             <View style={styles.vewtext}>
               <Text style={styles.textst}>What's in your mind?</Text>
             </View>
 
           </TouchableOpacity>
-          {/* <TextInput
-            style={styles.Inp}
-            placeholder="What's in your mind?"
-            placeholderTextColor="#FFA8C5"
-          />
-          <Image source={ImageIcon} style={styles.ImageIcon} /> */}
+          
         </View>
         {postlist.map((e, index) => (
-          console.log("here = ", e.id),
-          <MomsCommunity
-            value={e.text}
-            image={e.image}
-            idpost={e.id}
-            numreact={e.numreact}
-            key={index}
-          />
-        ))}
+            console.log("here = ", e.id),
+            <MomsCommunity
+              value={e.text}
+              image={e.image}
+              idpost={e.id}
+              numreact={e.numreact}
+              key={index}
+            />
+          ))}
         <View style={{ marginBottom: 80 }}></View>
       </ScrollView>
       <StatusBar style="auto" />
@@ -173,24 +164,24 @@ const styles = StyleSheet.create({
     color: "#FFA8C5",
     opacity: 0.5,
   },
-  textst: {
+  textst:{
     textAlign: "center",
     color: "#FFA8C5",
     fontFamily: "Montserrat",
     fontWeight: "500",
     fontSize: 14,
   },
-  Viewopaci: {
+  Viewopaci:{
     width: 273,
     height: 32,
-
-
+    
+    
     alignItems: "center",
     borderRadius: 30,
-
+    
     alignItems: "center",
     justifyContent: "center",
-
+    
 
   },
 });
