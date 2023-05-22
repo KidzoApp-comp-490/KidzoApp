@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
+  
   View,
   Text,
   StyleSheet,
@@ -10,6 +11,8 @@ import {
   Button,
 } from "react-native";
 import OnboardingSlide from './OnboardingSlide';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import { NetworkStatus } from '../NetworkStatus';
 
@@ -47,11 +50,31 @@ const slides = [
 const OnboardingFlow = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleNext = () => {
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
+
+  const checkOnboardingStatus = async () => {
+    try {
+      const onboardingStatus = await AsyncStorage.getItem('onboardingStatus');
+      if (onboardingStatus === 'completed') {
+        navigation.navigate('SignIn');
+      }
+    } catch (error) {
+      console.log('Error retrieving onboarding status:', error);
+    }
+  };
+
+  const handleNext = async () => {
     if (activeIndex < slides.length - 1) {
       setActiveIndex(activeIndex + 1);
     } else {
-      navigation.navigate('SignIn');
+      try {
+        await AsyncStorage.setItem('onboardingStatus', 'completed');
+        navigation.navigate('SignIn');
+      } catch (error) {
+        console.log('Error saving onboarding status:', error);
+      }
     }
   };
 
