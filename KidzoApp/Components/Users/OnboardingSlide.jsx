@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
     color:'#0B3B63',
   },
   desc: {
-    
+    justifyContent:'flex-start',
     fontSize: 16,
-    textAlign: 'center',
+    
     color:'#0B3B63',
   },
    logo:{
