@@ -57,12 +57,7 @@ export function PostItem({
         {postImage == "" ? null : (
           <Image
             source={postImage}
-            style={{
-              width: 328,
-              height: 243,
-              borderRadius: 15,
-              resizeMode: "stretch",
-            }}
+            style={{ width: 328, height: 243, borderRadius: 15 }}
           />
         )}
 
@@ -156,7 +151,7 @@ export default function Profile({ navigation }) {
               />
             ) : null
           )}
-          <View style={{ marginBottom: 30 }}></View>
+          <View style={{ marginBottom: 80 }}></View>
         </ScrollView>
         <StatusBar style="auto" />
       </View>

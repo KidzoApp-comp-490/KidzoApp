@@ -1,12 +1,11 @@
 import { View, StyleSheet, TouchableOpacity, Image, Text } from "react-native";
 import React from "react";
-// import MapView from "react-native-maps";
+import MapView from "react-native-maps";
 
 export default function Map() {
   return (
     <View style={styles.container}>
-      <Text>aa</Text>
-      {/* <MapView style={styles.map} /> */}
+      <MapView style={styles.map} />
     </View>
   );
 }

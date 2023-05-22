@@ -36,12 +36,7 @@ export function ManageCommunityItem({ postText, postImage, postId, numreact }) {
         {postImage == "" ? null : (
           <Image
             source={postImage}
-            style={{
-              width: 328,
-              height: 243,
-              borderRadius: 15,
-              resizeMode: "stretch",
-            }}
+            style={{ width: 328, height: 243, borderRadius: 15 }}
           />
         )}
 
