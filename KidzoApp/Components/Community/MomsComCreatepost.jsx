@@ -156,8 +156,8 @@ export default function MomsComCreatepost() {
         >
           <TouchableOpacity
             style={{
-              width: 200,
-              height: 52,
+              width: 328,
+              height: 48,
               backgroundColor: "#FFA8C5",
               flexDirection: "row",
               alignItems: "center",
@@ -189,7 +189,7 @@ export default function MomsComCreatepost() {
                 color: "white",
                 fontFamily: "Montserrat",
                 fontWeight: "700",
-                fontSize: 18,
+                fontSize: 15,
               }}
             >
               Create post
