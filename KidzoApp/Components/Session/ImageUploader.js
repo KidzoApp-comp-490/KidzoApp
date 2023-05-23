@@ -1,52 +1,30 @@
-import React, { useState } from "react";
-import { View, Button, Image, Platform } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import React, { useEffect } from "react";
+import { View, Button } from "react-native";
 import axios from "axios";
+const BackendURL = "http://localhost:8090/detection";
 
 const ImageUploader = () => {
-  const [image, setImage] = useState(null);
-
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      console.error("Permission denied");
-      return;
-    }
-
-    const imageResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-      base64: true, // Convert image to base64 for sending to the backend
-    });
-
-    if (!imageResult.cancelled) {
-      setImage(imageResult);
-    }
-  };
-
-  const uploadImage = async () => {
+  const runDetection = async () => {
     try {
-      const response = await axios.post("http://localhost:8090/upload", {
-        image: image.base64,
+      const response = await axios.post(BackendURL, {
+        weights: "best.pt",
+        conf: 0.4,
+        imgSize: 640,
+        source: "9.mp4",
       });
-
-      console.log("Image uploaded successfully:", response.data);
+      console.log(response.data); // Handle the response from the Spring Boot backend
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error(error);
     }
   };
+
+  useEffect(() => {
+    runDetection();
+  }, []);
 
   return (
     <View>
-      <Button title="Pick an image" onPress={pickImage} />
-      {image && (
-        <Image
-          source={{ uri: image.uri }}
-          style={{ width: 200, height: 200 }}
-        />
-      )}
-      {image && <Button title="Upload image" onPress={uploadImage} />}
+      <Button title="Run Detection" onPress={runDetection} />
     </View>
   );
 };

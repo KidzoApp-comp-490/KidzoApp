@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
     marginBottom: 70,
+    justifyContent: "center"
   },
   square: {
     width: 328,
