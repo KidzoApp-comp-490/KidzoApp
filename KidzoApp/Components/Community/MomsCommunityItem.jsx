@@ -25,7 +25,6 @@ export default function MomsCommunityItem() {
   const getposts = async () => {
     const posts = await getpost();
     setpostlist(posts);
-    console.log("here the post mehtod", posts);
   };
   React.useEffect(() => {
     subscribePost(() => {
@@ -65,7 +64,6 @@ export default function MomsCommunityItem() {
         </View>
         {postlist.map(
           (e, index) => (
-            console.log("here = ", e.id),
             (
               <MomsCommunity
                 value={e.text}

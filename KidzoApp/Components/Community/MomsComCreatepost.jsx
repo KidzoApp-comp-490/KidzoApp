@@ -55,7 +55,6 @@ export default function MomsComCreatepost() {
   React.useEffect(() => {
     subscribe(() => {
       getUserUId().then((id) => {
-        console.log(id);
         getUserById(id).then((user) => {
           SetFName(user[0].fName);
           SetLName(user[0].lName);
@@ -84,7 +83,7 @@ export default function MomsComCreatepost() {
           </View>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
 
         <View style={styles.header}>

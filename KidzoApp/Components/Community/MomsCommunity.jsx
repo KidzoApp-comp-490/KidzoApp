@@ -18,21 +18,16 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
   const clickHeart = async () => {
     if (icon) {
       setReactNum(reactNum + 1);
-      console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
-        console.log(reactNum);
-        console.log("Post updated successfully");
       } catch (error) {
         console.error("Error updating post:", error);
       }
     } else {
       setReactNum(reactNum - 1);
-      console.log("*****", idpost);
       try {
         await editpost(idpost, reactNum);
-        console.log(reactNum);
-        console.log("Post updated successfully");
+        
       } catch (error) {
         console.error("Error updating post:", error);
       }
