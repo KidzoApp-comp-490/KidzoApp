@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Frame from "../../assets/Report/Frame.png";
@@ -20,19 +20,14 @@ import {
   deleteMedicineReport,
   getMedicineReport,
   subscribe,
-  editMedical,
+  editMedical
+
 } from "../../db/medicineReport";
-import { NetworkStatus } from "../NetworkStatus";
+import { NetworkStatus } from '../NetworkStatus';
 import { getUserUId } from "../../db/firebase/auth";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 export default function Report({ navigation, route }) {
-  const input1Ref = useRef();
-  const input2Ref = useRef();
-  const input3Ref = useRef();
-  const input4Ref = useRef();
-  const input5Ref = useRef();
-
   let { flagAddVal, itemId } = route.params;
   const [title, setTitle] = useState("");
   const [day, setDay] = useState("");
@@ -41,19 +36,20 @@ export default function Report({ navigation, route }) {
   const [desc, setDes] = useState("");
   const [currentId, setCurrentId] = useState("");
   const [mediList, setMidList] = useState([]);
-  const [printTitle, setprintTitle] = useState("");
-  const [printDay, setprintDay] = useState("");
-  const [printMonth, setprintMonth] = useState("");
-  const [printYear, setprintYear] = useState("");
-  const [printDesc, setprintDesc] = useState("");
+  const [printTitle, setprintTitle] = useState("")
+  const [printDay, setprintDay] = useState("")
+  const [printMonth, setprintMonth] = useState("")
+  const [printYear, setprintYear] = useState("")
+  const [printDesc, setprintDesc] = useState("")
 
-  const [editTitle, seteditTitle] = useState("");
-  const [editday, seteditday] = useState("");
 
-  const [editMonth, seteditMonth] = useState("");
-  const [editYear, seteditYear] = useState("");
-  const [editImg, setImageVal] = useState("");
-  const [editDesc, seteditDesc] = useState("");
+  const [editTitle, seteditTitle] = useState("")
+  const [editday, seteditday] = useState("")
+
+  const [editMonth, seteditMonth] = useState("")
+  const [editYear, seteditYear] = useState("")
+  const [editImg, setImageVal] = useState("")
+  const [editDesc, seteditDesc] = useState("")
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const uploadImage = async (uri) => {
@@ -84,25 +80,26 @@ export default function Report({ navigation, route }) {
     getUserUId().then((val) => {
       setCurrentId(val);
     });
-  });
+  })
+
 
   React.useEffect(() => {
     mediList.map((e) => {
       if (itemId == e.id) {
-        setprintTitle(e.title);
-        setprintDay(e.day);
-        setprintMonth(e.month);
-        setprintYear(e.year);
-        setprintDesc(e.description);
-        setImageVal(e.image);
+        setprintTitle(e.title)
+        setprintDay(e.day)
+        setprintMonth(e.month)
+        setprintYear(e.year)
+        setprintDesc(e.description)
+        setImageVal(e.image)
       }
-    });
-  });
+    })
+  })
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
     console.log("medicines from database", medc);
-  };
+  }
   React.useEffect(() => {
     if (!flagAddVal) {
       getmedcList();
@@ -130,6 +127,7 @@ export default function Report({ navigation, route }) {
         unsubscribe();
       };
     }
+
   }, []);
   return (
     <NetworkStatus>
@@ -146,11 +144,13 @@ export default function Report({ navigation, route }) {
               </TouchableOpacity>
             </View>
             <View style={styles.wordView}>
-              {flagAddVal ? (
-                <Text style={styles.title}>NEW REPORT</Text>
-              ) : (
-                <Text style={styles.title}>EDIT REPORT</Text>
-              )}
+              {
+                flagAddVal ?
+                  <Text style={styles.title}>NEW REPORT</Text>
+                  :
+                  <Text style={styles.title}>EDIT REPORT</Text>
+              }
+
             </View>
           </View>
           <View style={styles.lineView}>
@@ -158,128 +158,117 @@ export default function Report({ navigation, route }) {
           </View>
           <View style={styles.ReportView}>
             <View style={styles.starView}>
-              <Text style={styles.inpText}>Report Title</Text>
+              <Text style={styles.inpText}>Report Title {""}</Text>
               <Text style={styles.star}>*</Text>
             </View>
             <View style={styles.inpView}>
-              {flagAddVal ? (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(val) => setTitle(val)}
-                  ref={input1Ref}
-                  onSubmitEditing={() => input2Ref.current.focus()}
-                />
-              ) : (
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(val) => {
-                    seteditTitle(val);
-                  }}
-                  ref={input1Ref}
-                  onSubmitEditing={() => input2Ref.current.focus()}
-                />
-              )}
+              {
+                flagAddVal ?
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(val) => setTitle(val)}
+                  /> :
+
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(val) => {
+                      seteditTitle(val);
+                    }}
+                  />
+              }
+
             </View>
           </View>
           <View style={styles.birthdayView}>
             <View style={styles.starView}>
-              <Text style={styles.inpText}>Report Date</Text>
+              <Text style={styles.inpText}>Report Date {""}</Text>
               <Text style={styles.star}>*</Text>
             </View>
             <View style={styles.DMYView}>
               <View style={styles.dayInpView}>
-                {flagAddVal ? (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Day"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setDay(val)}
-                    ref={input2Ref}
-                    onSubmitEditing={() => input3Ref.current.focus()}
-                  />
-                ) : (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Day"
-                    keyboardType="number-pad"
-                    onChangeText={seteditday}
-                    ref={input2Ref}
-                    onSubmitEditing={() => input3Ref.current.focus()}
-                  />
-                )}
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Day"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setDay(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Day"
+                      keyboardType="number-pad"
+                      onChangeText={seteditday}
+                    />
+                }
+
               </View>
               <View style={styles.monthInpView}>
-                {flagAddVal ? (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Month"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setMonth(val)}
-                    ref={input3Ref}
-                    onSubmitEditing={() => input4Ref.current.focus()}
-                  />
-                ) : (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Month"
-                    keyboardType="number-pad"
-                    onChangeText={seteditMonth}
-                    ref={input3Ref}
-                    onSubmitEditing={() => input4Ref.current.focus()}
-                  />
-                )}
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Month"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setMonth(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Month"
+                      keyboardType="number-pad"
+                      onChangeText={seteditMonth}
+
+                    />
+                }
+
               </View>
               <View style={styles.yearInpView}>
-                {flagAddVal ? (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Year"
-                    keyboardType="number-pad"
-                    onChangeText={(val) => setYear(val)}
-                    ref={input4Ref}
-                    onSubmitEditing={() => input5Ref.current.focus()}
-                  />
-                ) : (
-                  <TextInput
-                    style={styles.DMYInp}
-                    placeholder="Year"
-                    keyboardType="number-pad"
-                    onChangeText={seteditYear}
-                    ref={input4Ref}
-                    onSubmitEditing={() => input5Ref.current.focus()}
-                  />
-                )}
+                {
+                  flagAddVal ?
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Year"
+                      keyboardType="number-pad"
+                      onChangeText={(val) => setYear(val)}
+                    /> :
+                    <TextInput
+                      style={styles.DMYInp}
+                      placeholder="Year"
+                      keyboardType="number-pad"
+                      onChangeText={seteditYear}
+                    />
+                }
               </View>
             </View>
           </View>
           <View style={styles.DesView}>
-            {flagAddVal ? (
-              <Text style={styles.Des}>Add Description</Text>
-            ) : (
-              <Text style={styles.Des}>Edit Description</Text>
-            )}
+            {
+              flagAddVal ?
+                <Text style={styles.Des}>Add Description</Text>
+                :
+                <Text style={styles.Des}>Edit Description</Text>
+            }
 
             <View style={styles.inputView}>
-              {flagAddVal ? (
-                <TextInput
-                  style={styles.inp}
-                  multiline
-                  scrollEnabled
-                  onChangeText={(val) => setDes(val)}
-                  ref={input5Ref}
-                />
-              ) : (
-                <TextInput
-                  style={styles.inp}
-                  multiline
-                  scrollEnabled
-                  onChangeText={seteditDesc}
-                  ref={input5Ref}
-                />
-              )}
+              {
+                flagAddVal ?
+                  <TextInput
+                    style={styles.inp}
+                    multiline
+                    scrollEnabled
+                    onChangeText={(val) => setDes(val)}
+                  /> :
+                  <TextInput
+                    style={styles.inp}
+                    multiline
+                    scrollEnabled
+                    onChangeText={seteditDesc}
+                  />
+              }
+
             </View>
           </View>
-          <View style={styles.Viewimage}>
+          <View style={styles.Viewimag}>
           <View style={styles.iconView}>
             {loading ? (
               <ActivityIndicator
@@ -289,13 +278,7 @@ export default function Report({ navigation, route }) {
                 style={styles.activityIndicator}
               />
             ) : (
-              <View
-                style={{
-                  borderRadius: 10,
-                  overflow: "hidden",
-                  marginBottom: 10,
-                }}
-              >
+              <View style={{ borderRadius: 10, overflow: "hidden", marginBottom: 10 }}>
                 <Image
                   source={{ uri: image }}
                   style={{ width: 328, height: 150 }}
@@ -316,27 +299,6 @@ export default function Report({ navigation, route }) {
               medical tests
             </Text>
           </View>
-<<<<<<< Updated upstream
-          {flagAddVal ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                let isMonth = /^\d+$/.test(month);
-                let isDay = /^\d+$/.test(day);
-                let isYear = /^\d+$/.test(year);
-                if (
-                  title.length > 0 &&
-                  isMonth &&
-                  month >= 1 &&
-                  month <= 12 &&
-                  isYear &&
-                  year >= 2020 &&
-                  isDay &&
-                  day >= 1 &&
-                  day <= 31 &&
-                  desc.length > 0
-                ) {
-=======
           </View>
           {
             flagAddVal ?
@@ -393,76 +355,29 @@ export default function Report({ navigation, route }) {
               :
               <TouchableOpacity style={styles.button}
                 onPress={() => {
->>>>>>> Stashed changes
                   navigation.navigate("TabFun");
-                  console.log(
-                    title,
-                    " ",
-                    day,
-                    " ",
-                    month,
-                    " ",
-                    year,
-                    " ",
-                    desc
-                  );
-                  addMedicineReport({
-                    day: day,
-                    description: desc,
-                    month: month,
-                    title: title,
-                    year: year,
-                    currentUserid: currentId,
-                    image: image,
-                  });
-                }
-                if (!(title.length > 0)) {
-                  alert("Title can not be empty");
-                } else if (!(isMonth && month >= 1 && month <= 12)) {
-                  alert("Month should be between 1 - 12");
-                } else if (!(isDay && day >= 1 && day <= 31)) {
-                  alert("Day should be between 1 - 31");
-                } else if (!(isYear && year >= 2020)) {
-                  alert("Year should be greater than 2020");
-                } else if (!(desc.length > 0)) {
-                  alert("Description can not be empty");
-                } else {
-                  alert("Done!");
-                }
-              }}
-            >
-              <View style={styles.button2}>
-                <Text style={styles.button1}> Add Report</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                navigation.navigate("TabFun");
-                let titleValue = printTitle;
-                let dayValue = printDay;
-                let monthValue = printMonth;
-                let yearValue = printYear;
-                let desValue = printDesc;
-                let imgValue = editImg;
-                if (editTitle.length > 0) {
-                  titleValue = editTitle;
-                }
-                if (editMonth.length > 0) {
-                  monthValue = editMonth;
-                }
-                if (editday.length > 0) {
-                  dayValue = editday;
-                }
-                if (editYear.length > 0) {
-                  yearValue = editYear;
-                }
-                if (editDesc.length > 0) {
-                  desValue = editDesc;
-                }
-                editMedical(
-                  {
+                  let titleValue = printTitle;
+                  let dayValue = printDay;
+                  let monthValue = printMonth;
+                  let yearValue = printYear;
+                  let desValue = printDesc;
+                  let imgValue = editImg;
+                  if (editTitle.length > 0) {
+                    titleValue = editTitle;
+                  }
+                  if (editMonth.length > 0) {
+                    monthValue = editMonth;
+                  }
+                  if (editday.length > 0) {
+                    dayValue = editday;
+                  }
+                  if (editYear.length > 0) {
+                    yearValue = editYear;
+                  }
+                  if (editDesc.length > 0) {
+                    desValue = editDesc;
+                  }
+                  editMedical({
                     currentUserid: currentId,
                     title: titleValue,
                     day: dayValue,
@@ -470,17 +385,17 @@ export default function Report({ navigation, route }) {
                     year: yearValue,
                     description: desValue,
                     image: imgValue,
-                  },
-                  itemId
-                );
-                alert("Done!");
-              }}
-            >
-              <View style={styles.button2}>
-                <Text style={styles.button1}> Edit Report</Text>
-              </View>
-            </TouchableOpacity>
-          )}
+                  }, itemId)
+                  alert("Done!");
+                }
+                }
+
+              >
+                <View style={styles.button2}>
+                  <Text style={styles.button1}> Edit Report</Text>
+                </View>
+              </TouchableOpacity>
+          }
         </ScrollView>
 
         <StatusBar style="auto" />
@@ -595,6 +510,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     fontSize: 14,
     opacity: 0.65,
+
   },
   inp: {
     backgroundColor: "#ffff",
@@ -642,8 +558,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
   },
-  Viewimage:{
+  Viewimag:{
     marginBottom:32,
-    marginTop:32,
   },
 });
