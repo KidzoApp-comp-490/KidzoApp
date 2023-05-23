@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,9 @@ import { getUserUId } from "../../db/firebase/auth";
 import { getUserById } from "../../db/firebase/users";
 
 export default function SignIn({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+
   const SingInWithGoogle = () => {
     signInWithPopup(auth, provider).then(() => {
       getUserUId().then((id) => {
@@ -103,6 +106,8 @@ export default function SignIn({ navigation }) {
               <TextInput
                 style={styles.input}
                 onChangeText={(val) => setEmail(val)}
+                ref={input1Ref}
+                onSubmitEditing={() => input2Ref.current.focus()}
               />
             </View>
           </View>
@@ -117,6 +122,7 @@ export default function SignIn({ navigation }) {
                   textContentType="newPassword"
                   secureTextEntry
                   onChangeText={(val) => setPassword(val)}
+                  ref={input2Ref}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -129,7 +135,11 @@ export default function SignIn({ navigation }) {
               <View style={styles.inpViewPass}>
                 <TextInput
                   style={styles.inputPass}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
                   onChangeText={(val) => setPassword(val)}
+                  ref={input2Ref}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
