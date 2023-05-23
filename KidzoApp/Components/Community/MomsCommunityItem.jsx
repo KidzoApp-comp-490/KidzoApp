@@ -53,7 +53,7 @@ export default function MomsCommunityItem() {
           </View>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}>───────────────────────────────────</Text>
+          <Text style={styles.line}>─────────────────────────────────</Text>
         </View>
         <View style={styles.InpView}>
           <TouchableOpacity

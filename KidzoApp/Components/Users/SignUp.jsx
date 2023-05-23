@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   PassView: {
     marginTop: 32,
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   inputPass: {
     width: 300,
     height: 42,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   flNameView: {
     flexDirection: "row",
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   lNameView: {
     marginLeft: 16,
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   PhoneView: {
     marginTop: 32,

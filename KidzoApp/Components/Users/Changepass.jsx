@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFA8C5",
     width: 300,
     height: 44,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   emailView: {
     marginTop: 32,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   buttonview: {
     marginTop: 30,

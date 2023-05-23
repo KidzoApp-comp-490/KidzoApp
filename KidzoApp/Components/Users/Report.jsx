@@ -279,6 +279,7 @@ export default function Report({ navigation, route }) {
               )}
             </View>
           </View>
+          <View style={styles.Viewimage}>
           <View style={styles.iconView}>
             {loading ? (
               <ActivityIndicator
@@ -315,6 +316,7 @@ export default function Report({ navigation, route }) {
               medical tests
             </Text>
           </View>
+<<<<<<< Updated upstream
           {flagAddVal ? (
             <TouchableOpacity
               style={styles.button}
@@ -334,6 +336,64 @@ export default function Report({ navigation, route }) {
                   day <= 31 &&
                   desc.length > 0
                 ) {
+=======
+          </View>
+          {
+            flagAddVal ?
+              <TouchableOpacity style={styles.button}
+                onPress={() => {
+                  let isMonth = /^\d+$/.test(month);
+                  let isDay = /^\d+$/.test(day);
+                  let isYear = /^\d+$/.test(year);
+                  if (
+                    title.length > 0 &&
+                    isMonth &&
+                    month >= 1 &&
+                    month <= 12 &&
+                    isYear &&
+                    year >= 2020 &&
+                    isDay &&
+                    day >= 1 &&
+                    day <= 31 &&
+                    desc.length > 0
+                  ) {
+                    navigation.navigate("TabFun");
+                    console.log(title, " ", day, " ", month, " ", year, " ", desc);
+                    addMedicineReport({
+                      day: day,
+                      description: desc,
+                      month: month,
+                      title: title,
+                      year: year,
+                      currentUserid: currentId,
+                      image: image
+                    });
+                  }
+                  if (!(title.length > 0)) {
+                    alert("Title can not be empty");
+                  } else if (!(isMonth && month >= 1 && month <= 12)) {
+                    alert("Month should be between 1 - 12");
+                  } else if (!(isDay && day >= 1 && day <= 31)) {
+                    alert("Day should be between 1 - 31");
+                  } else if (!(isYear && year >= 2020)) {
+                    alert("Year should be greater than 2020");
+                  }
+                  else if (!(desc.length > 0)) {
+                    alert("Description can not be empty")
+                  } else {
+                    alert("Done!");
+                  }
+
+                }}
+              >
+                <View style={styles.button2}>
+                  <Text style={styles.button1}> Add Report</Text>
+                </View>
+              </TouchableOpacity>
+              :
+              <TouchableOpacity style={styles.button}
+                onPress={() => {
+>>>>>>> Stashed changes
                   navigation.navigate("TabFun");
                   console.log(
                     title,
@@ -484,7 +544,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   starView: {
     flexDirection: "row",
@@ -543,7 +603,8 @@ const styles = StyleSheet.create({
     width: 328,
     height: 144,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
+    paddingTop:10,
   },
   iconView: {
     marginTop: 36,
@@ -580,5 +641,9 @@ const styles = StyleSheet.create({
   button2: {
     alignItems: "center",
     marginTop: 15,
+  },
+  Viewimage:{
+    marginBottom:32,
+    marginTop:32,
   },
 });
