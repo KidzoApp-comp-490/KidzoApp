@@ -49,7 +49,6 @@ export default function Home({ navigation }) {
               <Image source={{ uri: image }} style={styles.Mom} />
             </View>
           </View>
-
           <View style={styles.body}>
             <View
               style={{
@@ -141,18 +140,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     alignItems: "center",
     marginTop: 16,
-    marginBottom: 70,
+    flex: 1,
+    marginBottom: 120,
     justifyContent: "center"
   },
   square: {
     width: 328,
     height: 152,
-    marginBottom: 16,
-    padding: 10,
+    marginTop:15 
   },
   squareImg: {
     width: 328,
     height: 152,
     borderRadius: 15,
+    
   },
 });
