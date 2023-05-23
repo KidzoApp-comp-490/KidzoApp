@@ -42,7 +42,7 @@ import ManageUsers from "./Components/Admin/ManageUsers";
 import ImageUploader from "./Components/Session/ImageUploader";
 import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
 import Map from "./Components/Map/Map";
-import DoctorSettings from "./Components/Doctors/DoctorSettings";
+import DoctorSettings from "./Components/Doctors/Doctorsettings";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

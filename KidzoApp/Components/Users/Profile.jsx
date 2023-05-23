@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -26,7 +27,29 @@ export function PostItem({
   fName,
   lName,
   profImg,
+  onDeletePost,
 }) {
+  const confirmDeletePost = (postId) => {
+    Alert.alert(
+      "Delete Post",
+      "Are you sure you want to delete this post?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            deletepost(postId);
+            alert("Deleted");
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.PostsView}>
       <View style={styles.userInfoView}>
@@ -38,10 +61,7 @@ export function PostItem({
           {fName} {lName}
         </Text>
         <TouchableOpacity
-          onPress={() => {
-            deletepost(postId);
-            alert("Deleted");
-          }}
+          onPress={() => confirmDeletePost(postId)}
           style={{
             alignItems: "center",
             alignContent: "flex-end",
@@ -96,6 +116,7 @@ export default function Profile({ navigation }) {
       });
     });
   }, []);
+
   const getposts = async () => {
     const posts = await getpost();
     setPostsList(posts);
@@ -107,6 +128,10 @@ export default function Profile({ navigation }) {
       getposts();
     });
   }, []);
+
+  const handleDeletePost = (postId) => {
+    deletepost(postId);
+  };
 
   return (
     <NetworkStatus>
@@ -153,6 +178,7 @@ export default function Profile({ navigation }) {
                 fName={firstname}
                 lName={lastname}
                 profImg={image}
+                onDeletePost={handleDeletePost}
               />
             ) : null
           )}

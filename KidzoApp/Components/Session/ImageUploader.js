@@ -12,7 +12,6 @@ const ImageUploader = () => {
         imgSize: 640,
         source: "9.mp4",
       });
-      console.log(response.data); // Handle the response from the Spring Boot backend
     } catch (error) {
       console.error(error);
     }
