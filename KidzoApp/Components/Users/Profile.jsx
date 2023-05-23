@@ -31,7 +31,7 @@ export function PostItem({
     <View style={styles.PostsView}>
       <View style={styles.userInfoView}>
         <Image
-          source={profImg}
+          source={{ uri: profImg }}
           style={{ width: 55, height: 55, borderRadius: 100 }}
         />
         <Text style={styles.userName}>
@@ -52,22 +52,24 @@ export function PostItem({
           <Image source={DeleteIcon} style={{ width: 20, height: 20 }} />
         </TouchableOpacity>
       </View>
-
       <Text style={styles.PostTitle}>{postText}</Text>
       <View style={{ alignItems: "center" }}>
-        <Image
-          source={postImage}
-          style={{ width: 328, height: 243, borderRadius: 15 }}
-        />
+        {postImage == "" ? null : (
+          <Image
+            source={{ uri: postImage }}
+            style={{
+              width: 328,
+              height: 243,
+              borderRadius: 15,
+              resizeMode: "stretch",
+            }}
+          />
+        )}
+
         <View style={styles.ReactsView}>
           <View style={styles.LeftPart}>
             <Image source={Heart} style={{ width: 24, height: 24 }} />
             <Text style={styles.ReactTxt}>{numreact}</Text>
-          </View>
-          <View style={styles.VerticalPar}></View>
-          <View style={styles.RightPart}>
-            <Image source={Comment} style={{ width: 24, height: 24 }} />
-            <Text style={styles.CommentTxt}>5 Comments</Text>
           </View>
         </View>
       </View>
@@ -154,7 +156,7 @@ export default function Profile({ navigation }) {
               />
             ) : null
           )}
-          <View style={{ marginBottom: 30 }}></View>
+          <View style={{ marginBottom: 80 }}></View>
         </ScrollView>
         <StatusBar style="auto" />
       </View>
@@ -229,42 +231,26 @@ const styles = StyleSheet.create({
     color: "#0B3B63",
     marginTop: 17,
     marginBottom: 16,
-    marginLeft: 18,
+    marginHorizontal: 18,
   },
   ReactsView: {
     flexDirection: "row",
     width: 370,
+    height: 48,
     paddingBottom: 5,
     borderRadius: 15,
     borderWidth: 1,
     marginTop: 16,
     borderColor: "rgba(11, 59, 99, 0.15)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   LeftPart: {
     flexDirection: "row",
     alignItems: "center",
-    width: "49%",
-    marginLeft: 16,
+    justifyContent: "center",
   },
   ReactTxt: {
-    fontSize: 14,
-    fontWeight: "500",
-    fontFamily: "Montserrat",
-    color: "#FFA8C5",
-    marginLeft: 5,
-  },
-  VerticalPar: {
-    width: 1,
-    height: 47,
-    backgroundColor: "rgba(11, 59, 99, 0.15)",
-  },
-  RightPart: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "49%",
-    marginLeft: 16,
-  },
-  CommentTxt: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: "Montserrat",

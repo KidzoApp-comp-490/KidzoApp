@@ -6,23 +6,18 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import logo from "../../assets/Post/ant-design_picture-outlined.png";
 import Frame from "../../assets/MedicalH/Frame.png";
 import { getUserUId } from "../../db/firebase/auth";
 import { firebase } from "../../db/Config";
-import { StatusBar } from "expo-status-bar";
-import { NetworkStatus } from "../NetworkStatus";
 import * as ImagePicker from "expo-image-picker";
 import { getUserById, subscribe } from "../../db/firebase/users";
-import {
-  addpost,
-  deletepost,
-  getpost,
-  getpostinfo,
-} from "../../db/firebase/post";
+import { addpost } from "../../db/firebase/post";
 import { useNavigation } from "@react-navigation/native";
+
 export default function MomsComCreatepost() {
   const navigation = useNavigation();
   const [firstname, SetFName] = useState("");
@@ -33,6 +28,7 @@ export default function MomsComCreatepost() {
   const [imageup, setImageup] = useState("");
   const [numreact, setnumreact] = useState(0);
   const [id, setid] = useState("");
+
   const uploadImage = async (uri) => {
     const response = await fetch(uri);
     const blob = await response.blob();
@@ -44,7 +40,6 @@ export default function MomsComCreatepost() {
     const downloadURL = await snapshot.ref.getDownloadURL();
     setImageup(downloadURL);
     console.log("download link", downloadURL);
-    setImageup(downloadURL);
   };
 
   const pickImage = async () => {
@@ -58,7 +53,7 @@ export default function MomsComCreatepost() {
     setLoading(false);
   };
   React.useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+    subscribe(() => {
       getUserUId().then((id) => {
         console.log(id);
         getUserById(id).then((user) => {
@@ -74,7 +69,7 @@ export default function MomsComCreatepost() {
   return (
     <View style={styles.container}>
       <ScrollView>
-      <View style={styles.titleView}>
+        <View style={styles.titleView}>
           <View style={styles.frameView}>
             <TouchableOpacity
               onPress={() => {
@@ -107,86 +102,101 @@ export default function MomsComCreatepost() {
           </TouchableOpacity>
         </View>
         <View>
-          <TextInput 
-          placeholder="what's in your mind?"
-          placeholderTextColor={"#0B3B63"}
-          
+          <TextInput
+            placeholder="what's in your mind?"
+            placeholderTextColor={"#0B3B63"}
             style={{
-              height: 300,
-              borderColor: "#ffff",
+              height: 150,
+              borderColor: "#FFA8C5",
               borderRadius: 10,
               marginTop: 20,
-              paddingLeft:16,
-              paddingTop:10,
-              fontSize:14,
-              
+              paddingHorizontal: 16,
+              paddingTop: 10,
+              fontSize: 14,
+              marginHorizontal: 16,
+              borderWidth: 1,
             }}
             onChangeText={(text) => onChangeText(text)}
             value={value}
             multiline={true}
           />
         </View>
-        <View  style={{
-            alignItems: "center",
-            justifyContent: "center"
-          }}> 
-        <Image
-          source={imageup}
-          style={{
-            width: 100,
-            height: 100,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        />
-        </View>
-        <View  style={{
-            alignItems: "center",
-            justifyContent: "center"
-          }}> 
-        <TouchableOpacity
-        
-          style={{
-            width: 200,
-            height: 52,
-            backgroundColor: "#FFA8C5",
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 5,
-            marginHorizontal: 16,
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 48,
-          }}
-          onPress={() => {
-            addpost({
-              text: value,
-              image: imageup,
-              currentUserid: id,
-              numreact: numreact,
-            });
-            navigation.navigate("MomsCommunityItem");
-            setImageup("");
-            onChangeText("");
-          }}
-          
-        >
-          <Text
+        {loading ? (
+          <ActivityIndicator
+            animating={true}
+            color="#bc2b78"
+            size="large"
+            style={styles.activityIndicator}
+          />
+        ) : (
+          <View
             style={{
-              textAlign: "center",
-              color: "white",
-              fontFamily: "Montserrat",
-              fontWeight: "700",
-              fontSize: 18,
-
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            creat post
-          </Text>
-        </TouchableOpacity>
+            <Image
+              source={{ uri: imageup }}
+              style={{
+                width: "90%",
+                height: 150,
+                marginVertical: 16,
+                justifyContent: "center",
+                alignItems: "center",
+                resizeMode: "stretch",
+                borderRadius: 15,
+              }}
+            />
+          </View>
+        )}
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 200,
+              height: 52,
+              backgroundColor: "#FFA8C5",
+              flexDirection: "row",
+              alignItems: "center",
+              borderRadius: 5,
+              marginHorizontal: 16,
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 48,
+            }}
+            onPress={() => {
+              if (value.length === 0 && imageup === "") {
+                alert("invalid information");
+              } else {
+                addpost({
+                  text: value,
+                  image: imageup,
+                  currentUserid: id,
+                  numreact: numreact,
+                });
+                navigation.navigate("TabFun");
+                setImageup("");
+                onChangeText("");
+              }
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+                fontFamily: "Montserrat",
+                fontWeight: "700",
+                fontSize: 18,
+              }}
+            >
+              Create post
+            </Text>
+          </TouchableOpacity>
         </View>
-
-
       </ScrollView>
     </View>
   );
@@ -219,6 +229,7 @@ const styles = StyleSheet.create({
   },
   titleView: {
     flexDirection: "row",
+    marginLeft: 16,
   },
   title: {
     color: "#0B3B63",
@@ -239,5 +250,12 @@ const styles = StyleSheet.create({
   line: {
     color: "#FFA8C5",
     opacity: 0.5,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
+    marginVertical: 16,
   },
 });

@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Logo from "../assets/Home/Logo2.png";
-import Mom from "../assets/Home/Group80.png";
 import Session from "../assets/Home/Session.png";
 import Map from "../assets/Home/Map.png";
 import Information from "../assets/Home/Info.png";
@@ -25,7 +24,7 @@ export default function Home({ navigation }) {
     "https://cdn-icons-png.flaticon.com/512/149/149071.png"
   );
   React.useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+    subscribe(() => {
       getUserUId().then((id) => {
         console.log(id);
         getUserById(id).then((user) => {
@@ -69,16 +68,15 @@ export default function Home({ navigation }) {
               }}
             >
               <Image source={Session} style={styles.squareImg} />
-
             </TouchableOpacity>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.square}
               onPress={() => {
                 navigation.navigate("Map");
               }}
             >
               <Image source={Map} style={styles.squareImg} />
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
