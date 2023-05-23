@@ -200,10 +200,24 @@ export default function ChatWithDoc({ navigation, route }) {
                 style={styles.activityIndicator}
               />
             ) : (
-              <Image
-                source={{ uri: image ? image : Img }}
-                style={{ width: 24, height: 24, marginLeft: 15 }}
-              />
+              <View>
+                {image ? (
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      marginLeft: 15,
+                      resizeMode: "center",
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={Img}
+                    style={{ width: 24, height: 24, marginLeft: 15 }}
+                  />
+                )}
+              </View>
             )}
           </TouchableOpacity>
           <TextInput

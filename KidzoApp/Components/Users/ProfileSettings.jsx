@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById, edituser, subscribe } from "../../db/firebase/users";
 import { StatusBar } from "expo-status-bar";
@@ -18,6 +18,11 @@ import * as ImagePicker from "expo-image-picker";
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function ProfileSettings({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -126,6 +131,8 @@ export default function ProfileSettings({ navigation }) {
               style={styles.Input}
               defaultValue={fName}
               onChangeText={setFName}
+              ref={input1Ref}
+              onSubmitEditing={() => input2Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -134,6 +141,8 @@ export default function ProfileSettings({ navigation }) {
               style={styles.Input}
               defaultValue={lName}
               onChangeText={setLName}
+              ref={input2Ref}
+              onSubmitEditing={() => input3Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -142,6 +151,8 @@ export default function ProfileSettings({ navigation }) {
               style={styles.Input}
               defaultValue={phone}
               onChangeText={setPhone}
+              ref={input3Ref}
+              onSubmitEditing={() => input4Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -150,6 +161,7 @@ export default function ProfileSettings({ navigation }) {
               style={styles.Input}
               defaultValue={age}
               onChangeText={setAge}
+              ref={input4Ref}
             />
           </View>
           <View style={styles.buttonview}>
@@ -208,7 +220,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   InputView2: {
     marginTop: 32,

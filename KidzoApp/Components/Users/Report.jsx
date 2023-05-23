@@ -268,6 +268,7 @@ export default function Report({ navigation, route }) {
 
             </View>
           </View>
+          <View style={styles.Viewimag}>
           <View style={styles.iconView}>
             {loading ? (
               <ActivityIndicator
@@ -297,6 +298,7 @@ export default function Report({ navigation, route }) {
               Add pictures for medical prescription{"\n                 "}and
               medical tests
             </Text>
+          </View>
           </View>
           {
             flagAddVal ?
@@ -457,7 +459,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   starView: {
     flexDirection: "row",
@@ -517,7 +519,8 @@ const styles = StyleSheet.create({
     width: 328,
     height: 144,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
+    paddingTop:10,
   },
   iconView: {
     marginTop: 36,
@@ -554,5 +557,8 @@ const styles = StyleSheet.create({
   button2: {
     alignItems: "center",
     marginTop: 15,
+  },
+  Viewimag:{
+    marginBottom:32,
   },
 });

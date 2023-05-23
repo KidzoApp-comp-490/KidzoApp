@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,9 @@ import "firebase/auth";
 export default function Changepass({ navigation }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const input1Ref = useRef();
+  const input2Ref = useRef();
 
   const changePassword = () => {
     const user = firebase.auth().currentUser;
@@ -91,6 +94,8 @@ export default function Changepass({ navigation }) {
                 secureTextEntry
                 value={currentPassword}
                 onChangeText={(text) => setCurrentPassword(text)}
+                ref={input1Ref}
+                onSubmitEditing={() => input2Ref.current.focus()}
               />
               <TouchableOpacity onPress={clickEye}>
                 <Image
@@ -108,6 +113,8 @@ export default function Changepass({ navigation }) {
                 textContentType="newPassword"
                 value={currentPassword}
                 onChangeText={(text) => setCurrentPassword(text)}
+                ref={input1Ref}
+                onSubmitEditing={() => input2Ref.current.focus()}
               />
               <TouchableOpacity onPress={clickEye}>
                 <Image
@@ -131,6 +138,7 @@ export default function Changepass({ navigation }) {
                 secureTextEntry
                 value={newPassword}
                 onChangeText={(text) => setNewPassword(text)}
+                ref={input2Ref}
               />
               <TouchableOpacity onPress={clickEye2}>
                 <Image
@@ -148,6 +156,7 @@ export default function Changepass({ navigation }) {
                 textContentType="newPassword"
                 value={newPassword}
                 onChangeText={(text) => setNewPassword(text)}
+                ref={input2Ref}
               />
               <TouchableOpacity onPress={clickEye2}>
                 <Image
@@ -227,7 +236,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFA8C5",
     width: 300,
     height: 44,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   emailView: {
     marginTop: 32,
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   buttonview: {
     marginTop: 30,

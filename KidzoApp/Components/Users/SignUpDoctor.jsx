@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -21,6 +21,14 @@ import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function SignUpDoctor({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
+  const input6Ref = useRef();
+  const input7Ref = useRef();
+
   const SingUpWithGoogle = () => {
     signInWithPopup(auth, provider).then((data) => {
       navigation.navigate("DoctorGoogleSettings");
@@ -144,6 +152,8 @@ export default function SignUpDoctor({ navigation }) {
                 onChangeText={(val) => {
                   setEmail(val);
                 }}
+                ref={input1Ref}
+                onSubmitEditing={() => input2Ref.current.focus()}
               />
             </View>
           </View>
@@ -160,6 +170,8 @@ export default function SignUpDoctor({ navigation }) {
                   onChangeText={(val) => {
                     setPassword(val);
                   }}
+                  ref={input2Ref}
+                  onSubmitEditing={() => input3Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -178,6 +190,8 @@ export default function SignUpDoctor({ navigation }) {
                   onChangeText={(val) => {
                     setPassword(val);
                   }}
+                  ref={input2Ref}
+                  onSubmitEditing={() => input3Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -197,6 +211,8 @@ export default function SignUpDoctor({ navigation }) {
                   onChangeText={(val) => {
                     setFName(val);
                   }}
+                  ref={input3Ref}
+                  onSubmitEditing={() => input4Ref.current.focus()}
                 />
               </View>
             </View>
@@ -208,6 +224,8 @@ export default function SignUpDoctor({ navigation }) {
                   onChangeText={(val) => {
                     setLName(val);
                   }}
+                  ref={input4Ref}
+                  onSubmitEditing={() => input5Ref.current.focus()}
                 />
               </View>
             </View>
@@ -221,6 +239,8 @@ export default function SignUpDoctor({ navigation }) {
                 onChangeText={(val) => {
                   setPhone(val);
                 }}
+                ref={input5Ref}
+                onSubmitEditing={() => input6Ref.current.focus()}
               />
             </View>
           </View>
@@ -232,6 +252,8 @@ export default function SignUpDoctor({ navigation }) {
                 onChangeText={(val) => {
                   setAddress(val);
                 }}
+                ref={input6Ref}
+                onSubmitEditing={() => input7Ref.current.focus()}
               />
             </View>
           </View>
@@ -245,6 +267,7 @@ export default function SignUpDoctor({ navigation }) {
                 onChangeText={(val) => {
                   setPrice(val);
                 }}
+                ref={input7Ref}
               />
             </View>
           </View>
@@ -333,7 +356,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   inpPassText: {
     fontSize: 14,
@@ -356,7 +379,7 @@ const styles = StyleSheet.create({
   inputPass: {
     width: 300,
     height: 42,
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   AdressView: {
     marginTop: 32,
@@ -368,7 +391,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   PassView: {
     marginTop: 32,
@@ -392,7 +415,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     borderWidth: 1,
-    paddingLeft: 5,
+    paddingLeft: 10,
     borderColor: "#FFA8C5",
   },
   lNameView: {

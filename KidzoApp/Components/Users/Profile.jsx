@@ -143,14 +143,16 @@ export default function Profile({ navigation }) {
             <Text style={styles.ProfileTxt}>YOUR PROFILE</Text>
           </View>
           <View style={styles.Section1}>
-            <View style={{ borderRadius: 100, overflow: "hidden" }}>
-              <Image
-                source={{ uri: image }}
-                style={{ width: 155, height: 155 }}
-              />
+            <View style={{paddingRight: 17}}>
+              <View style={{ borderRadius: 100, overflow: "hidden"}}>
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 150, height: 150}}
+                />
+              </View>
             </View>
             <Text style={styles.UserName}>
-              {firstname} {lastname}
+                {firstname} {lastname}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -159,7 +161,7 @@ export default function Profile({ navigation }) {
             >
               <Image
                 source={EditIcon}
-                style={{ width: 22.85, height: 22.81 }}
+                style={{ width: 22.85, height: 22.81 , paddingRight : 17}}
               />
             </TouchableOpacity>
           </View>
