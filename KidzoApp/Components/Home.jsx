@@ -118,45 +118,46 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    marginHorizontal: windowWidth * 0.04,
+    marginHorizontal: 16,
     alignItems: "center",
     justifyContent: "center",
   },
   Logo: {
-    width: windowWidth * 0.4,
-    height: windowHeight * 0.08,
-    marginTop: windowHeight * 0.1,
-    marginRight: windowWidth * 0.16,
+    width: 156,
+    height: 66,
+    marginTop: 75,
+    marginRight: 104,
   },
   Mom: {
     width: 72,
     height: 77,
   },
   WelcomeTxt: {
-    marginLeft: windowWidth * 0.04,
+    marginLeft: 16,
     color: "#0B3B63",
     fontWeight: "700",
-    fontSize: windowHeight * 0.025,
+    fontSize: 18,
     fontFamily: "Montserrat",
     textAlign: "left",
   },
   body: {
-    marginHorizontal: windowWidth * 0.04,
+    marginHorizontal: 16,
     alignItems: "center",
-    marginTop: windowHeight * 0.04,
+    marginTop: 16,
     flex: 1,
-    marginBottom: windowHeight * 0.12,
-    justifyContent: "center",
+    marginBottom: 120,
+    justifyContent: "center"
   },
   square: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.2,
-    marginTop: windowHeight * 0.015,
+    width: 328,
+    height: 152,
+    marginTop:15 
   },
   squareImg: {
-    width: "100%",
-    height: "100%",
-    borderRadius: windowWidth * 0.04,
+    width: 328,
+    height: 152,
+    borderRadius: 15,
+    
   },
 });
 

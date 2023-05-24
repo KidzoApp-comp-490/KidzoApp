@@ -17,9 +17,7 @@ const ImageUploader = () => {
     }
   };
 
-  useEffect(() => {
-    runDetection();
-  }, []);
+
 
   return (
     <View>
