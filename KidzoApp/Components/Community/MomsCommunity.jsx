@@ -60,7 +60,7 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
             >
               <Image source={imageSource} style={{ width: 24, height: 24 }} />
             </TouchableOpacity>
-            <Text style={styles.ReactTxt}>{numreact - 1}</Text>
+            <Text style={styles.ReactTxt}>{numreact }</Text>
           </View>
         </View>
       </View>

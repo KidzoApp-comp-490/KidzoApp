@@ -14,7 +14,7 @@ import {
 // Listen for authentication state to change.
 onAuthStateChanged(auth, (user) => {
   if (user != null) {
-    console.log("We are authenticated now!");
+    
   }
   // Do other things
 });
@@ -46,7 +46,7 @@ async function forgetPass(email) {
 
 async function getUserUId() {
   if (auth.currentUser != null) {
-    console.log("here", auth.currentUser.uid);
+    
     return auth.currentUser.uid;
   } else {
     return null;

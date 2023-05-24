@@ -18,8 +18,7 @@ const fetchData = async () => {
     const querySnapshot = await getDocs(collectionRef);
 
     querySnapshot.forEach((doc) => {
-      console.log("Document ID:", doc.id);
-      console.log("Document data:", doc.data());
+      
     });
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -40,7 +39,7 @@ async function editpost(id, numreact) {
     const postRef = doc(db, "post", id);
 
     await setDoc(postRef, { numreact: numreact }, { merge: true });
-    console.log("Post updated successfully");
+    
   } catch (error) {
     console.error("Error updating post:", error);
   }
@@ -54,7 +53,7 @@ async function getpostinfo(id) {
   const q = query(usersRef, where("id", "==", id));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => {
-    // console.log("here doc", doc)
+    
     return { id: doc.id, ...doc.data() };
   });
 }
@@ -71,10 +70,10 @@ function subscribePost(callback) {
     (snapshot) => {
       const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
       snapshot.docChanges().forEach((change) => {
-        // console.log("changes", change, snapshot.metadata);
+        
         if (callback) callback({ change, snapshot });
       });
-      // console.log(source, " data: ", snapshot.data());
+      
     }
   );
   return unsubscribe;

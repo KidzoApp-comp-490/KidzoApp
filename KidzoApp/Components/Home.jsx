@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  Dimensions 
 } from "react-native";
 import Logo from "../assets/Home/Logo2.png";
 import Session from "../assets/Home/Session.png";
@@ -26,7 +27,7 @@ export default function Home({ navigation }) {
   React.useEffect(() => {
     subscribe(() => {
       getUserUId().then((id) => {
-        console.log(id);
+        
         getUserById(id).then((user) => {
           setFName(user[0].fName);
           setImage(user[0].image);
@@ -107,6 +108,9 @@ export default function Home({ navigation }) {
     </NetworkStatus>
   );
 }
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   content: {
     flex: 1,
@@ -114,45 +118,45 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    marginHorizontal: 16,
+    marginHorizontal: windowWidth * 0.04,
     alignItems: "center",
     justifyContent: "center",
   },
   Logo: {
-    width: 156,
-    height: 66,
-    marginTop: 75,
-    marginRight: 104,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.08,
+    marginTop: windowHeight * 0.1,
+    marginRight: windowWidth * 0.16,
   },
   Mom: {
     width: 72,
     height: 77,
   },
   WelcomeTxt: {
-    marginLeft: 16,
+    marginLeft: windowWidth * 0.04,
     color: "#0B3B63",
     fontWeight: "700",
-    fontSize: 18,
+    fontSize: windowHeight * 0.025,
     fontFamily: "Montserrat",
     textAlign: "left",
   },
   body: {
-    marginHorizontal: 16,
+    marginHorizontal: windowWidth * 0.04,
     alignItems: "center",
-    marginTop: 16,
+    marginTop: windowHeight * 0.04,
     flex: 1,
-    marginBottom: 120,
-    justifyContent: "center"
+    marginBottom: windowHeight * 0.12,
+    justifyContent: "center",
   },
   square: {
-    width: 328,
-    height: 152,
-    marginTop:15 
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.2,
+    marginTop: windowHeight * 0.015,
   },
   squareImg: {
-    width: 328,
-    height: 152,
-    borderRadius: 15,
-    
+    width: "100%",
+    height: "100%",
+    borderRadius: windowWidth * 0.04,
   },
 });
+

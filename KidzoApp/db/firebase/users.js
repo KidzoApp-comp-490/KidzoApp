@@ -23,7 +23,7 @@ async function getusersInfo() {
 async function deleteusers(id) {
   try {
     await deleteDoc(doc(db, "users", id));
-    console.log("Document deleted with ID: ", id);
+    
   } catch (error) {
     console.error("Error deleting document: ", error);
   }
@@ -32,7 +32,7 @@ async function deleteusers(id) {
 async function Addusers(user) {
   try {
     const docRef = await addDoc(collection(db, "users"), user);
-    console.log("Document written with ID: ", docRef.id);
+    
   } catch (e) {
     console.error("Error adding document: ", e);
   }

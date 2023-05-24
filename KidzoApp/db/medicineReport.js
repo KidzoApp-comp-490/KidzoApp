@@ -29,7 +29,7 @@ async function getMedicineReport(id) {
     const q = query(usersRef, where("id", "==", id));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => {
-        // console.log("here doc", doc)
+       
         return { id: doc.id, ...doc.data() };
     });
 }
@@ -46,10 +46,10 @@ function subscribe(callback) {
       (snapshot) => {
         const source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
         snapshot.docChanges().forEach((change) => {
-          // console.log("changes", change, snapshot.metadata);
+          
           if (callback) callback({ change, snapshot });
         });
-        // console.log(source, " data: ", snapshot.data());
+        
       }
     );
     return unsubscribe;
