@@ -5,7 +5,7 @@ import SignIn from "./Components/Users/SignIn";
 import SignUp from "./Components/Users/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import ForgetPass from "./Components/Users/ForgetPass";
 import Confirm from "./Components/Users/Confirm";
 import First from "./Components/First";
@@ -45,13 +45,18 @@ import Map from "./Components/Map/Map";
 import DoctorSettings from "./Components/Doctors/Doctorsettings";
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+
+
 
 export function TabFun() {
   return (
     <NetworkStatus>
       <Tab.Navigator
         screenOptions={{
+          ...TransitionPresets.SlideFromRightIOS, 
+            ...TransitionPresets.ScaleFromCenterAndroid, 
+          
           tabBarStyle: styles.tabBarStyle,
           headerShown: false,
           tabBarActiveTintColor: "#FFA8C5",
@@ -105,8 +110,9 @@ export default function App() {
         <Stack.Navigator
           initialRouteName="First"
           screenOptions={{
-            animationEnabled: true,
-            gestureEnabled: true,
+            
+            ...TransitionPresets.SlideFromRightIOS, 
+            ...TransitionPresets.ScaleFromCenterAndroid, 
           }}
         >
           <Stack.Screen
