@@ -261,7 +261,7 @@ export default function App() {
           <Stack.Screen
             name="ImageUploader"
             component={ImageUploader}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ManageCommunity"
