@@ -62,19 +62,15 @@ export default function MomsCommunityItem() {
             <Text style={styles.textst}>What's in your mind?</Text>
           </TouchableOpacity>
         </View>
-        {postlist.map(
-          (e, index) => (
-            (
-              <MomsCommunity
-                value={e.text}
-                image={e.image}
-                idpost={e.id}
-                numreact={e.numreact}
-                key={index}
-              />
-            )
-          )
-        )}
+        {postlist.map((e, index) => (
+          <MomsCommunity
+            value={e.text}
+            image={e.image}
+            idpost={e.id}
+            numreact={e.numreact}
+            key={index}
+          />
+        ))}
         <View style={{ marginBottom: 80 }}></View>
       </ScrollView>
       <StatusBar style="auto" />
