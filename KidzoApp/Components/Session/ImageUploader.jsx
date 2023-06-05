@@ -52,7 +52,7 @@ export default function ImageUploader({ navigation }) {
 
       <View style={styles.QViwe}>
         <Text style={styles.question}>
-          What time frame do you prefer for the meeting?
+          What time frame do you prefer for a session?
         </Text>
       </View>
 
