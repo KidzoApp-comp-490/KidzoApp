@@ -213,13 +213,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     fontSize: 18,
   },
-  //   word: {
-  //     color: "#0B3B63",
-  //     fontFamily: "Montserrat",
-  //     fontWeight: 500,
-  //     fontSize: 14,
-  //     opacity: 0.65,
-  //   },
+
   inpViewPass: {
     flexDirection: "row",
     backgroundColor: "#ffff",
@@ -237,6 +231,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 44,
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   emailView: {
     marginTop: 32,
@@ -257,6 +252,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   buttonview: {
     marginTop: 30,

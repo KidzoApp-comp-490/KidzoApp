@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   passView: {
     marginTop: 30,
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 44,
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   forgotword: {
     fontFamily: "Montserrat",

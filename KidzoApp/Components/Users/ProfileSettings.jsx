@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#FFA8C5",
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   InputView2: {
     marginTop: 32,

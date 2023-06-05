@@ -14,52 +14,52 @@ import { StatusBar } from "expo-status-bar";
 import Logo from "../../assets/ForgotPass/Logo 2.png";
 import Frame from "../../assets/ForgotPass/Frame.png";
 import { forgetPass } from "../../db/firebase/auth";
-import { NetworkStatus } from '../NetworkStatus';
+import { NetworkStatus } from "../NetworkStatus";
 
 export default function Forget({ navigation }) {
   const [email, setEmail] = useState("");
   return (
     <NetworkStatus>
-    <View style={styles.container}>
-      <View style={styles.logoView}>
-        <Image source={Logo} style={styles.logo} />
-      </View>
-      <View style={styles.frameView}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("SignIn");
-          }}
-        >
-          <Image source={Frame} style={styles.frame} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.titleViwe}>
-        <Text style={styles.title}>Forgot your password!</Text>
-        <Text style={styles.word}>Follow the steps to reset a new one</Text>
-      </View>
-      <View style={styles.emailView}>
-        <Text style={styles.inpText}>E-mail</Text>
-        <View style={styles.inpView}>
-          <TextInput style={styles.input} onChangeText={setEmail} />
+      <View style={styles.container}>
+        <View style={styles.logoView}>
+          <Image source={Logo} style={styles.logo} />
         </View>
-      </View>
-      <View style={styles.buttonview}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            forgetPass(email).then(() => {
-              alert("Email sent");
+        <View style={styles.frameView}>
+          <TouchableOpacity
+            onPress={() => {
               navigation.navigate("SignIn");
-            });
-          }}
-        >
-          <View style={styles.button2}>
-            <Text style={styles.button1}> Send verification code</Text>
+            }}
+          >
+            <Image source={Frame} style={styles.frame} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.titleViwe}>
+          <Text style={styles.title}>Forgot your password!</Text>
+          <Text style={styles.word}>Follow the steps to reset a new one</Text>
+        </View>
+        <View style={styles.emailView}>
+          <Text style={styles.inpText}>E-mail</Text>
+          <View style={styles.inpView}>
+            <TextInput style={styles.input} onChangeText={setEmail} />
           </View>
-        </TouchableOpacity>
+        </View>
+        <View style={styles.buttonview}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              forgetPass(email).then(() => {
+                alert("Email sent");
+                navigation.navigate("SignIn");
+              });
+            }}
+          >
+            <View style={styles.button2}>
+              <Text style={styles.button1}> Send verification code</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="auto" />
       </View>
-      <StatusBar style="auto" />
-    </View>
     </NetworkStatus>
   );
 }
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     paddingLeft: 10,
+    color: "#0B3B63",
   },
   buttonview: {
     marginTop: 30,

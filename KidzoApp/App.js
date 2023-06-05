@@ -104,7 +104,9 @@ export function TabFun() {
 }
 
 export default function App() {
+ 
   return (
+    
     <NetworkStatus>
       <NavigationContainer>
         <Stack.Navigator

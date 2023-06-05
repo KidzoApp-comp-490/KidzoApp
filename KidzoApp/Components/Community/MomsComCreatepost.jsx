@@ -114,6 +114,7 @@ export default function MomsComCreatepost() {
               fontSize: 14,
               marginHorizontal: 16,
               borderWidth: 1,
+              color: "#0B3B63",
             }}
             onChangeText={(text) => onChangeText(text)}
             value={value}
