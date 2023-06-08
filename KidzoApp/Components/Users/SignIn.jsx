@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Platform,
   View,
   Text,
   StyleSheet,
@@ -20,8 +21,29 @@ import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
 import { NetworkStatus } from "../NetworkStatus";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById } from "../../db/firebase/users";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+// import { RNCamera } from "react-native-camera";
+
+// import { request, PERMISSIONS } from "react-native-permissions";
 
 export default function SignIn({ navigation }) {
+  // const handleFacialRecognition = async () => {
+  //   if (Platform.OS === "android") {
+  //     const permission = await request(PERMISSIONS.ANDROID.CAMERA);
+  //     if (permission !== "granted") {
+  //       // Handle camera permission denied
+  //       return;
+  //     }
+  //   }
+
+  //   this.camera.takePictureAsync({ quality: 0.5 }).then((data) => {
+  //     // Perform facial recognition on the captured image
+  //     // Compare the recognized face with the stored facial data
+  //     // Proceed with login or authentication logic based on the result
+  //   });
+  // };
+
   const SingInWithGoogle = () => {
     signInWithPopup(auth, provider).then(() => {
       getUserUId().then((id) => {
@@ -90,6 +112,14 @@ export default function SignIn({ navigation }) {
     <NetworkStatus>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          {/* <RNCamera
+            ref={(ref) => {
+              this.camera = ref;
+            }}
+            style={styles.preview}
+            type={RNCamera.Constants.Type.front}
+            captureAudio={false}
+          /> */}
           <View style={styles.logoView}>
             <Image source={Logo} style={styles.logo} />
           </View>
@@ -156,6 +186,26 @@ export default function SignIn({ navigation }) {
               </View>
             </TouchableOpacity>
           </View>
+
+          {/* <TouchableOpacity
+            onPress={() => {
+              handleFacialRecognition;
+            }}
+          >
+            <View style={styles.btnSecondary}>
+              <MaterialCommunityIcons
+                color="#0B3B63"
+                name="face-recognition"
+                size={22}
+                style={{ marginRight: 30 }}
+              />
+
+              <Text style={styles.btnSecondaryText}>Face ID</Text>
+
+              <View style={{ width: 34 }} />
+            </View>
+          </TouchableOpacity> */}
+
           <View style={styles.orimageview}>
             <Image source={Or} style={styles.orimage} />
           </View>
@@ -271,6 +321,7 @@ const styles = StyleSheet.create({
   },
   buttonview: {
     marginTop: 30,
+    marginBottom: 30,
   },
   button: {
     borderRadius: 5,
@@ -335,5 +386,24 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginRight: 130,
     marginBottom: 72,
+  },
+  btnSecondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    backgroundColor: "transparent",
+    borderColor: "#0B3B63",
+    width: 328,
+    height: 48,
+  },
+  btnSecondaryText: {
+    fontSize: 18,
+    lineHeight: 26,
+    fontWeight: "600",
+    color: "#0B3B63",
   },
 });

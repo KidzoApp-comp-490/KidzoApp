@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Animated,
+  ScrollView,
 } from "react-native";
 import OnboardingSlide from "./OnboardingSlide";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -102,70 +103,58 @@ const OnboardingFlow = ({ navigation }) => {
 
   return (
     <NetworkStatus>
-      <View style={styles.container}>
-        {slides.map((slide, index) => (
-          <Animated.View
-            key={slide.id}
-            style={[
-              styles.slideContainer,
-              { opacity: fadeAnim },
-              index !== activeIndex && { display: "none" },
-            ]}
-          >
-            <OnboardingSlide
-              image={slide.image}
-              title={slide.title}
-              desc={slide.desc}
-            />
-          </Animated.View>
-        ))}
-
-        {/* <View style={styles.dotsContainer}>
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <View style={styles.container}>
           {slides.map((slide, index) => (
-            <TouchableOpacity
+            <Animated.View
               key={slide.id}
               style={[
-                styles.dot,
-                index === activeIndex && styles.activeDot,
-                index === activeIndex && { width: 23 }, // Increase width for the active dot
+                styles.slideContainer,
+                { opacity: fadeAnim },
+                index !== activeIndex && { display: "none" },
               ]}
-              onPress={() => handleDotPress(index)}
-            />
+            >
+              <OnboardingSlide
+                image={slide.image}
+                title={slide.title}
+                desc={slide.desc}
+              />
+            </Animated.View>
           ))}
-        </View> */}
 
-        <View style={styles.dotsContainer}>
-          {slides.map((slide, index) => (
-            <TouchableOpacity
-              key={slide.id}
-              style={[
-                styles.dot,
-                index === activeIndex && styles.activeDot,
-                index === activeIndex && { width: 30 }, // Increase width for the active dot
-              ]}
-              onPress={() => {
-                fadeOut();
-                setTimeout(() => {
-                  setActiveIndex(index);
-                  fadeIn();
-                }, 500);
-              }}
-            />
-          ))}
+          <View style={styles.dotsContainer}>
+            {slides.map((slide, index) => (
+              <TouchableOpacity
+                key={slide.id}
+                style={[
+                  styles.dot,
+                  index === activeIndex && styles.activeDot,
+                  index === activeIndex && { width: 30 },
+                ]}
+                onPress={() => {
+                  fadeOut();
+                  setTimeout(() => {
+                    setActiveIndex(index);
+                    fadeIn();
+                  }, 500);
+                }}
+              />
+            ))}
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.touch} onPress={handleNext}>
+              <Text style={styles.skip}>
+                {activeIndex === slides.length - 1 ? "Finish" : "Next"}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.touch1} onPress={handleSkip}>
+              <Text style={styles.skip1}>Skip</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.touch} onPress={handleNext}>
-            <Text style={styles.skip}>
-              {activeIndex === slides.length - 1 ? "Finish" : "Next"}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.touch1} onPress={handleSkip}>
-            <Text style={styles.skip1}>Skip</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ScrollView>
     </NetworkStatus>
   );
 };
@@ -212,6 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 55,
+    marginTop: 35,
   },
   dot: {
     width: 10,

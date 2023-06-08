@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { NetworkStatus } from '../NetworkStatus';
 
-const OnboardingSlide = ({ image, title, desc,image2 }) => {
+const OnboardingSlide = ({ image, title, desc }) => {
   return (
     <NetworkStatus>
     <View style={styles.slide}>
@@ -11,9 +11,7 @@ const OnboardingSlide = ({ image, title, desc,image2 }) => {
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.desc}>{desc}</Text>
       </View>
-      <View>
-      <Image source={image2} style={styles.logo} />
-      </View>
+     
     </View>
     </NetworkStatus>
   );

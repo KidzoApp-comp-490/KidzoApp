@@ -44,6 +44,7 @@ import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
 import Map from "./Components/Map/Map";
 import DoctorSettings from "./Components/Doctors/Doctorsettings";
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
