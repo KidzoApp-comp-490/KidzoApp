@@ -19,7 +19,7 @@ import {
   getMedical,
   deleteMedicineReport,
   getMedicineReport,
-  subscribe,
+  subscribeMed,
   editMedical,
 } from "../../db/medicineReport";
 import { NetworkStatus } from "../NetworkStatus";
@@ -33,8 +33,10 @@ export default function Report({ navigation, route }) {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [desc, setDes] = useState("");
+
   const [currentId, setCurrentId] = useState("");
   const [mediList, setMidList] = useState([]);
+
   const [printTitle, setprintTitle] = useState("");
   const [printDay, setprintDay] = useState("");
   const [printMonth, setprintMonth] = useState("");
@@ -43,37 +45,14 @@ export default function Report({ navigation, route }) {
 
   const [editTitle, seteditTitle] = useState("");
   const [editday, seteditday] = useState("");
-
   const [editMonth, seteditMonth] = useState("");
   const [editYear, seteditYear] = useState("");
   const [editImg, setImageVal] = useState("");
   const [editDesc, seteditDesc] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
-  const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const ref = firebase
-      .storage()
-      .ref()
-      .child(`UsersImages/${new Date().toISOString()}`);
-    const snapshot = await ref.put(blob);
-    const downloadURL = await snapshot.ref.getDownloadURL();
-    setImage(downloadURL);
-    console.log("download link", downloadURL);
-    setImage(downloadURL);
-    // watch out here
-  };
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 1,
-    });
-    setLoading(true);
-    await uploadImage(result.uri);
-    setLoading(false);
-  };
+
   React.useEffect(() => {
     getUserUId().then((val) => {
       setCurrentId(val);
@@ -92,6 +71,7 @@ export default function Report({ navigation, route }) {
       }
     });
   });
+
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
@@ -105,7 +85,7 @@ export default function Report({ navigation, route }) {
 
   React.useEffect(() => {
     if (!flagAddVal) {
-      const unsubscribe = subscribe(({ change, snapshot }) => {
+      const unsubscribe = subscribeMed(({ change, snapshot }) => {
         if (change.type === "added") {
           console.log("New Medicine: ", change.doc.data());
           getmedcList();
@@ -125,6 +105,37 @@ export default function Report({ navigation, route }) {
       };
     }
   }, []);
+
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`UsersImages/${new Date().toISOString()}`);
+    const snapshot = await ref.put(blob);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    console.log("test    : ", downloadURL);
+    if (flagAddVal) {
+      setImage(downloadURL);
+    } else {
+      setImage(downloadURL);
+      setImageVal(downloadURL);
+    }
+
+    // watch out here
+  };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+    setLoading(true);
+    await uploadImage(result.uri);
+    setLoading(false);
+  };
+
   return (
     <NetworkStatus>
       <View style={styles.body}>
@@ -164,6 +175,7 @@ export default function Report({ navigation, route }) {
               ) : (
                 <TextInput
                   style={styles.input}
+                  defaultValue={printTitle}
                   onChangeText={(val) => {
                     seteditTitle(val);
                   }}
@@ -190,6 +202,7 @@ export default function Report({ navigation, route }) {
                     style={styles.DMYInp}
                     placeholder="Day"
                     keyboardType="number-pad"
+                    defaultValue={printDay}
                     onChangeText={seteditday}
                   />
                 )}
@@ -207,6 +220,7 @@ export default function Report({ navigation, route }) {
                     style={styles.DMYInp}
                     placeholder="Month"
                     keyboardType="number-pad"
+                    defaultValue={printMonth}
                     onChangeText={seteditMonth}
                   />
                 )}
@@ -224,6 +238,7 @@ export default function Report({ navigation, route }) {
                     style={styles.DMYInp}
                     placeholder="Year"
                     keyboardType="number-pad"
+                    defaultValue={printYear}
                     onChangeText={seteditYear}
                   />
                 )}
@@ -250,11 +265,13 @@ export default function Report({ navigation, route }) {
                   style={styles.inp}
                   multiline
                   scrollEnabled
+                  defaultValue={printDesc}
                   onChangeText={seteditDesc}
                 />
               )}
             </View>
           </View>
+
           <View style={styles.Viewimag}>
             <View style={styles.iconView}>
               {loading ? (
@@ -265,17 +282,59 @@ export default function Report({ navigation, route }) {
                   style={styles.activityIndicator}
                 />
               ) : (
-                <View
-                  style={{
-                    borderRadius: 10,
-                    overflow: "hidden",
-                    marginBottom: 10,
-                  }}
-                >
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 328, height: 150 }}
-                  />
+                <View>
+                  {flagAddVal ? (
+                    <View
+                      style={{
+                        borderRadius: 10,
+                        overflow: "hidden",
+                        marginBottom: 20,
+                      }}
+                    >
+                      {image != "" ? (
+                        <Image
+                          source={{ uri: image }}
+                          style={{
+                            width: 328,
+                            height: 150,
+                            resizeMode: "stretch",
+                          }}
+                        />
+                      ) : null}
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        borderRadius: 10,
+                        overflow: "hidden",
+                        marginBottom: 20,
+                      }}
+                    >
+                      {image != "" ? (
+                        <Image
+                          source={{ uri: image }}
+                          style={{
+                            width: 328,
+                            height: 150,
+                            resizeMode: "stretch",
+                          }}
+                        />
+                      ) : (
+                        <View>
+                          {editImg == "" ? null : (
+                            <Image
+                              source={{ uri: editImg }}
+                              style={{
+                                width: 328,
+                                height: 150,
+                                resizeMode: "stretch",
+                              }}
+                            />
+                          )}
+                        </View>
+                      )}
+                    </View>
+                  )}
                 </View>
               )}
               <TouchableOpacity
@@ -287,7 +346,6 @@ export default function Report({ navigation, route }) {
             </View>
             <View style={styles.wordsView}>
               <Text style={styles.words}>
-                {" "}
                 Add pictures for medical prescription{"\n                 "}and
                 medical tests
               </Text>
@@ -312,7 +370,7 @@ export default function Report({ navigation, route }) {
                   day <= 31 &&
                   desc.length > 0
                 ) {
-                  navigation.navigate("TabFun");
+                  navigation.navigate("Medical");
                   console.log(
                     title,
                     " ",
@@ -350,14 +408,14 @@ export default function Report({ navigation, route }) {
               }}
             >
               <View style={styles.button2}>
-                <Text style={styles.button1}> Add Report</Text>
+                <Text style={styles.button1}>Add Report</Text>
               </View>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                navigation.navigate("TabFun");
+                navigation.navigate("Medical");
                 let titleValue = printTitle;
                 let dayValue = printDay;
                 let monthValue = printMonth;
@@ -387,7 +445,7 @@ export default function Report({ navigation, route }) {
                     month: monthValue,
                     year: yearValue,
                     description: desValue,
-                    image: imgValue,
+                    image: image == "" ? imgValue : image,
                   },
                   itemId
                 );
@@ -395,7 +453,7 @@ export default function Report({ navigation, route }) {
               }}
             >
               <View style={styles.button2}>
-                <Text style={styles.button1}> Edit Report</Text>
+                <Text style={styles.button1}>Edit Report</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -527,7 +585,7 @@ const styles = StyleSheet.create({
     color: "#0B3B63",
   },
   iconView: {
-    marginTop: 36,
+    marginTop: 20,
     alignItems: "center",
   },
   icon: {
@@ -550,7 +608,7 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: "#FFA8C5",
     color: "#ffff",
-    marginBottom: 10,
+    marginBottom: 50,
   },
   button1: {
     fontFamily: "Montserrat",
@@ -563,6 +621,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   Viewimag: {
+    marginBottom: 32,
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
     marginBottom: 32,
   },
 });

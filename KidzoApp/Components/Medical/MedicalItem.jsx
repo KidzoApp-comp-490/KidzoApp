@@ -11,27 +11,30 @@ import { StatusBar } from "expo-status-bar";
 import Frame from "../../assets/MedicalH/Frame.png";
 import Icon from "../../assets/MedicalH/material-symbols_add-circle-outline-rounded.png";
 import Medical from "./Medical";
-import { getMedical, subscribe } from '../../db/medicineReport'
+import { getMedical, subscribeMed } from "../../db/medicineReport";
 import { getUserUId } from "../../db/firebase/auth";
 export default function MedicalItem({ navigation }) {
   let userId;
   let flagAdd = false;
   const [mediList, setMidList] = useState([]);
   const [currentId, setCurrentId] = useState("");
+
   getUserUId().then((val) => {
     setCurrentId(val);
   });
+
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
     // console.log("medicines from database", medc);
-  }
+  };
+
   React.useEffect(() => {
     getmedcList();
   }, []);
 
   React.useEffect(() => {
-    const unsubscribe = subscribe(({ change, snapshot }) => {
+    const unsubscribe = subscribeMed(({ change, snapshot }) => {
       if (change.type === "added") {
         console.log("New Medicine: ", change.doc.data());
         getmedcList();
@@ -50,6 +53,7 @@ export default function MedicalItem({ navigation }) {
       unsubscribe();
     };
   }, []);
+
   return (
     <View style={styles.body}>
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
@@ -76,7 +80,6 @@ export default function MedicalItem({ navigation }) {
               flagAdd = true;
               navigation.navigate("Report", { flagAddVal: flagAdd });
               console.log("nav");
-
             }}
           >
             <Image source={Icon} style={styles.icon} />
@@ -84,27 +87,27 @@ export default function MedicalItem({ navigation }) {
         </View>
         <View style={styles.wordsView}>
           <Text style={styles.words}>
-            {" "}
             Add new medical reprt{"\n         "}for your child
           </Text>
         </View>
 
-        {mediList.map((e, index) => (
-
-          userId = e.currentUserid,
-          currentId == userId ?
-            <Medical
-              text1={e.title}
-              day={e.day}
-              month={e.month}
-              year={e.year}
-              key={index}
-              compId={e.id}
-              desc={e.description}
-              image={e.image}
-            />
-            : null
-        ))}
+        {mediList.map(
+          (e, index) => (
+            (userId = e.currentUserid),
+            currentId == userId ? (
+              <Medical
+                text1={e.title}
+                day={e.day}
+                month={e.month}
+                year={e.year}
+                key={index}
+                compId={e.id}
+                desc={e.description}
+                image={e.image}
+              />
+            ) : null
+          )
+        )}
         <View style={{ marginBottom: 50 }}></View>
       </ScrollView>
       <StatusBar style="auto" />

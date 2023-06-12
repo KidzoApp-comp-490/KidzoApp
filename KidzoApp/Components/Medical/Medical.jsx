@@ -6,17 +6,25 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  ActivityIndicator
+  Alert,
 } from "react-native";
 import Imagem from "../../assets/MedicalH/material-symbols_edit-rounded.png";
 import Ok from "../../assets/MedicalH/ok.png";
-import ImageDelete from "../../assets/MedicalH/majesticons_delete-bin-line.png"
-import { getMedical, subscribe, deleteMedicineReport } from '../../db/medicineReport'
-import { useNavigation } from '@react-navigation/native';
-export default function Medical({ text1, day, month, year, compId, desc, image }) {
+import ImageDelete from "../../assets/MedicalH/majesticons_delete-bin-line.png";
+import { deleteMedicineReport } from "../../db/medicineReport";
+import { useNavigation } from "@react-navigation/native";
+export default function Medical({
+  text1,
+  day,
+  month,
+  year,
+  compId,
+  desc,
+  image,
+}) {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+
   return (
     <View style={styles.body}>
       <Modal
@@ -30,24 +38,30 @@ export default function Medical({ text1, day, month, year, compId, desc, image }
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{text1}</Text>
-            <Text style={styles.modalText1}>{day}-{month}-{year}</Text>
+            <Text style={styles.modalText1}>
+              {day}-{month}-{year}
+            </Text>
             <Text style={styles.modalText2}>{desc}</Text>
-              <View style={{ borderRadius: 20, overflow: "hidden" }}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 168, marginTop:20 }}
-                />
-              </View>
-            <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}>
+            <View
+              style={{ borderRadius: 20, overflow: "hidden", marginBottom: 20 }}
+            >
+              <Image
+                source={{ uri: image }}
+                style={{
+                  width: 200,
+                  height: 168,
+                  marginTop: 20,
+                  borderRadius: 20,
+                }}
+              />
+            </View>
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <Image source={Ok} style={styles.imageOk} />
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-      >
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.bordView}>
           <Text style={styles.statment1}> {text1}</Text>
           <Text style={styles.statment2}>
@@ -56,26 +70,38 @@ export default function Medical({ text1, day, month, year, compId, desc, image }
           <View style={styles.imageView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Report", { itemId: compId })
+                navigation.navigate("Report", { itemId: compId });
               }}
             >
               <Image source={Imagem} style={styles.image} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                deleteMedicineReport(compId)
-                alert("Removed!");
-                navigation.navigate("TabFun");
-              }
-              }
+                Alert.alert(
+                  "Delete History",
+                  "Are you sure you want to delete this History?",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        deleteMedicineReport(compId);
+                        alert("Deleted");
+                      },
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              }}
             >
               <Image source={ImageDelete} style={styles.image} />
             </TouchableOpacity>
           </View>
         </View>
-
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -106,8 +132,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   image: {
-    width: 12.18,
-    height: 12.17,
+    width: 20,
+    height: 20,
     marginRight: 18,
   },
   imageView: {
@@ -116,18 +142,18 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -135,8 +161,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 300,
-    height: 600
+    width: "85%",
+    height: "70%",
   },
   button: {
     borderRadius: 20,
@@ -144,24 +170,24 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     color: "#0B3B63",
     fontFamily: "Montserrat",
     fontSize: 40,
-    fontWeight: '900',
+    fontWeight: "900",
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   modalText1: {
     color: "#0B3B63",
     fontFamily: "Montserrat",
     fontSize: 15,
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   modalText2: {
     color: "#0B3B63",
@@ -171,8 +197,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   imageOk: {
-    margin:20,
+    margin: 20,
     width: 48,
     height: 48,
-  }
+    marginTop: 32,
+  },
 });
