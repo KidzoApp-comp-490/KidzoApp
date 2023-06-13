@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   PassView: {
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   inputPass: {
     width: 300,
     height: 42,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   flNameView: {
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   lNameView: {
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   PhoneView: {

@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     width: 328,
     height: 48,
     borderRadius: 5,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   passView: {
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFA8C5",
     width: 300,
     height: 44,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   forgotword: {

@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   inpPassText: {
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   inputPass: {
     width: 300,
     height: 42,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   AdressView: {
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
     width: 328,
     borderWidth: 1,
     borderColor: "#FFA8C5",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
   },
   PassView: {
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     borderWidth: 1,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
     borderColor: "#FFA8C5",
   },
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 5,
     borderWidth: 1,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     color: "#0B3B63",
     borderColor: "#FFA8C5",
   },

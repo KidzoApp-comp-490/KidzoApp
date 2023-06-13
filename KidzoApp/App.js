@@ -109,7 +109,7 @@ export default function App() {
     <NetworkStatus>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="First"
+          initialRouteName="SignIn"
           screenOptions={{
             ...TransitionPresets.SlideFromRightIOS,
             ...TransitionPresets.ScaleFromCenterAndroid,
