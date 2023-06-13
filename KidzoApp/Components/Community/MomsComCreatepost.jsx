@@ -135,18 +135,20 @@ export default function MomsComCreatepost() {
               justifyContent: "center",
             }}
           >
-            <Image
-              source={{ uri: imageup }}
-              style={{
-                width: "90%",
-                height: 150,
-                marginVertical: 16,
-                justifyContent: "center",
-                alignItems: "center",
-                resizeMode: "stretch",
-                borderRadius: 15,
-              }}
-            />
+            {imageup == "" ? null : (
+              <Image
+                source={{ uri: imageup }}
+                style={{
+                  width: "90%",
+                  height: 150,
+                  marginTop: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  resizeMode: "stretch",
+                  borderRadius: 15,
+                }}
+              />
+            )}
           </View>
         )}
         <View
@@ -167,6 +169,7 @@ export default function MomsComCreatepost() {
               alignItems: "center",
               justifyContent: "center",
               marginBottom: 48,
+              marginTop: 32,
             }}
             onPress={() => {
               if (value.length === 0 && imageup === "") {

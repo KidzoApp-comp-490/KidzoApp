@@ -31,7 +31,7 @@ export default function Messages({ iconSrc, text1, text2, docId }) {
             <Text>
               {text1} {text2}
             </Text>
-            <View style={styles.dotImageView}></View>
+            {/* <View style={styles.dotImageView}></View> */}
           </View>
         </View>
       </TouchableOpacity>

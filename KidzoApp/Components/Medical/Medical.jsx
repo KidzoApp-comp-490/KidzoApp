@@ -43,17 +43,23 @@ export default function Medical({
             </Text>
             <Text style={styles.modalText2}>{desc}</Text>
             <View
-              style={{ borderRadius: 20, overflow: "hidden", marginBottom: 20 }}
+              style={{
+                borderRadius: 20,
+                overflow: "hidden",
+                marginVertical: 20,
+              }}
             >
-              <Image
-                source={{ uri: image }}
-                style={{
-                  width: 200,
-                  height: 168,
-                  marginTop: 20,
-                  borderRadius: 20,
-                }}
-              />
+              {image == "" ? null : (
+                <Image
+                  source={{ uri: image }}
+                  style={{
+                    width: 250,
+                    height: 168,
+
+                    borderRadius: 20,
+                  }}
+                />
+              )}
             </View>
             <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
               <Image source={Ok} style={styles.imageOk} />
@@ -79,7 +85,7 @@ export default function Medical({
               onPress={() => {
                 Alert.alert(
                   "Delete History",
-                  "Are you sure you want to delete this History?",
+                  "Are you sure to delete this history?",
                   [
                     {
                       text: "Cancel",
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 25,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
@@ -161,8 +167,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: "85%",
-    height: "70%",
+    // width: "85%",
+    // height: "70%",
   },
   button: {
     borderRadius: 20,
