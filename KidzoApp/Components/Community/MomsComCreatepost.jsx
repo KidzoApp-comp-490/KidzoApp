@@ -67,7 +67,7 @@ export default function MomsComCreatepost() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+     
         <View style={styles.titleView}>
           <View style={styles.frameView}>
             <TouchableOpacity
@@ -85,7 +85,7 @@ export default function MomsComCreatepost() {
         <View style={styles.lineView}>
           <Text style={styles.line}>────────────────────────────────</Text>
         </View>
-
+        <ScrollView>
         <View style={styles.header}>
           <View style={{ borderRadius: 100, overflow: "hidden" }}>
             <Image source={{ uri: image }} style={{ width: 45, height: 45 }} />

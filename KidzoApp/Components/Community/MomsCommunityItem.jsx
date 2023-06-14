@@ -41,11 +41,7 @@ export default function MomsCommunityItem() {
   });
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: "center",
-        }}
-      >
+      
         <View style={styles.titleView}>
           <View style={styles.wordView}>
             <Text style={styles.title}>MOMS COMMUNITY</Text>
@@ -54,6 +50,11 @@ export default function MomsCommunityItem() {
         <View style={styles.lineView}>
           <Text style={styles.line}>─────────────────────────────────</Text>
         </View>
+        <ScrollView
+        contentContainerStyle={{
+          alignItems: "center",
+        }}
+      >
         <View style={styles.InpView}>
           <TouchableOpacity
             style={styles.MomInpView}
