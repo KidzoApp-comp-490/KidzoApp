@@ -139,28 +139,30 @@ export default function Report({ navigation, route }) {
   return (
     <NetworkStatus>
       <View style={styles.body}>
+
+        <View style={styles.titleView}>
+          <View style={styles.frameView}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Medical");
+              }}
+            >
+              <Image source={Frame} style={styles.frame} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.wordView}>
+            {flagAddVal ? (
+              <Text style={styles.title}>NEW REPORT</Text>
+            ) : (
+              <Text style={styles.title}>EDIT REPORT</Text>
+            )}
+          </View>
+        </View>
+
+        <View style={styles.lineView}>
+          <Text style={styles.line}> ────────────────────────────────</Text>
+        </View>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-          <View style={styles.titleView}>
-            <View style={styles.frameView}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Medical");
-                }}
-              >
-                <Image source={Frame} style={styles.frame} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.wordView}>
-              {flagAddVal ? (
-                <Text style={styles.title}>NEW REPORT</Text>
-              ) : (
-                <Text style={styles.title}>EDIT REPORT</Text>
-              )}
-            </View>
-          </View>
-          <View style={styles.lineView}>
-            <Text style={styles.line}> ────────────────────────────────</Text>
-          </View>
           <View style={styles.ReportView}>
             <View style={styles.starView}>
               <Text style={styles.inpText}>Report Title {""}</Text>
@@ -178,7 +180,9 @@ export default function Report({ navigation, route }) {
                   defaultValue={printTitle}
                   onChangeText={(val) => {
                     seteditTitle(val);
+                    
                   }}
+                  maxLength={10}
                 />
               )}
             </View>
@@ -457,8 +461,8 @@ export default function Report({ navigation, route }) {
               </View>
             </TouchableOpacity>
           )}
-        </ScrollView>
 
+        </ScrollView>
         <StatusBar style="auto" />
       </View>
     </NetworkStatus>

@@ -28,7 +28,6 @@ export default function DoctorItem({ navigation }) {
   }, [])
   return (
     <View style={styles.body}>
-      <ScrollView>
         <View style={styles.titleView}>
           <View style={styles.frameView}>
             <TouchableOpacity
@@ -44,6 +43,7 @@ export default function DoctorItem({ navigation }) {
         <View style={styles.lineView}>
           <Text style={styles.line}>──────────────────────────────────</Text>
         </View>
+        <ScrollView>
         {usersList.map((e, index) =>
           e.job == "Doctor" ? (
             <Doctors
