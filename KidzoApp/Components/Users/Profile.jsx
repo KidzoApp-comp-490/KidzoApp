@@ -179,7 +179,7 @@ export default function Profile({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={styles.lineView}>
-            <Text style={styles.line}>───────────────────────────────────</Text>
+            <Text style={styles.line}>────────────────────────────────</Text>
           </View>
           <Text style={styles.PostsTxt}>Posts</Text>
           {postsList.map((e, index) =>

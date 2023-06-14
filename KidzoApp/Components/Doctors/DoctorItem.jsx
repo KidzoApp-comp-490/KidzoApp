@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import BackIcon from "../../assets/MedicalH/Frame.png";
 import { StatusBar } from "expo-status-bar";
 import Doctors from "./Doctors";
-import { getusersInfo,subscribe } from "../../db/firebase/users";
+import { getusersInfo, subscribe } from "../../db/firebase/users";
 
 export default function DoctorItem({ navigation }) {
   const [usersList, setUsersList] = useState([]);
@@ -21,29 +21,29 @@ export default function DoctorItem({ navigation }) {
   React.useEffect(() => {
     const unsubscribe = subscribe(() => {
       getUsersList();
-    })
+    });
     return () => {
       unsubscribe();
     };
-  }, [])
+  }, []);
   return (
     <View style={styles.body}>
-        <View style={styles.titleView}>
-          <View style={styles.frameView}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("TabFun");
-              }}
-            >
-              <Image source={BackIcon} style={styles.frame} />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.title}>Doctors</Text>
+      <View style={styles.titleView}>
+        <View style={styles.frameView}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("TabFun");
+            }}
+          >
+            <Image source={BackIcon} style={styles.frame} />
+          </TouchableOpacity>
         </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}>──────────────────────────────────</Text>
-        </View>
-        <ScrollView>
+        <Text style={styles.title}>Doctors</Text>
+      </View>
+      <View style={styles.lineView}>
+        <Text style={styles.line}>────────────────────────────────</Text>
+      </View>
+      <ScrollView>
         {usersList.map((e, index) =>
           e.job == "Doctor" ? (
             <Doctors

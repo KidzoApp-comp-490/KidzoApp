@@ -45,7 +45,7 @@ export default function ImageUploader({ navigation }) {
       </View>
 
       <View style={styles.lineView}>
-        <Text style={styles.line}> ────────────────────────────────</Text>
+        <Text style={styles.line}>────────────────────────────────</Text>
       </View>
 
       {/* Question user to choose what he want */}

@@ -25,7 +25,7 @@ export default function Settings({ navigation }) {
             <Text style={styles.word}>SETTINGS</Text>
           </View>
           <View style={styles.lineView}>
-            <Text style={styles.line}> ────────────────────────────────</Text>
+            <Text style={styles.line}>────────────────────────────────</Text>
           </View>
           <TouchableOpacity
             onPress={() => {

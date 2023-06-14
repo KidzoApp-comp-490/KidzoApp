@@ -67,25 +67,24 @@ export default function MomsComCreatepost() {
 
   return (
     <View style={styles.container}>
-     
-        <View style={styles.titleView}>
-          <View style={styles.frameView}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("TabFun");
-              }}
-            >
-              <Image source={Frame} style={styles.frame} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.wordView}>
-            <Text style={styles.title}>CREATE POST</Text>
-          </View>
+      <View style={styles.titleView}>
+        <View style={styles.frameView}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("TabFun");
+            }}
+          >
+            <Image source={Frame} style={styles.frame} />
+          </TouchableOpacity>
         </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}>────────────────────────────────</Text>
+        <View style={styles.wordView}>
+          <Text style={styles.title}>CREATE POST</Text>
         </View>
-        <ScrollView>
+      </View>
+      <View style={styles.lineView}>
+        <Text style={styles.line}>────────────────────────────────</Text>
+      </View>
+      <ScrollView>
         <View style={styles.header}>
           <View style={{ borderRadius: 100, overflow: "hidden" }}>
             <Image source={{ uri: image }} style={{ width: 45, height: 45 }} />

@@ -139,7 +139,6 @@ export default function Report({ navigation, route }) {
   return (
     <NetworkStatus>
       <View style={styles.body}>
-
         <View style={styles.titleView}>
           <View style={styles.frameView}>
             <TouchableOpacity
@@ -160,7 +159,7 @@ export default function Report({ navigation, route }) {
         </View>
 
         <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
           <View style={styles.ReportView}>
@@ -180,7 +179,6 @@ export default function Report({ navigation, route }) {
                   defaultValue={printTitle}
                   onChangeText={(val) => {
                     seteditTitle(val);
-                    
                   }}
                   maxLength={10}
                 />
@@ -461,7 +459,6 @@ export default function Report({ navigation, route }) {
               </View>
             </TouchableOpacity>
           )}
-
         </ScrollView>
         <StatusBar style="auto" />
       </View>

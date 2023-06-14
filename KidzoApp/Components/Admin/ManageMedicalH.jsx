@@ -80,7 +80,7 @@ export default function ManageMedicalH({ navigation }) {
           <Text style={styles.title}>Medical History</Text>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}>──────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
         {medicalList.map((e, index) => (
           <ManageMedicalHItem
