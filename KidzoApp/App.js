@@ -46,6 +46,7 @@ import ImageUploader from "./Components/Session/ImageUploader";
 import MomsComCreatepost from "./Components/Community/MomsComCreatepost";
 import Map from "./Components/Map/Map";
 import DoctorSettings from "./Components/Doctors/Doctorsettings";
+import Comment from "./Components/Community/Comment";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -109,7 +110,7 @@ export default function App() {
     <NetworkStatus>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SignIn"
+          initialRouteName="First"
           screenOptions={{
             ...TransitionPresets.SlideFromRightIOS,
             ...TransitionPresets.ScaleFromCenterAndroid,
@@ -272,6 +273,11 @@ export default function App() {
           <Stack.Screen
             name="ManageCommunity"
             component={ManageCommunity}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Comment"
+            component={Comment}
             options={{ headerShown: false }}
           />
           <Stack.Screen

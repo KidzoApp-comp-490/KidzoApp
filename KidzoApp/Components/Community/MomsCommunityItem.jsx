@@ -40,7 +40,7 @@ export default function MomsCommunityItem() {
     });
   });
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
       <ScrollView
         contentContainerStyle={{
           alignItems: "center",
@@ -68,6 +68,7 @@ export default function MomsCommunityItem() {
             image={e.image}
             idpost={e.id}
             numreact={e.numreact}
+            userId={e.currentUserid}
             key={index}
           />
         ))}

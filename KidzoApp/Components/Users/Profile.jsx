@@ -18,6 +18,7 @@ import { StatusBar } from "expo-status-bar";
 import { NetworkStatus } from "../NetworkStatus";
 import { deletepost, getpost, subscribePost } from "../../db/firebase/post";
 import DeleteIcon from "../../assets/Profile/majesticons_delete-bin-line.png";
+import { useNavigation } from "@react-navigation/native";
 
 export function PostItem({
   postText,
@@ -29,6 +30,7 @@ export function PostItem({
   profImg,
   onDeletePost,
 }) {
+  const navigation = useNavigation();
   const confirmDeletePost = (postId) => {
     Alert.alert(
       "Delete Post",
@@ -57,7 +59,7 @@ export function PostItem({
           source={{ uri: profImg }}
           style={{ width: 55, height: 55, borderRadius: 100 }}
         />
-        <Text style={styles.userName}>
+        <Text style={styles.userNamePost}>
           {fName} {lName}
         </Text>
         <TouchableOpacity
@@ -88,9 +90,22 @@ export function PostItem({
 
         <View style={styles.ReactsView}>
           <View style={styles.LeftPart}>
-            <Image source={Heart} style={{ width: 24, height: 24 }} />
-            <Text style={styles.ReactTxt}>{numreact}</Text>
+            <Image
+              source={Heart}
+              style={{ width: 24, height: 24, marginLeft: 10 }}
+            />
+            <Text style={styles.ReactTxt}>{numreact} Love</Text>
           </View>
+          <View style={styles.VerticalPar}></View>
+          <TouchableOpacity
+            style={styles.RightPart}
+            onPress={() => {
+              navigation.navigate("Comment", { postId: postId });
+            }}
+          >
+            <Image source={Comment} style={{ width: 24, height: 24 }} />
+            <Text style={styles.CommentTxt}>Comments</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -135,7 +150,7 @@ export default function Profile({ navigation }) {
 
   return (
     <NetworkStatus>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
         <ScrollView
           contentContainerStyle={{ alignItems: "center", marginBottom: 80 }}
         >
@@ -143,16 +158,14 @@ export default function Profile({ navigation }) {
             <Text style={styles.ProfileTxt}>YOUR PROFILE</Text>
           </View>
           <View style={styles.Section1}>
-            <View style={{paddingRight: 17}}>
-              <View style={{ borderRadius: 100, overflow: "hidden"}}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 150, height: 150}}
-                />
-              </View>
+            <View style={{ borderRadius: 100, overflow: "hidden" }}>
+              <Image
+                source={{ uri: image }}
+                style={{ width: 130, height: 130 }}
+              />
             </View>
             <Text style={styles.UserName}>
-                {firstname} {lastname}
+              {firstname} {lastname}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -161,7 +174,7 @@ export default function Profile({ navigation }) {
             >
               <Image
                 source={EditIcon}
-                style={{ width: 22.85, height: 22.81 , paddingRight : 17}}
+                style={{ width: 22.85, height: 22.81, paddingRight: 17 }}
               />
             </TouchableOpacity>
           </View>
@@ -206,15 +219,14 @@ const styles = StyleSheet.create({
     marginTop: 33,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   UserName: {
     fontSize: 18,
     fontWeight: "700",
     fontFamily: "Montserrat",
     color: "#0B3B63",
-    marginLeft: 25,
-    marginRight: 29.75,
+    marginHorizontal: 15,
   },
   lineView: {
     marginTop: 16,
@@ -245,7 +257,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 18,
   },
-  userName: {
+  userNamePost: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: "Montserrat",
@@ -276,9 +288,28 @@ const styles = StyleSheet.create({
   LeftPart: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    width: "49%",
+    marginLeft: 16,
   },
   ReactTxt: {
+    fontSize: 14,
+    fontWeight: "500",
+    fontFamily: "Montserrat",
+    color: "#FFA8C5",
+    marginLeft: 5,
+  },
+  VerticalPar: {
+    width: 1,
+    height: 47,
+    backgroundColor: "rgba(11, 59, 99, 0.15)",
+  },
+  RightPart: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "49%",
+    marginLeft: 16,
+  },
+  CommentTxt: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: "Montserrat",

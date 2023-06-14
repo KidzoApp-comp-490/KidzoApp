@@ -10,34 +10,25 @@ import {
 import { useState, useEffect } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
-import { editpost, addComment } from "../../db/firebase/post"; // Import the addComment function
-// import { firebase } from "../../db/Config";
-// import "firebase/database";
-export default function MomsCommunity({ value, image, idpost, numreact }) {
+import Comment from "../../assets/Community/Comment.png";
+import { editpost } from "../../db/firebase/post";
+import { useNavigation } from "@react-navigation/native";
+import { getUserById, subscribe } from "../../db/firebase/users";
+
+export default function MomsCommunity({
+  value,
+  image,
+  idpost,
+  numreact,
+  userId,
+}) {
+  const navigation = useNavigation();
+
   const [icon, setIcon] = useState(true);
   const [reactNum, setReactNum] = useState(numreact);
-  const [comment, setComment] = useState(""); // State to store the comment
-  const [comments, setComments] = useState([]); // State to store the comments
-
-  // useEffect(() => {
-  //   // Fetch comments for the post
-  //   fetchComments();
-  // }, []);
-
-  // const getComments = async (postId) => {
-  //   const snapshot = await firebase
-  //     .database()
-  //     .ref(`posts/${postId}/comments`)
-  //     .once("value");
-  //   const comments = snapshot.val();
-  //   return comments ? Object.values(comments) : [];
-  // };
-
-  // Example usage
-  // const fetchComments = async () => {
-  //   const fetchedComments = await getComments(idpost);
-  //   setComments(fetchedComments);
-  // };
+  const [FName, SetFName] = useState("");
+  const [LName, SetLName] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   const clickHeart = async () => {
     if (icon) {
@@ -58,38 +49,29 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
     setIcon(!icon); // Toggle the value of 'icon'
   };
 
-  // const addComment = async (postId, comment) => {
-  //   const newCommentRef = firebase
-  //     .database()
-  //     .ref(`posts/${postId}/comments`)
-  //     .push();
-  //   const newCommentKey = newCommentRef.key;
-
-  //   const commentData = {
-  //     id: newCommentKey,
-  //     text: comment,
-  //   };
-
-  //   await newCommentRef.set(commentData);
-  // };
-
-  // Example usage
-  // const handleAddComment = async () => {
-  //   if (comment.trim() === "") return;
-
-  //   try {
-  //     await addComment(idpost, comment);
-  //     setComments([...comments, comment]);
-  //     setComment("");
-  //   } catch (error) {
-  //     console.error("Error adding comment:", error);
-  //   }
-  // };
-
   const imageSource = icon ? Heart : ColoredHeart;
+
+  useEffect(() => {
+    subscribe(() => {
+      getUserById(userId).then((user) => {
+        SetFName(user[0].fName);
+        SetLName(user[0].lName);
+        setUserImage(user[0].image);
+      });
+    });
+  }, []);
 
   return (
     <View style={styles.PostsView}>
+      <View style={styles.userInfoView}>
+        <Image
+          source={{ uri: userImage }}
+          style={{ width: 55, height: 55, borderRadius: 100 }}
+        />
+        <Text style={styles.userName}>
+          {FName} {LName}
+        </Text>
+      </View>
       <Text style={styles.PostTitle}>{value}</Text>
       <View style={{ alignItems: "center" }}>
         {image === "" ? null : (
@@ -111,32 +93,22 @@ export default function MomsCommunity({ value, image, idpost, numreact }) {
             </TouchableOpacity>
             <Text style={styles.ReactTxt}>{reactNum}</Text>
           </View>
+          <View style={styles.VerticalPar}></View>
+          <TouchableOpacity
+            style={styles.RightPart}
+            onPress={() => {
+              navigation.navigate("Comment", { postId: idpost });
+              console.log("postId: ", idpost);
+            }}
+          >
+            {/* <View style={styles.RightPart}> */}
+
+            <Image source={Comment} style={{ width: 24, height: 24 }} />
+            <Text style={styles.CommentTxt}>Comments</Text>
+            {/* </View> */}
+          </TouchableOpacity>
         </View>
       </View>
-
-      {/* <View style={styles.CommentsContainer}>
-        <Text style={styles.CommentsTitle}>Comments</Text>
-        {comments.map((comment, index) => (
-          <Text style={styles.CommentText} key={index}>
-            {comment}
-          </Text>
-        ))}
-      </View>
-
-      <View style={styles.CommentInputContainer}>
-        <TextInput
-          style={styles.CommentInput}
-          placeholder="Add a comment..."
-          value={comment}
-          onChangeText={setComment}
-        />
-        <TouchableOpacity
-          style={styles.AddCommentButton}
-          onPress={handleAddComment}
-        >
-          <Text style={styles.AddCommentButtonText}>Post</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 }
@@ -182,19 +154,17 @@ const styles = StyleSheet.create({
   ReactsView: {
     flexDirection: "row",
     width: 370,
-    height: 48,
     paddingBottom: 5,
     borderRadius: 15,
     borderWidth: 1,
     marginTop: 16,
     borderColor: "rgba(11, 59, 99, 0.15)",
-    justifyContent: "center",
-    alignItems: "center",
   },
   LeftPart: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    width: "49%",
+    marginLeft: 16,
   },
   ReactTxt: {
     fontSize: 14,
@@ -203,41 +173,22 @@ const styles = StyleSheet.create({
     color: "#FFA8C5",
     marginLeft: 5,
   },
-  CommentsContainer: {
-    marginTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#EFEFEF",
-    paddingTop: 16,
+  VerticalPar: {
+    width: 1,
+    height: 47,
+    backgroundColor: "rgba(11, 59, 99, 0.15)",
   },
-  CommentsTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  CommentText: {
-    marginBottom: 8,
-  },
-  CommentInputContainer: {
+  RightPart: {
     flexDirection: "row",
-    marginTop: 16,
     alignItems: "center",
+    width: "49%",
+    marginLeft: 16,
   },
-  CommentInput: {
-    flex: 1,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: "#EFEFEF",
-    borderRadius: 8,
-    padding: 8,
-  },
-  AddCommentButton: {
-    backgroundColor: "#0B3B63",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  AddCommentButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "bold",
+  CommentTxt: {
+    fontSize: 14,
+    fontWeight: "500",
+    fontFamily: "Montserrat",
+    color: "#FFA8C5",
+    marginLeft: 5,
   },
 });
