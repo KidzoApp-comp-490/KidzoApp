@@ -86,7 +86,7 @@ export default function ManageCommunity({ navigation }) {
           <Text style={styles.title}>Community</Text>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}>──────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
         {postsList.map((e, index) => (
           <ManageCommunityItem

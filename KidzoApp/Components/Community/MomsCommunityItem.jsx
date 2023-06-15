@@ -40,20 +40,20 @@ export default function MomsCommunityItem() {
     });
   });
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <View style={styles.titleView}>
+        <View style={styles.wordView}>
+          <Text style={styles.title}>MOMS COMMUNITY</Text>
+        </View>
+      </View>
+      <View style={styles.lineView}>
+        <Text style={styles.line}>────────────────────────────────</Text>
+      </View>
       <ScrollView
         contentContainerStyle={{
           alignItems: "center",
         }}
       >
-        <View style={styles.titleView}>
-          <View style={styles.wordView}>
-            <Text style={styles.title}>MOMS COMMUNITY</Text>
-          </View>
-        </View>
-        <View style={styles.lineView}>
-          <Text style={styles.line}>─────────────────────────────────</Text>
-        </View>
         <View style={styles.InpView}>
           <TouchableOpacity
             style={styles.MomInpView}
@@ -68,6 +68,7 @@ export default function MomsCommunityItem() {
             image={e.image}
             idpost={e.id}
             numreact={e.numreact}
+            userId={e.currentUserid}
             key={index}
           />
         ))}

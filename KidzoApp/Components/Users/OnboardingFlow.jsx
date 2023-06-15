@@ -103,7 +103,13 @@ const OnboardingFlow = ({ navigation }) => {
 
   return (
     <NetworkStatus>
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          paddingBottom: 50,
+          backgroundColor: "#FFFFFF",
+        }}
+      >
         <View style={styles.container}>
           {slides.map((slide, index) => (
             <Animated.View

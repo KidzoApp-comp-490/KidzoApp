@@ -72,7 +72,7 @@ export default function MedicalItem({ navigation }) {
           </View>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}> ────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
         <View style={styles.iconView}>
           <TouchableOpacity

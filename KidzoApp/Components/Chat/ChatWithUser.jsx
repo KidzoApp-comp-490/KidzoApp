@@ -15,7 +15,13 @@ import Send from "../../assets/Chat/ic_round-send.png";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 import { getusersInfo } from "../../db/firebase/users";
-import { getMessage, addMessage, subscribe } from "../../db/Chat";
+import {
+  getMsgsforChatId,
+  getChat,
+  getMessage,
+  addMessage,
+  subscribe,
+} from "../../db/Chat";
 import { getUserUId } from "../../db/firebase/auth";
 import { onSnapshot, serverTimestamp } from "firebase/firestore";
 export default function ChatWithUser({ navigation, route }) {
@@ -32,7 +38,7 @@ export default function ChatWithUser({ navigation, route }) {
   const [messages, setMessages] = useState([]);
   const [userID, setuserID] = useState("");
   const [reciverID, setreciverID] = useState("");
-  const [isText, setisText] = useState(false);
+  let today = new Date();
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
@@ -114,39 +120,182 @@ export default function ChatWithUser({ navigation, route }) {
     console.log("added");
   };
   const renderMessage = ({ item }) =>
-    item.type == "text" ? (
-      <View
-        style={[
-          styles.messageContainer,
-          item.senderUid == userID && item.reciverUid == reciverID
-            ? styles.sentMessage
-            : item.senderUid == reciverID && item.reciverUid == userID
-            ? styles.receivedMessage
-            : null,
-        ]}
-      >
-        {(item.senderUid == userID && item.reciverUid == reciverID) ||
-        (item.senderUid == reciverID && item.reciverUid == userID) ? (
-          <Text>{item.content}</Text>
-        ) : null}
-      </View>
-    ) : (
-      <View
-        style={[
-          styles.messageContainer,
-          item.senderUid == userID && item.reciverUid == reciverID
-            ? styles.sentMessage
-            : item.senderUid == reciverID && item.reciverUid == userID
-            ? styles.receivedMessage
-            : null,
-        ]}
-      >
-        {(item.senderUid == userID && item.reciverUid == reciverID) ||
-        (item.senderUid == reciverID && item.reciverUid == userID) ? (
-          <Image source={{ uri: item.image }} style={styles.image} />
-        ) : null}
-      </View>
-    );
+    (item.senderUid == userID && item.reciverUid == reciverID) ||
+    (item.senderUid == reciverID && item.reciverUid == userID) ? (
+      item.type == "text" ? (
+        <View>
+          {(item.senderUid == userID && item.reciverUid == reciverID) ||
+          (item.senderUid == reciverID && item.reciverUid == userID) ? (
+            <View>
+              <View
+                style={[
+                  styles.messageContainer,
+                  item.senderUid == userID && item.reciverUid == reciverID
+                    ? styles.sentMessage
+                    : item.senderUid == reciverID && item.reciverUid == userID
+                    ? styles.receivedMessage
+                    : null,
+                ]}
+              >
+                {item.senderUid == userID && item.reciverUid == reciverID ? (
+                  <Text style={[styles.messageTxt1]}>{item.content}</Text>
+                ) : (
+                  <Text style={[styles.messageTxt2]}>{item.content}</Text>
+                )}
+
+                {item.time == undefined ? (
+                  today.getHours() <= 11 && today.getMinutes() <= 59 ? (
+                    today.getHours() == 0 ? (
+                      item.senderUid == userID &&
+                      item.reciverUid == reciverID ? (
+                        <Text style={[styles.date1]}>
+                          {"12"} {":"} {today.getMinutes()} {" AM"}
+                        </Text>
+                      ) : (
+                        <Text style={[styles.date2]}>{item.content}</Text>
+                      )
+                    ) : item.senderUid == userID &&
+                      item.reciverUid == reciverID ? (
+                      <Text style={[styles.date1]}>
+                        {today.getHours()} {":"} {today.getMinutes()} {" AM"}
+                      </Text>
+                    ) : (
+                      <Text style={[styles.date2]}>
+                        {today.getHours()} {":"} {today.getMinutes()} {" AM"}
+                      </Text>
+                    )
+                  ) : item.senderUid == userID &&
+                    item.reciverUid == reciverID ? (
+                    <Text style={[styles.date1]}>
+                      {today.getHours() % 12} {":"} {today.getMinutes()} {" PM"}
+                    </Text>
+                  ) : (
+                    <Text style={[styles.date2]}>
+                      {today.getHours() % 12} {":"} {today.getMinutes()} {" PM"}
+                    </Text>
+                  )
+                ) : item.time.toDate().getHours() <= 11 &&
+                  item.time.toDate().getMinutes() <= 59 ? (
+                  item.time.toDate().getHours() == 0 ? (
+                    item.senderUid == userID && item.reciverUid == reciverID ? (
+                      <Text style={[styles.date1]}>
+                        {"12"} {":"} {item.time.toDate().getMinutes()} {" AM"}
+                      </Text>
+                    ) : (
+                      <Text style={[styles.date2]}>
+                        {"12"} {":"} {item.time.toDate().getMinutes()} {" AM"}
+                      </Text>
+                    )
+                  ) : item.senderUid == userID &&
+                    item.reciverUid == reciverID ? (
+                    <Text style={[styles.date1]}>
+                      {item.time.toDate().getHours()} {":"}{" "}
+                      {item.time.toDate().getMinutes()} {" AM"}
+                    </Text>
+                  ) : (
+                    <Text style={[styles.date2]}>
+                      {item.time.toDate().getHours()} {":"}{" "}
+                      {item.time.toDate().getMinutes()} {" AM"}
+                    </Text>
+                  )
+                ) : item.senderUid == userID && item.reciverUid == reciverID ? (
+                  <Text style={[styles.date1]}>
+                    {item.time.toDate().getHours() % 12} {":"}{" "}
+                    {item.time.toDate().getMinutes()} {" PM"}
+                  </Text>
+                ) : (
+                  <Text style={[styles.date2]}>
+                    {item.time.toDate().getHours() % 12} {":"}{" "}
+                    {item.time.toDate().getMinutes()} {" PM"}
+                  </Text>
+                )}
+                {/* {
+                    item.senderUid == reciverID && item.reciverUid == userID ?
+                      <View style={[styles.arrowContainer]}>
+                        <View style={styles.leftArrow} />
+                        <View style={styles.leftArrowOverlap}></View>
+                      </View>
+
+                      :
+                      <View style={[styles.arrowContainer]}>
+                        <View style={styles.rightArrow} />
+                        <View style={styles.rightArrowOverlap}></View>
+                      </View>
+                  } */}
+              </View>
+            </View>
+          ) : null}
+        </View>
+      ) : item.image.length > 0 && item.content.length == 0 ? (
+        <View
+          style={[
+            styles.messageContainer,
+            item.senderUid == userID && item.reciverUid == reciverID
+              ? styles.sentMessage
+              : item.senderUid == reciverID && item.reciverUid == userID
+              ? styles.receivedMessage
+              : null,
+          ]}
+        >
+          {(item.senderUid == userID && item.reciverUid == reciverID) ||
+          (item.senderUid == reciverID && item.reciverUid == userID) ? (
+            <Image source={{ uri: item.image }} style={styles.image} />
+          ) : null}
+          {/* {
+              item.senderUid == reciverID && item.reciverUid == userID ?
+                <View style={[styles.arrowContainer]}>
+                  <View style={styles.leftArrow} />
+                  <View style={styles.leftArrowOverlap}></View>
+                </View>
+
+                :
+                <View style={[styles.arrowContainer]}>
+                  <View style={styles.rightArrow} />
+                  <View style={styles.rightArrowOverlap}></View>
+                </View>
+            } */}
+          {item.time == undefined ? (
+            <Text style={[styles.date]}>
+              {today.getHours()} {":"} {today.getMinutes()}{" "}
+              {item.content.length}
+            </Text>
+          ) : item.time.toDate().getHours() <= 11 &&
+            item.time.toDate().getMinutes() <= 59 ? (
+            item.time.toDate().getHours() == 0 ? (
+              item.senderUid == userID && item.reciverUid == reciverID ? (
+                <Text style={[styles.date1]}>
+                  {"12"} {":"} {item.time.toDate().getMinutes()} {" AM "}{" "}
+                </Text>
+              ) : (
+                <Text style={[styles.date2]}>
+                  {"12"} {":"} {item.time.toDate().getMinutes()} {" AM "}{" "}
+                </Text>
+              )
+            ) : item.senderUid == userID && item.reciverUid == reciverID ? (
+              <Text style={[styles.date1]}>
+                {item.time.toDate().getHours()} {":"}{" "}
+                {item.time.toDate().getMinutes()} {" AM "}
+              </Text>
+            ) : (
+              <Text style={[styles.date1]}>
+                {item.time.toDate().getHours()} {":"}{" "}
+                {item.time.toDate().getMinutes()} {" AM "}
+              </Text>
+            )
+          ) : item.senderUid == userID && item.reciverUid == reciverID ? (
+            <Text style={[styles.date1]}>
+              {item.time.toDate().getHours() % 12} {":"}{" "}
+              {item.time.toDate().getMinutes()} {" PM "}
+            </Text>
+          ) : (
+            <Text style={[styles.date2]}>
+              {item.time.toDate().getHours() % 12} {":"}{" "}
+              {item.time.toDate().getMinutes()} {" PM "}
+            </Text>
+          )}
+        </View>
+      ) : null
+    ) : null;
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
@@ -197,20 +346,20 @@ export default function ChatWithUser({ navigation, route }) {
               />
             ) : (
               <View>
-                {image ? (
+                {image == "" ? (
+                  <Image
+                    source={Img}
+                    style={{ width: 24, height: 24, marginLeft: 15 }}
+                  />
+                ) : (
                   <Image
                     source={{ uri: image }}
                     style={{
                       width: 24,
                       height: 24,
                       marginLeft: 15,
-                      resizeMode: "center",
+                      borderRadius: 15,
                     }}
-                  />
-                ) : (
-                  <Image
-                    source={Img}
-                    style={{ width: 24, height: 24, marginLeft: 15 }}
                   />
                 )}
               </View>
@@ -250,6 +399,22 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: 16,
   },
+  date1: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: "#eeeeee",
+  },
+  date2: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: "#0B3B63",
+  },
+  messageTxt1: {
+    color: "#eeeeee",
+  },
+  messageTxt2: {
+    color: "#0B3B63",
+  },
   doctorTxt: {
     color: "#FFFFFF",
     fontWeight: "700",
@@ -268,12 +433,66 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
+    // elevation: 5,
   },
   sentMessage: {
     alignSelf: "flex-end",
     backgroundColor: "#FFA8C5",
     borderRadius: 25,
     marginRight: 16,
+  },
+  arrowContainer: {
+    marginTop: 10,
+  },
+  leftArrow: {
+    position: "absolute",
+    backgroundColor: "#C2C2C2",
+    width: 15,
+    height: 15,
+    bottom: 0,
+    borderBottomRightRadius: 25,
+    left: -16,
+    marginTop: 20,
+  },
+
+  leftArrowOverlap: {
+    position: "absolute",
+    backgroundColor: "#eeeeee",
+    width: 15,
+    height: 16,
+    bottom: -1,
+    borderBottomRightRadius: 18,
+    left: -25,
+    marginTop: 20,
+  },
+
+  rightArrow: {
+    position: "absolute",
+    backgroundColor: "#FFA8C5",
+    width: 15,
+    height: 15,
+    bottom: 0,
+    borderBottomLeftRadius: 25,
+    right: -16,
+    marginTop: 20,
+  },
+
+  rightArrowOverlap: {
+    position: "absolute",
+    backgroundColor: "#eeeeee",
+    width: 15,
+    height: 16,
+    bottom: -1,
+    borderBottomLeftRadius: 18,
+    right: -25,
+    marginTop: 20,
   },
   receivedMessage: {
     alignSelf: "flex-start",

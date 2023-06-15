@@ -75,7 +75,7 @@ export default function ManageUsers({ navigation }) {
           <Text style={styles.title}>Users</Text>
         </View>
         <View style={styles.lineView}>
-          <Text style={styles.line}>──────────────────────────────────</Text>
+          <Text style={styles.line}>────────────────────────────────</Text>
         </View>
         {usersList.map((e, index) =>
           e.uid != "ZF60Ucd4DVd66crcR4GO7yGSL8h1" ? (

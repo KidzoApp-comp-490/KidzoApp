@@ -24,7 +24,7 @@ export default function Medical({
 }) {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [modalVisible1, setModalVisible1] = useState(false);
   return (
     <View style={styles.body}>
       <Modal
@@ -67,6 +67,50 @@ export default function Medical({
           </View>
         </View>
       </Modal>
+
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={() => {
+          setModalVisible1(!modalVisible1);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView1}>
+            <View style={styles.textContainerDel}>
+              <Text style={styles.modalText4}>Are You Sure?</Text>
+            </View>
+            <View style={styles.buttonContainerDel}>
+              <View style={styles.contForModelDel}>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteMedicineReport(compId)
+                    navigation.navigate("TabFun");
+                  }}
+
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setModalVisible1(!modalVisible1)}>
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+
+
+          </View>
+        </View>
+      </Modal>
+
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.bordView}>
           <Text style={styles.statment1}> {text1}</Text>
@@ -81,7 +125,7 @@ export default function Medical({
             >
               <Image source={Imagem} style={styles.image} />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 Alert.alert(
                   "Delete History",
@@ -104,6 +148,17 @@ export default function Medical({
               }}
             >
               <Image source={ImageDelete} style={styles.image} />
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible1(true)
+                // deleteMedicineReport(compId)
+                // alert("Removed!");
+                // navigation.navigate("TabFun");
+              }
+              }
+            >
+              <Image source={ImageDelete} style={styles.image} />
             </TouchableOpacity>
           </View>
         </View>
@@ -123,6 +178,60 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 20,
     justifyContent: "space-between",
+  },
+  modalView1: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: 300,
+    height: 150
+  },
+  content: {
+    width: 70,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 5,
+    marginHorizontal: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 48,
+  },
+  textStyle: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+  textContainerDel:{
+    marginTop:20,
+  },
+  modalText4: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontSize: 15,
+    marginTop: 30,
+    textAlign: 'center',
+    opacity: 0.65,
+  },
+  contForModelDel: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 35,
   },
   statment1: {
     color: "#0B3B63",
@@ -167,8 +276,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    // width: "85%",
-    // height: "70%",
   },
   button: {
     borderRadius: 20,
