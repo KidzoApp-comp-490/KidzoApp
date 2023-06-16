@@ -11,12 +11,16 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import Frame from "../../assets/MedicalH/Frame.png";
+import { Audio } from 'expo-av';
+import Dengrase from '../../src/assets/sounds/sound1.mp3'
+import saving from '../../src/assets/sounds/sound2.mp4'
 const BackendURL = "http://localhost:8090/detection"
 const BackendURL2 = "http://localhost:8090/file";
 
 export default function ImageUploader({ navigation }) {
   const [fileContent, setFileContent] = useState('');
   const [fileContentupdate, setFileContentupdate] = useState('');
+  const [sound, setSound] = React.useState();
   const runDetection = async () => {
     try {
       const response = await axios.post(BackendURL, {
@@ -29,16 +33,30 @@ export default function ImageUploader({ navigation }) {
       console.error(error);
     }
   };
-  // axios.get(BackendURL2)
-  // .then(response => {
-  //   const fileContent = response.data;
-  //   console.log(fileContent); // You can do further processing with the file content here
-  //   console.log("syaed")
-  // })
-  // .catch(error => {
-  //   console.error(error);
-  // });
 
+
+  async function playSounddengrase() {
+    
+    const { sound } = await Audio.Sound.createAsync(Dengrase);
+    setSound(sound);
+
+    
+    await sound.playAsync();
+  }
+  async function playSoundsaving() {
+    const { sound } = await Audio.Sound.createAsync(saving);
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+        
+        sound.unloadAsync();
+      }
+      : undefined;
+  }, [sound]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +76,13 @@ export default function ImageUploader({ navigation }) {
       clearInterval(interval);
     };
   }, []);
+  useEffect(() => {
+    if (fileContent === 'Saving') {
+      playSoundsaving();
+    } else if (fileContent === 'Danger') {
+      playSounddengrase();
+    }
+  }, [fileContent]);
 
   useEffect(() => {
     // Function to decrypt the file content
@@ -132,6 +157,7 @@ export default function ImageUploader({ navigation }) {
 
       <TouchableOpacity
         onPress={runDetection}
+
       >
         <View style={styles.content}>
           <Text style={styles.text1}>A session with no time limit</Text>
@@ -156,7 +182,7 @@ export default function ImageUploader({ navigation }) {
 
       {/* button for no limit time */}
       <Text>the result for testing</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={playSounddengrase} >
         <View style={styles.content2}>
           {/* <Text style={styles.text1}>A session with no time limit</Text> */}
           <Text>{fileContent}</Text>
