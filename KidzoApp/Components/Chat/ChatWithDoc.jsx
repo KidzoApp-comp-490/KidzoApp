@@ -38,7 +38,6 @@ export default function ChatWithDoc({ navigation, route }) {
   const getUsersMessages = async () => {
     const msgs = await getMessage();
     setMessages2(msgs);
-    console.log(msgs);
   };
   React.useEffect(() => {
     getUserUId().then((val) => {
@@ -76,7 +75,6 @@ export default function ChatWithDoc({ navigation, route }) {
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
     setImage(downloadURL);
-    console.log("download link", downloadURL);
   };
 
   const pickImage = async () => {

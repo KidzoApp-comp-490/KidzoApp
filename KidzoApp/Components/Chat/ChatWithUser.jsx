@@ -26,7 +26,6 @@ import { getUserUId } from "../../db/firebase/auth";
 import { onSnapshot, serverTimestamp } from "firebase/firestore";
 export default function ChatWithUser({ navigation, route }) {
   let docId = route.params.itemId;
-  console.log("id ,", docId);
   const [usersList, setUsersList] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -42,12 +41,10 @@ export default function ChatWithUser({ navigation, route }) {
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
-    console.log("users from database", users);
   };
   const getUsersMessages = async () => {
     const msgs = await getMessage();
     setMessages2(msgs);
-    console.log(msgs);
   };
   React.useEffect(() => {
     getUsersList();
@@ -87,7 +84,6 @@ export default function ChatWithUser({ navigation, route }) {
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
     setImage(downloadURL);
-    console.log("download link", downloadURL);
   };
 
   const pickImage = async () => {
@@ -117,7 +113,6 @@ export default function ChatWithUser({ navigation, route }) {
     });
     setText("");
     setImage("");
-    console.log("added");
   };
   const renderMessage = ({ item }) =>
     (item.senderUid == userID && item.reciverUid == reciverID) ||
