@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import OnboardingSlide from "./OnboardingSlide";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
 
 import { NetworkStatus } from "../NetworkStatus";
 
@@ -106,7 +107,7 @@ const OnboardingFlow = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={{
           flex: 1,
-          paddingBottom: 50,
+          paddingBottom: 80,
           backgroundColor: "#FFFFFF",
         }}
       >
@@ -161,6 +162,7 @@ const OnboardingFlow = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <StatusBar style="auto" />
     </NetworkStatus>
   );
 };
