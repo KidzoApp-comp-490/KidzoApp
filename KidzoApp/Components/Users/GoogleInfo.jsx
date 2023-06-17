@@ -39,7 +39,7 @@ export default function GoogleInfo({ navigation }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    console.log("download link", downloadURL);
+    
     setImage(downloadURL);
   };
 

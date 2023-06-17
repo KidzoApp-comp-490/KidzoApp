@@ -26,7 +26,7 @@ export default function MedicalItem({ navigation }) {
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
-    // console.log("medicines from database", medc);
+    
   };
 
   React.useEffect(() => {
@@ -36,15 +36,15 @@ export default function MedicalItem({ navigation }) {
   React.useEffect(() => {
     const unsubscribe = subscribeMed(({ change, snapshot }) => {
       if (change.type === "added") {
-        console.log("New Medicine: ", change.doc.data());
+        
         getmedcList();
       }
       if (change.type === "modified") {
-        console.log("Modified Medicine: ", change.doc.data());
+        
         getmedcList();
       }
       if (change.type === "removed") {
-        console.log("Removed Medicine: ", change.doc.data());
+        
         getmedcList();
       }
     });
@@ -79,7 +79,7 @@ export default function MedicalItem({ navigation }) {
             onPress={() => {
               flagAdd = true;
               navigation.navigate("Report", { flagAddVal: flagAdd });
-              console.log("nav");
+             
             }}
           >
             <Image source={Icon} style={styles.icon} />

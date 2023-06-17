@@ -84,7 +84,7 @@ export default function SignUp({ navigation }) {
     } else {
       register(email, password)
         .then(() => {
-          console.log("registerd");
+          
           alert("Register Success!\nPlease Login");
           navigation.navigate("SignIn");
           getUserUId().then((id) => {
