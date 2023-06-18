@@ -13,7 +13,7 @@ import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
 import { editpost } from "../../db/firebase/post";
 import { useNavigation } from "@react-navigation/native";
-import { getUserById, subscribe } from "../../db/firebase/users";
+import { getUserById, subscribe,getusersInfo } from "../../db/firebase/users";
 
 export default function MomsCommunity({
   value,
@@ -29,7 +29,23 @@ export default function MomsCommunity({
   const [FName, SetFName] = useState("");
   const [LName, SetLName] = useState("");
   const [userImage, setUserImage] = useState("");
-
+  const [postList, setpostList] = useState([]);
+  const getpostList = async () => {
+    const posts = await getMedical();
+    setpostList(posts);
+  };
+useEffect(() => {
+  getusersInfo();
+  }, []); 
+useEffect(() => {
+    postList.map((e) => {
+      if (userId == e.currentUserId) {
+        SetFName(e.fName);
+        SetLName(e.lName);
+      }
+    });
+  });
+  
   const clickHeart = async () => {
     if (icon) {
       setReactNum(reactNum + 1);

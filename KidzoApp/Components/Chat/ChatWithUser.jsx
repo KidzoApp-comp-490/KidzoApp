@@ -32,12 +32,13 @@ export default function ChatWithUser({ navigation, route }) {
   const [lName, setLName] = useState("");
   const [profImage, setProfImage] = useState("");
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages2, setMessages2] = useState([]);
   const [messages, setMessages] = useState([]);
   const [userID, setuserID] = useState("");
   const [reciverID, setreciverID] = useState("");
+
   let today = new Date();
   const getUsersList = async () => {
     const users = await getusersInfo();
