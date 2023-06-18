@@ -13,7 +13,7 @@ export default function Settings({ navigation }) {
     getUserUId().then((id) => {
       getUserById(id).then((user) => {
         setUserID(user[0].uid);
-        console.log("id for user", userID);
+       
       });
     });
   });
@@ -56,7 +56,7 @@ export default function Settings({ navigation }) {
           <TouchableOpacity
             onPress={() => {
               SignOut().then(() => {
-                console.log("sign out");
+               
                 navigation.navigate("SignIn");
                 alert("You signed out");
               });
@@ -106,7 +106,7 @@ export default function Settings({ navigation }) {
           <TouchableOpacity
             onPress={() => {
               SignOut().then(() => {
-                console.log("sign out");
+                
                 navigation.navigate("SignIn");
                 alert("You signed out");
               });

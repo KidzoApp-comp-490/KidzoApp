@@ -75,7 +75,7 @@ export default function Report({ navigation, route }) {
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
-    console.log("medicines from database", medc);
+    
   };
   React.useEffect(() => {
     if (!flagAddVal) {
@@ -87,15 +87,15 @@ export default function Report({ navigation, route }) {
     if (!flagAddVal) {
       const unsubscribe = subscribeMed(({ change, snapshot }) => {
         if (change.type === "added") {
-          console.log("New Medicine: ", change.doc.data());
+          
           getmedcList();
         }
         if (change.type === "modified") {
-          console.log("Modified Medicine: ", change.doc.data());
+          
           getmedcList();
         }
         if (change.type === "removed") {
-          console.log("Removed Medicine: ", change.doc.data());
+          
           getmedcList();
         }
       });
@@ -115,7 +115,7 @@ export default function Report({ navigation, route }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    console.log("test    : ", downloadURL);
+    
     if (flagAddVal) {
       setImage(downloadURL);
     } else {
@@ -373,17 +373,6 @@ export default function Report({ navigation, route }) {
                   desc.length > 0
                 ) {
                   navigation.navigate("Medical");
-                  console.log(
-                    title,
-                    " ",
-                    day,
-                    " ",
-                    month,
-                    " ",
-                    year,
-                    " ",
-                    desc
-                  );
                   addMedicineReport({
                     day: day,
                     description: desc,

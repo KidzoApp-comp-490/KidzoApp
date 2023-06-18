@@ -58,27 +58,24 @@ export function TabFun() {
         screenOptions={{
           ...TransitionPresets.SlideFromRightIOS,
           ...TransitionPresets.ScaleFromCenterAndroid,
-
           tabBarStyle: styles.tabBarStyle,
           headerShown: false,
           tabBarActiveTintColor: "#FFA8C5",
+          tabBarInactiveTintColor: "#FFFFFF",
+          tabBarLabelPosition: "below-icon",
+          tabBarLabelStyle: {
+            fontSize: 16,
+            fontWeight: "700",
+          },
         }}
       >
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
+            tabBarLabel: "Home",
             tabBarIcon: () => (
               <Image style={styles.TabIcon} source={HomeIcon} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarIcon: () => (
-              <Image style={styles.TabIcon} source={ProfileIcon} />
             ),
           }}
         />
@@ -86,15 +83,28 @@ export function TabFun() {
           name="MoMS"
           component={MomsCommunityItem}
           options={{
+            tabBarLabel: "Moms",
             tabBarIcon: () => (
               <Image style={styles.TabIcon} source={CommunityIcon} />
             ),
           }}
         />
         <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: () => (
+              <Image style={styles.TabIcon} source={ProfileIcon} />
+            ),
+          }}
+        />
+
+        <Tab.Screen
           name="Settings"
           component={Settings}
           options={{
+            tabBarLabel: "Settings",
             tabBarIcon: () => (
               <Image style={styles.TabIcon} source={SettingIcon} />
             ),
@@ -159,16 +169,17 @@ export default function App() {
           <Stack.Screen
             name="Map"
             component={Map}
-            options={{
-              headerBackVisible: true,
-              headerTransparent: true,
-              title: "MAP",
-              headerTitleStyle: {
-                fontSize: 18,
-                color: "#0B3B63",
-                fontWeight: "700",
-              },
-            }}
+            options={{ headerShown: false }}
+            // options={{
+            //   headerBackVisible: true,
+            //   headerTransparent: true,
+            //   title: "MAP",
+            //   headerTitleStyle: {
+            //     fontSize: 18,
+            //     color: "#0B3B63",
+            //     fontWeight: "700",
+            //   },
+            // }}
           />
           <Stack.Screen
             name="Medical"
@@ -308,12 +319,13 @@ export default function App() {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    width: "90%",
-    height: 52,
+    width: "97%",
+    height: 58,
     borderRadius: 30,
     marginBottom: 20,
-    marginHorizontal: 25,
     position: "absolute",
+    marginLeft: 8,
+    paddingTop: 8,
   },
 
   TabIcon: {

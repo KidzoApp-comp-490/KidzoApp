@@ -121,7 +121,7 @@ export default function Profile({ navigation }) {
   useEffect(() => {
     subscribe(() => {
       getUserUId().then((id) => {
-        console.log(id);
+        
         getUserById(id).then((user) => {
           SetFName(user[0].fName);
           SetLName(user[0].lName);
@@ -135,7 +135,7 @@ export default function Profile({ navigation }) {
   const getposts = async () => {
     const posts = await getpost();
     setPostsList(posts);
-    console.log("here the post mehtod", posts);
+    
   };
 
   useEffect(() => {

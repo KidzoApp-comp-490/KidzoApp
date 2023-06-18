@@ -42,7 +42,7 @@ export default function Changepass({ navigation }) {
           return user.updatePassword(newPassword);
         })
         .then(() => {
-          console.log("Password changed successfully.");
+          
           alert("Password changed successfully.");
           navigation.navigate("TabFun");
         })
