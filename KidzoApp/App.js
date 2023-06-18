@@ -120,7 +120,7 @@ export default function App() {
     <NetworkStatus>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="TabFun"
+          initialRouteName="First"
           screenOptions={{
             ...TransitionPresets.SlideFromRightIOS,
             ...TransitionPresets.ScaleFromCenterAndroid,
@@ -169,16 +169,17 @@ export default function App() {
           <Stack.Screen
             name="Map"
             component={Map}
-            options={{
-              headerBackVisible: true,
-              headerTransparent: true,
-              title: "MAP",
-              headerTitleStyle: {
-                fontSize: 18,
-                color: "#0B3B63",
-                fontWeight: "700",
-              },
-            }}
+            options={{ headerShown: false }}
+            // options={{
+            //   headerBackVisible: true,
+            //   headerTransparent: true,
+            //   title: "MAP",
+            //   headerTitleStyle: {
+            //     fontSize: 18,
+            //     color: "#0B3B63",
+            //     fontWeight: "700",
+            //   },
+            // }}
           />
           <Stack.Screen
             name="Medical"
