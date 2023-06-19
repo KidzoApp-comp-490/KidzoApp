@@ -39,7 +39,6 @@ export default function MomsComCreatepost() {
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
     setImageup(downloadURL);
-    console.log("download link", downloadURL);
   };
 
   const pickImage = async () => {

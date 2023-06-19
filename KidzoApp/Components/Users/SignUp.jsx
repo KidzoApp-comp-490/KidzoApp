@@ -153,8 +153,8 @@ export default function SignUp({ navigation }) {
                   onChangeText={(val) => {
                     setFName(val);
                   }}
-                  ref={input3Ref}
-                  onSubmitEditing={() => input4Ref.current.focus()}
+                  ref={input1Ref}
+                  onSubmitEditing={() => input2Ref.current.focus()}
                 />
               </View>
             </View>
@@ -166,8 +166,8 @@ export default function SignUp({ navigation }) {
                   onChangeText={(val) => {
                     setLName(val);
                   }}
-                  ref={input4Ref}
-                  onSubmitEditing={() => input5Ref.current.focus()}
+                  ref={input2Ref}
+                  onSubmitEditing={() => input3Ref.current.focus()}
                 />
               </View>
             </View>
@@ -182,8 +182,8 @@ export default function SignUp({ navigation }) {
                 onChangeText={(val) => {
                   setEmail(val);
                 }}
-                ref={input1Ref}
-                onSubmitEditing={() => input2Ref.current.focus()}
+                ref={input3Ref}
+                onSubmitEditing={() => input4Ref.current.focus()}
               />
             </View>
           </View>
@@ -200,8 +200,8 @@ export default function SignUp({ navigation }) {
                   onChangeText={(val) => {
                     setPassword(val);
                   }}
-                  ref={input2Ref}
-                  onSubmitEditing={() => input3Ref.current.focus()}
+                  ref={input4Ref}
+                  onSubmitEditing={() => input5Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -220,8 +220,8 @@ export default function SignUp({ navigation }) {
                   onChangeText={(val) => {
                     setPassword(val);
                   }}
-                  ref={input2Ref}
-                  onSubmitEditing={() => input3Ref.current.focus()}
+                  ref={input4Ref}
+                  onSubmitEditing={() => input5Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image

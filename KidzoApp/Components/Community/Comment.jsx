@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Alert,
+  Modal,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import BackIcon from "../../assets/Chat/back.png";
@@ -32,16 +33,15 @@ export function ManageCommentItem({
   commentId,
   userId,
 }) {
-  console.log("userId:  ", userId);
   const [FName, SetFName] = useState("");
   const [LName, SetLName] = useState("");
   const [userImage, setUserImage] = useState("");
   const [cUserId, setCUserId] = useState("");
+  const [modalVisible1, setModalVisible1] = useState(false);
 
   useEffect(() => {
     subscribe(() => {
       getUserUId().then((id) => {
-        console.log(id);
         setCUserId(id);
       });
     });
@@ -59,6 +59,43 @@ export function ManageCommentItem({
 
   return (
     <View style={styles.PostsView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={() => {
+          setModalVisible1(!modalVisible1);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView1}>
+            <View style={styles.textContainerDel}>
+              <Text style={styles.modalText4}>Are You Sure?</Text>
+            </View>
+            <View style={styles.buttonContainerDel}>
+              <View style={styles.contForModelDel}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible1(!modalVisible1)}
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteComment(commentId);
+                    setModalVisible1(!modalVisible1);
+                  }}
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.userInfoView}>
         <Image
           source={{ uri: userImage }}
@@ -70,24 +107,7 @@ export function ManageCommentItem({
         {userId == cUserId ? (
           <TouchableOpacity
             onPress={() => {
-              Alert.alert(
-                "Delete Comment",
-                "Are you sure you want to delete this Comment?",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: () => {
-                      deleteComment(commentId);
-                      alert("Deleted");
-                    },
-                  },
-                ],
-                { cancelable: false }
-              );
+              setModalVisible1(true);
             }}
             style={{
               alignItems: "center",
@@ -137,7 +157,6 @@ export default function Comment({ navigation, route }) {
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
     setCommentImage(downloadURL);
-    console.log("download link", downloadURL);
   };
 
   const pickImage = async () => {
@@ -164,7 +183,6 @@ export default function Comment({ navigation, route }) {
   const getCommentList = async () => {
     const comments = await getComments();
     setCommentList(comments);
-    console.log("here the comments method", comments);
   };
   React.useEffect(() => {
     subscribeComment(() => {
@@ -370,5 +388,65 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 16,
     marginLeft: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView1: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: 300,
+    height: 150,
+  },
+  textContainerDel: {
+    marginTop: 20,
+  },
+  modalText4: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontSize: 15,
+    marginTop: 30,
+    textAlign: "center",
+    opacity: 0.65,
+  },
+  contForModelDel: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 35,
+  },
+  content: {
+    width: 70,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 5,
+    marginHorizontal: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 48,
+  },
+  textStyle: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

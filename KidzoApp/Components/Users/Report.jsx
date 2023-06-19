@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -27,6 +27,12 @@ import { getUserUId } from "../../db/firebase/auth";
 import * as ImagePicker from "expo-image-picker";
 import { firebase } from "../../db/Config";
 export default function Report({ navigation, route }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
+
   let { flagAddVal, itemId } = route.params;
   const [title, setTitle] = useState("");
   const [day, setDay] = useState("");
@@ -75,9 +81,6 @@ export default function Report({ navigation, route }) {
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
-    console.log(medc)
-   
-    
   };
   React.useEffect(() => {
     if (!flagAddVal) {
@@ -89,15 +92,12 @@ export default function Report({ navigation, route }) {
     if (!flagAddVal) {
       const unsubscribe = subscribeMed(({ change, snapshot }) => {
         if (change.type === "added") {
-          
           getmedcList();
         }
         if (change.type === "modified") {
-          
           getmedcList();
         }
         if (change.type === "removed") {
-          
           getmedcList();
         }
       });
@@ -117,7 +117,7 @@ export default function Report({ navigation, route }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    
+
     if (flagAddVal) {
       setImage(downloadURL);
     } else {
@@ -163,10 +163,10 @@ export default function Report({ navigation, route }) {
         <View style={styles.lineView}>
           <Text style={styles.line}>────────────────────────────────</Text>
         </View>
-        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <ScrollView>
           <View style={styles.ReportView}>
             <View style={styles.starView}>
-              <Text style={styles.inpText}>Report Title {""}</Text>
+              <Text style={styles.inpText}>Report Title</Text>
               <Text style={styles.star}>*</Text>
             </View>
             <View style={styles.inpView}>
@@ -174,6 +174,8 @@ export default function Report({ navigation, route }) {
                 <TextInput
                   style={styles.input}
                   onChangeText={(val) => setTitle(val)}
+                  ref={input1Ref}
+                  onSubmitEditing={() => input2Ref.current.focus()}
                 />
               ) : (
                 <TextInput
@@ -183,13 +185,15 @@ export default function Report({ navigation, route }) {
                     seteditTitle(val);
                   }}
                   maxLength={10}
+                  ref={input1Ref}
+                  onSubmitEditing={() => input2Ref.current.focus()}
                 />
               )}
             </View>
           </View>
           <View style={styles.birthdayView}>
             <View style={styles.starView}>
-              <Text style={styles.inpText}>Report Date {""}</Text>
+              <Text style={styles.inpText}>Report Date</Text>
               <Text style={styles.star}>*</Text>
             </View>
             <View style={styles.DMYView}>
@@ -200,6 +204,8 @@ export default function Report({ navigation, route }) {
                     placeholder="Day"
                     keyboardType="number-pad"
                     onChangeText={(val) => setDay(val)}
+                    ref={input2Ref}
+                    onSubmitEditing={() => input3Ref.current.focus()}
                   />
                 ) : (
                   <TextInput
@@ -208,6 +214,8 @@ export default function Report({ navigation, route }) {
                     keyboardType="number-pad"
                     defaultValue={printDay}
                     onChangeText={seteditday}
+                    ref={input2Ref}
+                    onSubmitEditing={() => input3Ref.current.focus()}
                   />
                 )}
               </View>
@@ -218,6 +226,8 @@ export default function Report({ navigation, route }) {
                     placeholder="Month"
                     keyboardType="number-pad"
                     onChangeText={(val) => setMonth(val)}
+                    ref={input3Ref}
+                    onSubmitEditing={() => input4Ref.current.focus()}
                   />
                 ) : (
                   <TextInput
@@ -226,6 +236,8 @@ export default function Report({ navigation, route }) {
                     keyboardType="number-pad"
                     defaultValue={printMonth}
                     onChangeText={seteditMonth}
+                    ref={input3Ref}
+                    onSubmitEditing={() => input4Ref.current.focus()}
                   />
                 )}
               </View>
@@ -236,6 +248,8 @@ export default function Report({ navigation, route }) {
                     placeholder="Year"
                     keyboardType="number-pad"
                     onChangeText={(val) => setYear(val)}
+                    ref={input4Ref}
+                    onSubmitEditing={() => input5Ref.current.focus()}
                   />
                 ) : (
                   <TextInput
@@ -244,6 +258,8 @@ export default function Report({ navigation, route }) {
                     keyboardType="number-pad"
                     defaultValue={printYear}
                     onChangeText={seteditYear}
+                    ref={input4Ref}
+                    onSubmitEditing={() => input5Ref.current.focus()}
                   />
                 )}
               </View>
@@ -263,6 +279,7 @@ export default function Report({ navigation, route }) {
                   multiline
                   scrollEnabled
                   onChangeText={(val) => setDes(val)}
+                  ref={input5Ref}
                 />
               ) : (
                 <TextInput
@@ -271,6 +288,7 @@ export default function Report({ navigation, route }) {
                   scrollEnabled
                   defaultValue={printDesc}
                   onChangeText={seteditDesc}
+                  ref={input5Ref}
                 />
               )}
             </View>
@@ -359,7 +377,6 @@ export default function Report({ navigation, route }) {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                console.log("mediList",mediList)
                 let isMonth = /^\d+$/.test(month);
                 let isDay = /^\d+$/.test(day);
                 let isYear = /^\d+$/.test(year);

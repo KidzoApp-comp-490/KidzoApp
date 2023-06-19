@@ -38,7 +38,6 @@ export default function MessageItem({ navigation }) {
   const getDocMessages = async () => {
     const msgs = await getMessage();
     setMessages2(msgs);
-    // console.log(msgs)
   };
   React.useEffect(() => {
     getUsersList();

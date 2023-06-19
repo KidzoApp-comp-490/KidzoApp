@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById, edituser, subscribe } from "../../db/firebase/users";
 import { StatusBar } from "expo-status-bar";
@@ -18,6 +18,12 @@ import { NetworkStatus } from "../NetworkStatus";
 import BackIcon from "../../assets/Profile/Back.png";
 
 export default function DoctorSettings({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
+
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -148,6 +154,8 @@ export default function DoctorSettings({ navigation }) {
               style={styles.Input}
               defaultValue={fName}
               onChangeText={setFName}
+              ref={input1Ref}
+              onSubmitEditing={() => input2Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -156,6 +164,8 @@ export default function DoctorSettings({ navigation }) {
               style={styles.Input}
               defaultValue={lName}
               onChangeText={setLName}
+              ref={input2Ref}
+              onSubmitEditing={() => input3Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -164,6 +174,8 @@ export default function DoctorSettings({ navigation }) {
               style={styles.Input}
               defaultValue={phone}
               onChangeText={setPhone}
+              ref={input3Ref}
+              onSubmitEditing={() => input4Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -172,6 +184,8 @@ export default function DoctorSettings({ navigation }) {
               style={styles.Input}
               defaultValue={address}
               onChangeText={setAddress}
+              ref={input4Ref}
+              onSubmitEditing={() => input5Ref.current.focus()}
             />
           </View>
           <View style={styles.InputView2}>
@@ -180,6 +194,7 @@ export default function DoctorSettings({ navigation }) {
               style={styles.Input}
               defaultValue={price}
               onChangeText={setPrice}
+              ref={input5Ref}
             />
           </View>
           <View style={styles.buttonview}>

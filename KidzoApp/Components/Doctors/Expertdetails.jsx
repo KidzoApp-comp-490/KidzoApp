@@ -5,7 +5,6 @@ import { getusersInfo } from "../../db/firebase/users";
 
 export default function Expertdetails({ navigation, route }) {
   let docId = route.params.itemId;
-  console.log("id ,", docId);
   const [usersList, setUsersList] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -17,7 +16,6 @@ export default function Expertdetails({ navigation, route }) {
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
-    console.log("users from database", users);
   };
   React.useEffect(() => {
     getUsersList();

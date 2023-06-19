@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById, edituser, subscribe } from "../../db/firebase/users";
 import { StatusBar } from "expo-status-bar";
@@ -18,6 +18,11 @@ import { RadioButton } from "react-native-paper";
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function GoogleInfo({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -39,7 +44,7 @@ export default function GoogleInfo({ navigation }) {
       .child(`UsersImages/${new Date().toISOString()}`);
     const snapshot = await ref.put(blob);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    
+
     setImage(downloadURL);
   };
 
@@ -125,15 +130,30 @@ export default function GoogleInfo({ navigation }) {
           </View>
           <View style={styles.InputView}>
             <Text style={styles.InputTxt}>First name</Text>
-            <TextInput style={styles.Input} onChangeText={setFName} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setFName}
+              ref={input1Ref}
+              onSubmitEditing={() => input2Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Last name</Text>
-            <TextInput style={styles.Input} onChangeText={setLName} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setLName}
+              ref={input2Ref}
+              onSubmitEditing={() => input3Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Phon number</Text>
-            <TextInput style={styles.Input} onChangeText={setPhone} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setPhone}
+              ref={input3Ref}
+              onSubmitEditing={() => input4Ref.current.focus()}
+            />
           </View>
           <View style={styles.Gender}>
             <Text style={styles.GenderTxt}>Gender</Text>
@@ -166,7 +186,11 @@ export default function GoogleInfo({ navigation }) {
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Age</Text>
-            <TextInput style={styles.Input} onChangeText={setAge} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setAge}
+              ref={input4Ref}
+            />
           </View>
           <View style={styles.buttonview}>
             <TouchableOpacity style={styles.button} onPress={editDate}>

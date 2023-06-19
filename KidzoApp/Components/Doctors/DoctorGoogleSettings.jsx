@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById, edituser, subscribe } from "../../db/firebase/users";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +17,12 @@ import * as ImagePicker from "expo-image-picker";
 import { NetworkStatus } from "../NetworkStatus";
 
 export default function DoctorGoogleSettings({ navigation }) {
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
+
   const [user, setUser] = useState([]);
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
@@ -127,23 +133,47 @@ export default function DoctorGoogleSettings({ navigation }) {
           </View>
           <View style={styles.InputView}>
             <Text style={styles.InputTxt}>First name</Text>
-            <TextInput style={styles.Input} onChangeText={setFName} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setFName}
+              ref={input1Ref}
+              onSubmitEditing={() => input2Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Last name</Text>
-            <TextInput style={styles.Input} onChangeText={setLName} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setLName}
+              ref={input2Ref}
+              onSubmitEditing={() => input3Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Clinic Phon number</Text>
-            <TextInput style={styles.Input} onChangeText={setPhone} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setPhone}
+              ref={input3Ref}
+              onSubmitEditing={() => input4Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Clinic address</Text>
-            <TextInput style={styles.Input} onChangeText={setAddress} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setAddress}
+              ref={input4Ref}
+              onSubmitEditing={() => input5Ref.current.focus()}
+            />
           </View>
           <View style={styles.InputView2}>
             <Text style={styles.InputTxt}>Session price</Text>
-            <TextInput style={styles.Input} onChangeText={setPrice} />
+            <TextInput
+              style={styles.Input}
+              onChangeText={setPrice}
+              ref={input5Ref}
+            />
           </View>
           <View style={styles.buttonview}>
             <TouchableOpacity style={styles.button} onPress={editDate}>
