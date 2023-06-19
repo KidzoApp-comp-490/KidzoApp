@@ -179,13 +179,13 @@ export default function SignIn({ navigation }) {
               <Text style={styles.forgotword}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonview}>
-            <TouchableOpacity style={styles.button} onPress={checkDate}>
+          <TouchableOpacity onPress={checkDate}>
+            <View style={styles.buttonview}>
               <View style={styles.button2}>
                 <Text style={styles.button1}> Sign in</Text>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
 
           {/* <TouchableOpacity
             onPress={() => {
@@ -322,6 +322,11 @@ const styles = StyleSheet.create({
   buttonview: {
     marginTop: 30,
     marginBottom: 30,
+    borderRadius: 5,
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    color: "#ffff",
   },
   button: {
     borderRadius: 5,

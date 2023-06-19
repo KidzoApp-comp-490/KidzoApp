@@ -84,7 +84,6 @@ export default function SignUpDoctor({ navigation }) {
     } else {
       register(email, password)
         .then(() => {
-          
           alert("Register Success!\nPlease Login");
           navigation.navigate("SignIn");
           getUserUId().then((id) => {
@@ -142,6 +141,34 @@ export default function SignUpDoctor({ navigation }) {
                 <Text style={styles.signInText}>Sign In</Text>
               </TouchableOpacity>
             </Text>
+          </View>
+          <View style={styles.flNameView}>
+            <View style={styles.fNameView}>
+              <Text style={styles.fName}>First name</Text>
+              <View style={styles.fNameInpView}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(val) => {
+                    setFName(val);
+                  }}
+                  ref={input3Ref}
+                  onSubmitEditing={() => input4Ref.current.focus()}
+                />
+              </View>
+            </View>
+            <View style={styles.lNameView}>
+              <Text style={styles.lName}>Last name</Text>
+              <View style={styles.lNameInpView}>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(val) => {
+                    setLName(val);
+                  }}
+                  ref={input4Ref}
+                  onSubmitEditing={() => input5Ref.current.focus()}
+                />
+              </View>
+            </View>
           </View>
           <View style={styles.emailView}>
             <Text style={styles.inpText}>Email</Text>
@@ -202,34 +229,7 @@ export default function SignUpDoctor({ navigation }) {
               </View>
             )}
           </View>
-          <View style={styles.flNameView}>
-            <View style={styles.fNameView}>
-              <Text style={styles.fName}>First name</Text>
-              <View style={styles.fNameInpView}>
-                <TextInput
-                  style={styles.fNameInp}
-                  onChangeText={(val) => {
-                    setFName(val);
-                  }}
-                  ref={input3Ref}
-                  onSubmitEditing={() => input4Ref.current.focus()}
-                />
-              </View>
-            </View>
-            <View style={styles.lNameView}>
-              <Text style={styles.lName}>Last name</Text>
-              <View style={styles.lNameInpView}>
-                <TextInput
-                  style={styles.lNameInp}
-                  onChangeText={(val) => {
-                    setLName(val);
-                  }}
-                  ref={input4Ref}
-                  onSubmitEditing={() => input5Ref.current.focus()}
-                />
-              </View>
-            </View>
-          </View>
+
           <View style={styles.PhoneView}>
             <Text style={styles.inpText}>Clinic Phone number</Text>
             <View style={styles.inpView}>
@@ -271,14 +271,13 @@ export default function SignUpDoctor({ navigation }) {
               />
             </View>
           </View>
-
-          <View style={styles.buttonview}>
-            <TouchableOpacity style={styles.button} onPress={checkDate}>
+          <TouchableOpacity onPress={checkDate}>
+            <View style={styles.buttonview}>
               <View style={styles.button2}>
                 <Text style={styles.button1}> Sign Up</Text>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
           <View style={styles.orView}>
             <Image source={OR} style={styles.or} />
           </View>
@@ -400,8 +399,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   flNameView: {
-    flexDirection: "row",
-    marginHorizontal: 16,
     marginTop: 32,
   },
   fName: {
@@ -423,7 +420,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFA8C5",
   },
   lNameView: {
-    marginLeft: 16,
+    marginTop: 32,
   },
   lName: {
     marginBottom: 5,
@@ -449,6 +446,11 @@ const styles = StyleSheet.create({
 
   buttonview: {
     marginTop: 30,
+    borderRadius: 5,
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    color: "#ffff",
   },
   button: {
     borderRadius: 5,

@@ -43,21 +43,21 @@ export default function Forget({ navigation }) {
             <TextInput style={styles.input} onChangeText={setEmail} />
           </View>
         </View>
-        <View style={styles.buttonview}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              forgetPass(email).then(() => {
-                alert("Email sent");
-                navigation.navigate("SignIn");
-              });
-            }}
-          >
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            forgetPass(email).then(() => {
+              alert("Email sent");
+              navigation.navigate("SignIn");
+            });
+          }}
+        >
+          <View style={styles.buttonview}>
             <View style={styles.button2}>
               <Text style={styles.button1}> Send verification code</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
     </NetworkStatus>
@@ -126,6 +126,11 @@ const styles = StyleSheet.create({
   },
   buttonview: {
     marginTop: 30,
+    borderRadius: 5,
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    color: "#ffff",
   },
   button: {
     borderRadius: 5,

@@ -42,12 +42,10 @@ export default function Changepass({ navigation }) {
           return user.updatePassword(newPassword);
         })
         .then(() => {
-          
           alert("Password changed successfully.");
           navigation.navigate("TabFun");
         })
         .catch((error) => {
-          console.log("Error changing password:", error);
           // Handle and display error message to the user
         });
     }
@@ -167,14 +165,13 @@ export default function Changepass({ navigation }) {
             </View>
           )}
         </View>
-
-        <View style={styles.buttonview}>
-          <TouchableOpacity style={styles.button} onPress={changePassword}>
+        <TouchableOpacity onPress={changePassword}>
+          <View style={styles.buttonview}>
             <View style={styles.button2}>
               <Text style={styles.button1}> Change password</Text>
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
     </NetworkStatus>
@@ -256,6 +253,11 @@ const styles = StyleSheet.create({
   },
   buttonview: {
     marginTop: 30,
+    borderRadius: 5,
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    color: "#ffff",
   },
   button: {
     borderRadius: 5,

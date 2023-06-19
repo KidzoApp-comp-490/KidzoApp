@@ -34,7 +34,6 @@ export default function MessageItem({ navigation }) {
   const getUsersList = async () => {
     const users = await getusersInfo();
     setUsersList(users);
-    console.log("users from database", users);
   };
   const getDocMessages = async () => {
     const msgs = await getMessage();
@@ -45,9 +44,7 @@ export default function MessageItem({ navigation }) {
     getUsersList();
   }, []);
   React.useEffect(() => {
-    userForDoc.forEach((val) => {
-      console.log("val", val);
-    });
+    userForDoc.forEach((val) => {});
   }, []);
 
   React.useEffect(() => {
@@ -85,7 +82,6 @@ export default function MessageItem({ navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   SignOut().then(() => {
-                    console.log("sign out");
                     navigation.navigate("SignIn");
                     alert("You signed out");
                     setModalVisible(!modalVisible);
