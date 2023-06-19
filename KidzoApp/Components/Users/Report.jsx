@@ -75,6 +75,8 @@ export default function Report({ navigation, route }) {
   const getmedcList = async () => {
     const medc = await getMedical();
     setMidList(medc);
+    console.log(medc)
+   
     
   };
   React.useEffect(() => {
@@ -357,6 +359,7 @@ export default function Report({ navigation, route }) {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
+                console.log("mediList",mediList)
                 let isMonth = /^\d+$/.test(month);
                 let isDay = /^\d+$/.test(day);
                 let isYear = /^\d+$/.test(year);

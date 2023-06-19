@@ -7,13 +7,13 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Heart from "../../assets/Community/Frame.png";
 import ColoredHeart from "../../assets/Community/Group.png";
 import Comment from "../../assets/Community/Comment.png";
 import { editpost } from "../../db/firebase/post";
 import { useNavigation } from "@react-navigation/native";
-import { getUserById, subscribe,getusersInfo } from "../../db/firebase/users";
+import { getUserById, subscribe, getusersInfo } from "../../db/firebase/users";
 
 export default function MomsCommunity({
   value,
@@ -29,23 +29,26 @@ export default function MomsCommunity({
   const [FName, SetFName] = useState("");
   const [LName, SetLName] = useState("");
   const [userImage, setUserImage] = useState("");
-  const [postList, setpostList] = useState([]);
-  const getpostList = async () => {
-    const posts = await getMedical();
-    setpostList(posts);
+  const [usersInfos, setusersInfos] = useState([]);
+
+  const getusersInfoFun = async () => {
+    const infos = await getusersInfo();
+    setusersInfos(infos)
+
   };
-useEffect(() => {
-  getusersInfo();
-  }, []); 
-useEffect(() => {
-    postList.map((e) => {
-      if (userId == e.currentUserId) {
+
+  useEffect(() => {
+    getusersInfoFun();
+  }, []);
+  useEffect(() => {
+    usersInfos.map((e) => {
+      if (userId == e.uid) {
         SetFName(e.fName);
         SetLName(e.lName);
+        setUserImage(e.image)
       }
-    });
-  });
-  
+    })
+  })
   const clickHeart = async () => {
     if (icon) {
       setReactNum(reactNum + 1);
@@ -66,16 +69,6 @@ useEffect(() => {
   };
 
   const imageSource = icon ? Heart : ColoredHeart;
-
-  useEffect(() => {
-    subscribe(() => {
-      getUserById(userId).then((user) => {
-        SetFName(user[0].fName);
-        SetLName(user[0].lName);
-        setUserImage(user[0].image);
-      });
-    });
-  }, []);
 
   return (
     <View style={styles.PostsView}>
@@ -114,7 +107,6 @@ useEffect(() => {
             style={styles.RightPart}
             onPress={() => {
               navigation.navigate("Comment", { postId: idpost });
-              console.log("postId: ", idpost);
             }}
           >
             {/* <View style={styles.RightPart}> */}
