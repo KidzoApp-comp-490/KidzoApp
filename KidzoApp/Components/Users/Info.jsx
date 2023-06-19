@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,11 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NetworkStatus } from "../NetworkStatus";
+import * as ImagePicker from "expo-image-picker";
+import { getUserUId } from "../../db/firebase/auth";
+import { getUserById, subscribe } from "../../db/firebase/users";
+
+
 
 import Frame from "../../assets/Info/Frame.png";
 import Group58 from "../../assets/Info/Group-58.png";
@@ -21,6 +26,43 @@ import Group60 from "../../assets/Info/Group-60.png";
 import Group61 from "../../assets/Info/Group-61.png";
 
 export default function Info({ navigation }) {
+  const [userId, setUserId] = useState("");
+  const [additionalText, setAdditionalText] = useState("");
+  const [image, setImage] = useState(null);
+  
+  const handleTextInputChange = (text) => {
+    setAdditionalText(text);
+  };
+
+  const handleImageUpload = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    const imageResult = await ImagePicker.launchImageLibraryAsync();
+
+    if (!imageResult.cancelled) {
+      setImage(imageResult.uri);
+    }
+  };
+
+  const handleSubmit = () => {
+    // Handle the submission logic here
+    // You can use the additionalText and image state values
+  };
+
+  useEffect(() => {
+    subscribe(() => {
+      getUserUId().then((id) => {
+        getUserById(id).then((user) => {
+          setUserId(user[0].uid)
+        });
+      });
+    });
+  }, []);
   return (
     <NetworkStatus>
       <View style={styles.body}>
@@ -53,7 +95,7 @@ export default function Info({ navigation }) {
               style={styles.square}
               onPress={() => {
                 Linking.openURL(
-                  "https://www.naeyc.org/our-work/families/observation-key-to-understanding-your-child"
+                  "https://www.childrenshospital.org/conditions/sudden-infant-death-syndrome-sids"
                 ).catch((err) => {
                   console.error("Failed opening page because: ", err);
                   alert("Failed to open page");
@@ -102,6 +144,20 @@ export default function Info({ navigation }) {
               <Image source={Group61} style={styles.squareImg} />
             </TouchableOpacity>
           </View>
+
+          {userId === "ZF60Ucd4DVd66crcR4GO7yGSL8h1" && (
+            <>
+            <TextInput
+                style={styles.additionalInput}
+                value={additionalText}
+                onChangeText={handleTextInputChange}
+                placeholder="Enter additional text..."
+              />
+              <Button title="Upload Image" onPress={handleImageUpload} />
+              {image && <Image source={{ uri: image }} style={styles.uploadedImage} />}
+              <Button title="Submit" onPress={handleSubmit} />
+            </>
+          )}
         </ScrollView>
         <StatusBar style="auto" />
       </View>
