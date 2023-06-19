@@ -36,11 +36,11 @@ export default function ImageUploader({ navigation }) {
 
 
   async function playSounddengrase() {
-    
+
     const { sound } = await Audio.Sound.createAsync(Dengrase);
     setSound(sound);
 
-    
+
     await sound.playAsync();
   }
   async function playSoundsaving() {
@@ -52,7 +52,7 @@ export default function ImageUploader({ navigation }) {
   React.useEffect(() => {
     return sound
       ? () => {
-        
+
         sound.unloadAsync();
       }
       : undefined;
@@ -62,7 +62,7 @@ export default function ImageUploader({ navigation }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(BackendURL2);
-        setFileContent(response.data);
+        setFileContent(caesarDecrypt(response.data, 3));
       } catch (error) {
         console.error(error);
       }
@@ -84,39 +84,29 @@ export default function ImageUploader({ navigation }) {
     }
   }, [fileContent]);
 
-  useEffect(() => {
-    // Function to decrypt the file content
-    const decryptFileContent = () => {
-      const decryptedText = decryption(fileContent, 3);
-      setFileContentupdate(decryptedText);
-    };
-
-    // Call the decryptFileContent function
-    decryptFileContent();
-
-  }, []); // Empty dependency array to run the effect only once
-
-  function decryption(text, shift) {
-    let encrypt = false;
-    let result = "";
-
-    if (!encrypt) {
-      shift = -shift; // Invert the shift for decryption
-    }
-
+  function caesarDecrypt(text, shift) {
+    let decryptedText = '';
     for (let i = 0; i < text.length; i++) {
-      let ch = text.charAt(i);
+      let char = text[i];
 
-      if (ch.match(/[a-zA-Z]/)) {
-        let asciiOffset = ch === ch.toUpperCase() ? 65 : 97; // Determine ASCII offset based on uppercase or lowercase
-        let shifted = (ch.charCodeAt(0) - asciiOffset + shift + 26) % 26; // Apply shift and wrap around the alphabet
-        result += String.fromCharCode(shifted + asciiOffset);
-      } else {
-        result += ch; // Preserve non-alphabetic characters
+      // Check if the character is a letter
+      if (char.match(/[a-z]/i)) {
+        let code = text.charCodeAt(i);
+        let isUpperCase = code >= 65 && code <= 90;
+        let isLowerCase = code >= 97 && code <= 122;
+
+        // Apply the shift in the reverse direction to decrypt
+        let shiftedCode = isUpperCase ? ((code - 65 - shift) % 26 + 26) % 26 + 65 :
+          isLowerCase ? ((code - 97 - shift) % 26 + 26) % 26 + 97 :
+            code;
+
+        char = String.fromCharCode(shiftedCode);
       }
+
+      decryptedText += char;
     }
 
-    return result;
+    return decryptedText;
   }
 
 
