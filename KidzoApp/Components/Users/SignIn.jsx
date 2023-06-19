@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Platform,
   View,
@@ -21,28 +21,14 @@ import PassIconInV from "../../assets/SignIn/fluent_eye-off-16-regular.png";
 import { NetworkStatus } from "../NetworkStatus";
 import { getUserUId } from "../../db/firebase/auth";
 import { getUserById } from "../../db/firebase/users";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-// import { RNCamera } from "react-native-camera";
-
-// import { request, PERMISSIONS } from "react-native-permissions";
 
 export default function SignIn({ navigation }) {
-  // const handleFacialRecognition = async () => {
-  //   if (Platform.OS === "android") {
-  //     const permission = await request(PERMISSIONS.ANDROID.CAMERA);
-  //     if (permission !== "granted") {
-  //       // Handle camera permission denied
-  //       return;
-  //     }
-  //   }
-
-  //   this.camera.takePictureAsync({ quality: 0.5 }).then((data) => {
-  //     // Perform facial recognition on the captured image
-  //     // Compare the recognized face with the stored facial data
-  //     // Proceed with login or authentication logic based on the result
-  //   });
-  // };
+  const input1Ref = useRef();
+  const input2Ref = useRef();
+  const input3Ref = useRef();
+  const input4Ref = useRef();
+  const input5Ref = useRef();
+  const input6Ref = useRef();
 
   const SingInWithGoogle = () => {
     signInWithPopup(auth, provider).then(() => {
@@ -112,14 +98,6 @@ export default function SignIn({ navigation }) {
     <NetworkStatus>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-          {/* <RNCamera
-            ref={(ref) => {
-              this.camera = ref;
-            }}
-            style={styles.preview}
-            type={RNCamera.Constants.Type.front}
-            captureAudio={false}
-          /> */}
           <View style={styles.logoView}>
             <Image source={Logo} style={styles.logo} />
           </View>
@@ -133,6 +111,8 @@ export default function SignIn({ navigation }) {
               <TextInput
                 style={styles.input}
                 onChangeText={(val) => setEmail(val)}
+                ref={input1Ref}
+                onSubmitEditing={() => input2Ref.current.focus()}
               />
             </View>
           </View>
@@ -147,6 +127,8 @@ export default function SignIn({ navigation }) {
                   textContentType="newPassword"
                   secureTextEntry
                   onChangeText={(val) => setPassword(val)}
+                  ref={input2Ref}
+                  onSubmitEditing={() => input3Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -160,6 +142,8 @@ export default function SignIn({ navigation }) {
                 <TextInput
                   style={styles.inputPass}
                   onChangeText={(val) => setPassword(val)}
+                  ref={input2Ref}
+                  onSubmitEditing={() => input3Ref.current.focus()}
                 />
                 <TouchableOpacity onPress={clickEye}>
                   <Image
@@ -179,13 +163,13 @@ export default function SignIn({ navigation }) {
               <Text style={styles.forgotword}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonview}>
-            <TouchableOpacity style={styles.button} onPress={checkDate}>
+          <TouchableOpacity onPress={checkDate}>
+            <View style={styles.buttonview}>
               <View style={styles.button2}>
                 <Text style={styles.button1}> Sign in</Text>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
 
           {/* <TouchableOpacity
             onPress={() => {
@@ -322,6 +306,11 @@ const styles = StyleSheet.create({
   buttonview: {
     marginTop: 30,
     marginBottom: 30,
+    borderRadius: 5,
+    width: 328,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    color: "#ffff",
   },
   button: {
     borderRadius: 5,

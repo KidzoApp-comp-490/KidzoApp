@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Dimensions 
+  Dimensions,
 } from "react-native";
 import Logo from "../assets/Home/Logo2.png";
 import Session from "../assets/Home/Session.png";
@@ -27,7 +27,6 @@ export default function Home({ navigation }) {
   React.useEffect(() => {
     subscribe(() => {
       getUserUId().then((id) => {
-        
         getUserById(id).then((user) => {
           setFName(user[0].fName);
           setImage(user[0].image);
@@ -72,22 +71,6 @@ export default function Home({ navigation }) {
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
-                navigation.navigate("Map");
-              }}
-            >
-              <Image source={Map} style={styles.squareImg} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.square}
-              onPress={() => {
-                navigation.navigate("Info");
-              }}
-            >
-              <Image source={Information} style={styles.squareImg} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.square}
-              onPress={() => {
                 navigation.navigate("DoctorItem");
               }}
             >
@@ -96,10 +79,26 @@ export default function Home({ navigation }) {
             <TouchableOpacity
               style={styles.square}
               onPress={() => {
+                navigation.navigate("Map");
+              }}
+            >
+              <Image source={Map} style={styles.squareImg} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.square}
+              onPress={() => {
                 navigation.navigate("Medical");
               }}
             >
               <Image source={MedicalHistory} style={styles.squareImg} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.square}
+              onPress={() => {
+                navigation.navigate("Info");
+              }}
+            >
+              <Image source={Information} style={styles.squareImg} />
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -146,18 +145,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flex: 1,
     marginBottom: 120,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   square: {
     width: 328,
     height: 152,
-    marginTop:15 
+    marginTop: 15,
   },
   squareImg: {
     width: 328,
     height: 152,
     borderRadius: 15,
-    
   },
 });
-

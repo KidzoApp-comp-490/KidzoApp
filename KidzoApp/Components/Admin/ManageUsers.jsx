@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Modal,
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
@@ -15,8 +16,47 @@ import { useNavigation } from "@react-navigation/native";
 
 export function ManageUsersItem({ email, fName, lName, image, userId }) {
   const navigation = useNavigation();
+  const [modalVisible1, setModalVisible1] = useState(false);
+
   return (
     <View style={styles.userView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={() => {
+          setModalVisible1(!modalVisible1);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView1}>
+            <View style={styles.textContainerDel}>
+              <Text style={styles.modalText4}>Are You Sure?</Text>
+            </View>
+            <View style={styles.buttonContainerDel}>
+              <View style={styles.contForModelDel}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible1(!modalVisible1)}
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteusers(userId);
+                    setModalVisible1(!modalVisible1);
+                  }}
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.userImageView}>
         <Image source={{ uri: image }} style={{ width: 75, height: 75 }} />
       </View>
@@ -35,9 +75,7 @@ export function ManageUsersItem({ email, fName, lName, image, userId }) {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            deleteusers(userId);
-            alert("Removed!");
-            navigation.navigate("TabFun");
+            setModalVisible1(true);
           }}
         >
           <Image source={DeleteIcon} style={{ width: 25, height: 25 }} />
@@ -148,5 +186,65 @@ const styles = StyleSheet.create({
   line: {
     color: "#FFA8C5",
     opacity: 0.5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView1: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: 300,
+    height: 150,
+  },
+  textContainerDel: {
+    marginTop: 20,
+  },
+  modalText4: {
+    color: "#0B3B63",
+    fontFamily: "Montserrat",
+    fontSize: 15,
+    marginTop: 30,
+    textAlign: "center",
+    opacity: 0.65,
+  },
+  contForModelDel: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 35,
+  },
+  content: {
+    width: 70,
+    height: 48,
+    backgroundColor: "#FFA8C5",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 5,
+    marginHorizontal: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 48,
+  },
+  textStyle: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "Montserrat",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });

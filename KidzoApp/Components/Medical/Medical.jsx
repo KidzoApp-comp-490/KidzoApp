@@ -68,8 +68,6 @@ export default function Medical({
         </View>
       </Modal>
 
-
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -86,27 +84,24 @@ export default function Medical({
             <View style={styles.buttonContainerDel}>
               <View style={styles.contForModelDel}>
                 <TouchableOpacity
+                  onPress={() => setModalVisible1(!modalVisible1)}
+                >
+                  <View style={styles.content}>
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => {
-                    deleteMedicineReport(compId)
-                    navigation.navigate("TabFun");
+                    deleteMedicineReport(compId);
+                    setModalVisible1(!modalVisible1);
                   }}
-
                 >
                   <View style={styles.content}>
                     <Text style={styles.textStyle}>Delete</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setModalVisible1(!modalVisible1)}>
-                  <View style={styles.content}>
-                    <Text style={styles.textStyle}>Cancel</Text>
-                  </View>
-                </TouchableOpacity>
               </View>
-
             </View>
-
-
           </View>
         </View>
       </Modal>
@@ -151,12 +146,11 @@ export default function Medical({
             </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => {
-                setModalVisible1(true)
+                setModalVisible1(true);
                 // deleteMedicineReport(compId)
                 // alert("Removed!");
                 // navigation.navigate("TabFun");
-              }
-              }
+              }}
             >
               <Image source={ImageDelete} style={styles.image} />
             </TouchableOpacity>
@@ -181,12 +175,12 @@ const styles = StyleSheet.create({
   },
   modalView1: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -195,7 +189,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: 300,
-    height: 150
+    height: 150,
   },
   content: {
     width: 70,
@@ -216,15 +210,15 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 16,
   },
-  textContainerDel:{
-    marginTop:20,
+  textContainerDel: {
+    marginTop: 20,
   },
   modalText4: {
     color: "#0B3B63",
     fontFamily: "Montserrat",
     fontSize: 15,
     marginTop: 30,
-    textAlign: 'center',
+    textAlign: "center",
     opacity: 0.65,
   },
   contForModelDel: {
