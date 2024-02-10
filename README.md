@@ -19,4 +19,4 @@ https://github.com/KidzoApp-comp-490/KidzoApp-computer-vision.git
 ![ChatWithUser](https://github.com/KidzoApp-comp-490/KidzoApp/assets/86850441/4b2bbac6-5d3a-443c-83a8-735d00ff7794)
 ![MedicalH](https://github.com/KidzoApp-comp-490/KidzoApp/assets/86850441/14b991d8-ab52-414e-b46c-52342435eb04)
 ![Report](https://github.com/KidzoApp-comp-490/KidzoApp/assets/86850441/ca7ff3ae-fe8f-43bd-b198-91b116c33da7)
-for more info about UI/UX link: https://www.figma.com/file/3RWwogIjYMSsQ1mkdObSFw/Untitled?type=design&node-id=1-3180&mode=design&t=1fBFke4iMwFo3rjC-0
+# for more info about UI/UX link: https://www.figma.com/file/3RWwogIjYMSsQ1mkdObSFw/Untitled?type=design&node-id=1-3180&mode=design&t=1fBFke4iMwFo3rjC-0
